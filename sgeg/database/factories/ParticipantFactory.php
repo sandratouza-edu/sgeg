@@ -17,10 +17,10 @@ class ParticipantFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake('es_ES')->name(),
-            'surname' => fake('es_ES')->surname(),
-            'email' => fake('es_ES')->unique()->safeEmail(),
-            'dni' => fake('es_ES')->dni(),
+            'name' => fake()->name(),
+            'surname' => fake()->surname(),
+            'email' => fake()->unique()->safeEmail(),
+            'dni' => fake()->dni(),
         ];
     }
 } 

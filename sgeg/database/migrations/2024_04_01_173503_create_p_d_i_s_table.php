@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('p_d_i_s', function (Blueprint $table) {
             $table->id();
+            $table->string('degree_color');
+            $table->date('thesis_date');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('is_godfather')->references('id')->on('degree');
         });
     }
 

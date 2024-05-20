@@ -14,6 +14,13 @@ class Participant extends Model
 
     protected $guarded = [];
 
+    protected $fillable = [
+        'name',
+        'surname',
+        'email',
+        'dni'
+    ];
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);

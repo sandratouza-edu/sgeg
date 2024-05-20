@@ -10,4 +10,14 @@ class Garment extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $fillable = [
+        'name' ,
+        'height' ,
+        'width' ,
+        'waist' ,
+        'size_cap',
+        'color'  ,
+        'with_cap' ,
+    ];
 }

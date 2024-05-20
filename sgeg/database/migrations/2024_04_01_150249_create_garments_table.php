@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('with_cap')->default(false);
             $table->unsignedSmallInteger('size_cap');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

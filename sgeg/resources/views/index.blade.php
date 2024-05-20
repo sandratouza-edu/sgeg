@@ -1,20 +1,23 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('title', 'SGEG')
+        <title>SGEG </title>
+        <!-- style provisional -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    </head>
+    <body class="antialiased">
+        <header>
+           @component('components.nav-login')
+            
+           @endcomponent
+        </header>
+        <main>
+            <h2>SGEG</h2>
 
-@section('content')
-<h1>Index</h1>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header"> Probando </div>
-
-                <div class="card-body">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+            <a href="{{ route('sendmail') }}">Mail me</a>
+        </main>
+    </body>
+</html>
