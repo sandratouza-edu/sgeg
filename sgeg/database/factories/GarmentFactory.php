@@ -23,7 +23,8 @@ class GarmentFactory extends Factory
             'waist' => fake()->numberBetween(40,100),
             'size_cap' => fake()->numberBetween(20,70),
             'color' => fake('es_ES')->safeColorName(),
-            'with_cap' => fake()->boolean()
+            'with_cap' => fake()->boolean(),
+            //'pdi_id' => fake()->numberBetween(1,20),
         ];
     }
 }

@@ -51,7 +51,7 @@ class GarmentController extends Controller
      */
     public function edit(Garment $garment): View
     {
-        return view('garment.show', compact('garment'));
+        return view('garment.edit', compact('garment'));
     }
 
     /**
