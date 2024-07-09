@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\PDIController;
 use App\Http\Controllers\GarmentController;
+use App\Http\Controllers\DegreeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CsvController;
+use App\Http\Controllers\AttachController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,13 +33,24 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/user', [UserController::class, 'index'])->name('user');
+Route::get('/search', [UserController::class, 'search'])->name('search-get');
+Route::post('/search', [UserController::class, 'searchPost'])->name('search');
+
+
+
 Route::resource('/garment', GarmentController::class)->names('garment');
-Route::resource('/participant', ParticipantController::class);
+Route::resource('/pdi', PDIController::class)->names('pdi');
+Route::resource('/degree', DegreeController::class)->names('degree');
 
 //Send email
 Route::get('/email', [MailController::class, 'index'])->name('index');
 Route::get('/sendmail', [MailController::class, 'sendMail'])->name('sendmail');
+
 //CSV import
 Route::get('/userimport', [CsvController::class, 'index'])->name('userImport');
 Route::post('/import', [CsvController::class, 'import'])->name('import');
 Route::get('/export', [CsvController::class, 'export'])->name('export');
+
+//PDF
+Route::get('/pdf', [AttachController::class, 'invite'])->name('invite');

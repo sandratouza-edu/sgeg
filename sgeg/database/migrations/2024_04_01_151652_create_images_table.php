@@ -14,6 +14,14 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('uri');
+            $table->text('description')->nullable();
+            $table->text('keywords')->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            // Definir la clave foránea
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+       
         });
     }
 

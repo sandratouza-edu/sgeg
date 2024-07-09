@@ -27,6 +27,9 @@ class CsvController extends Controller
             $file = $request->file('document_csv');
             Excel::import(new UserImport, $file);
             return redirect()->route('index');
+
+            //$users = User::all(); //use $filter
+            //return view('index', compact('users'));
         } catch (\Exception $e) {
             //error - return redirect()->route('index');
             dd('Error importing users');
@@ -35,6 +38,6 @@ class CsvController extends Controller
 
     public function export()
     {
-        return Excel::download(new ProductsExport, 'products.csv');
+        return Excel::download(new UsersExport, 'alumnos.csv');
     }
 }

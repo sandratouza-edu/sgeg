@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Degree extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
+
+    protected $fillable = [
+        'name' ,
+        'color',
+        'description',
+    ];
+    
 }

@@ -21,8 +21,11 @@ return new class extends Migration
             $table->string('color');
             $table->boolean('with_cap')->default(false);
             $table->unsignedSmallInteger('size_cap');
+            $table->unsignedBigInteger('pdi_id');
+            
             $table->timestamps();
-         //   $table->foreign('pdi_id')->references('id')->on('p_d_i_s')->onUpdate('cascade')->onDelete('cascade');
+         //
+            $table->foreign('pdi_id')->references('id')->on('p_d_i_s')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

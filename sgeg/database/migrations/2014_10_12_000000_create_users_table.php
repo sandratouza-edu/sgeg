@@ -17,14 +17,15 @@ return new class extends Migration
             $table->string('surname');
             $table->string('dni');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            //$table->string('profile_photo_path', 2048)->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
 
-            $table->foreign('role_id')->references('id')->on('roles');
+          //  $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

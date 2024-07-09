@@ -12,11 +12,12 @@ class MailController extends Controller
         return view('index');
    }
 
-   public function mailMe() {
+   public function sendMail() {
         //Mail::to(Auth::user()->email); // email al usuario autenticado
-        Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
+       // Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
+       Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
 
 
-        return view('sent');
+        return view('emails.sent');
    }
 }

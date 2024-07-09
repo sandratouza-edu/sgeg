@@ -16,8 +16,13 @@ return new class extends Migration
             $table->string('degree_color');
             $table->date('thesis_date');
             $table->timestamps();
+
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('is_goodfather');
+
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('is_godfather')->references('id')->on('degree');
+          
+            $table->foreign('is_godfather')->references('id')->on('degrees');
         });
     }
 
