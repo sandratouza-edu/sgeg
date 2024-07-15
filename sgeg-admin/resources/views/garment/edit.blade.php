@@ -1,0 +1,87 @@
+@extends('adminlte::page')
+
+
+@section('content_header')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h2>Trajes</h2>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-group float-sm-right">
+                        <a class="btn btn-app bg-secondary" href="{{ route('garment.index') }}">
+                            <i class="fas fa-solid fa-arrow-rotate-left"></i> Back
+                        </a>
+                        <a class="btn btn-app bg-secondary" href="{{ route('garment.create') }}">
+                            <i class="fas fa-solid fa-user-tie"></i> New
+                        </a>
+                        <a class="btn btn-app bg-danger" href="{{ route('garment.index') }}">
+                            <i class="fas fa-inbox"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+
+@section('content')
+
+    @if ($errors->any())
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+    <form action="{{ route('garment.update', $garment->id) }}" method="POST">
+        @method('put')
+        @csrf
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" id="inputName" class="form-control" name="name" value="{{ $garment->name }}">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" class="form-control" name="description" value="{{ $garment->name }}">
+        </div>
+        <div class="form-group">
+            <label for="available">Available</label>
+            <input type="checkbox" name="available" class="form-control" @if ($garment->avaliable) checked @endif />
+            <p></p>
+        </div>
+        <div class="form-group">
+            <label for="description">Height</label>
+            <input type="text" name="height" class="form-control" value="{{ $garment->height }}" />
+        </div>
+        <div class="form-group">
+            <label for="description">width</label>
+            <input type="text" name="width" class="form-control" value="{{ $garment->width }}" />
+            <p></p>
+        </div>
+        <div class="form-group">
+            <label for="description">waist</label>
+            <input type="text" name="waist" class="form-control" value="{{ $garment->waist }}" />
+        </div>
+        <div class="form-group">
+            <label for="description">color</label>
+            <input type="text" name="color" class="form-control" value="{{ $garment->color }}" />
+            <p></p>
+        </div>
+        <div class="form-group">
+            <label for="width_cap">width cap</label>
+            <input type="checkbox" name="width_cap" class="form-control" @if ($garment->width_cap) checked @endif />
+        </div>
+        <div class="form-group">
+            <label for="description">size_cap</label>
+            <input type="text" name="size_cap" class="form-control" value="{{ $garment->size_cap }}" />
+        </div>
+
+        <div class="form-group">
+            <a href="{{ route('garment.index') }}" class="btn btn-secondary">Cancel</a>
+            <input type="submit" value="Update" class="btn btn-success float-right">
+        </div>
+    </form>
+@endsection
