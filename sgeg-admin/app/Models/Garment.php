@@ -21,9 +21,10 @@ class Garment extends Model
         'size_cap',
         'color',
         'with_cap',
+        'pdi_id'
     ];
 
-    public function users(): BelongsTo
+    public function pdi(): BelongsTo
     {
         return $this->belongsTo(PDI::class);
     }

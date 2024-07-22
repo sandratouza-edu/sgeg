@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Models\PDI;
+use App\Models\User;
 use App\Http\Requests\PDIRequest;
+use Spatie\Permission\Models\Role;
 
 class PDIController extends Controller
 {
@@ -15,8 +17,10 @@ class PDIController extends Controller
      */
     public function index(): View
     {
-        $pdis = PDI::all();
-        return view('pdi.index', compact('pdis'));
+        $pros = PDI::all();
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+         
+        return view('pdi.index', compact('pdis', 'pros'));
     }
 
     /**
@@ -34,7 +38,8 @@ class PDIController extends Controller
     {
         PDI::create($request->all());
         
-        return redirect()->route('pdi.index')->with('success', 'pdi Created');
+        //return redirect()->route('pdi.index')->with('success', 'pdi Created');
+        return back()->with('success');
 
     }
 
@@ -43,6 +48,7 @@ class PDIController extends Controller
      */
     public function show(PDI $pdi): View
     {
+        
         return view('pdi.show', compact('pdi'));
     }
 
@@ -51,6 +57,8 @@ class PDIController extends Controller
      */
     public function edit(PDI $pdi): View
     {
+        //$pdi = PDI::with('users')->find($pdi->id);
+
         return view('pdi.edit', compact('pdi'));
     }
 

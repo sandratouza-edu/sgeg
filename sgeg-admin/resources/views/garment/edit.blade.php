@@ -49,7 +49,7 @@
         </div>
         <div class="form-group">
             <label for="available">Available</label>
-            <input type="checkbox" name="available" class="form-control" @if ($garment->avaliable) checked @endif />
+            <input type="checkbox" name="available" class="" @if ($garment->avaliable) checked @endif />
             <p></p>
         </div>
         <div class="form-group">
@@ -72,13 +72,21 @@
         </div>
         <div class="form-group">
             <label for="width_cap">width cap</label>
-            <input type="checkbox" name="width_cap" class="form-control" @if ($garment->width_cap) checked @endif />
+            <input type="checkbox" name="width_cap" class="" @if ($garment->width_cap) checked @endif />
         </div>
         <div class="form-group">
             <label for="description">size_cap</label>
             <input type="text" name="size_cap" class="form-control" value="{{ $garment->size_cap }}" />
         </div>
-
+        <div class="form-group">
+            <label for="description">Propietario</label>
+            <select name="type">
+                @foreach ($pdis as $pdi)
+                    <option value="{{ $pdi->id }}">{{ $pdi->name }} </option>
+                    </label>
+                @endforeach
+            </select>
+        </div>
         <div class="form-group">
             <a href="{{ route('garment.index') }}" class="btn btn-secondary">Cancel</a>
             <input type="submit" value="Update" class="btn btn-success float-right">

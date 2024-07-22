@@ -7,21 +7,15 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h2>Alumnos</h2>
+                <h2>{{ __('Degree') }}</h2>
             </div>
             <div class="col-sm-6">
                 <div class="btn-group float-sm-right">
-                    <a class="btn btn-app bg-secondary">
-                        <i class="fas fa-user"></i> New
-                    </a>
-                    <a class="btn btn-app bg-success">
-                        <i class="fas fa-users"></i> Import 
-                    </a>
-                    <a class="btn btn-app bg-orange" href="{{ route('export') }}">
-                        <i class="fas fa-users"></i> Export 
-                    </a>
-                    <a class="btn btn-app bg-danger">
-                        <i class="fas fa-inbox"></i> Delete
+                    <div class="btn-group float-sm-right">
+                        <a class="btn btn-app bg-secondary" href="{{ route('user.index') }}">
+                            <i class="fas fa-solid fa-arrow-rotate-left"></i> Back
+                        </a>
+                    </div>
                     </a>
                 </div>
             </div>
@@ -40,13 +34,14 @@
         </ul>
     @endif
  
-
+    <div class="card">
+        <div class="card-body mt-2">
     <form action="{{ route('degree.store') }}" method="POST">
         @method('put')
         @csrf
         <div class="form-group">
             <label for="inputName">Code</label>
-            <input type="text" id="inputName" class="form-control" name="name" value="{{ old('name') }}">
+            <input type="text" id="inputName" class="form-control" name="desc" value="{{ old('name') }}">
         </div>
         <div class="form-group">
             <label for="inputName">Color</label>
@@ -67,5 +62,6 @@
             <input type="submit" value="Create" class="btn btn-success float-right">
         </div>
     </form>
-
+</div>
+</div>
 @endsection

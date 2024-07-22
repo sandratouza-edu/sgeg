@@ -3,24 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller
 {
-    public function index()
+    public function __construct() {
+       // $this->middleware('can: adminall')->only('index');
+     // $this->middleware('can: edit user')->only('edit');
+    // $this->middleware(['permission:read|edit|delete']);
+    /*
+        $this->middleware(['permission:product-list|product-create|product-edit|product-delete'], ['only' => ['index', 'show']]);
+        $this->middleware(['permission:product-create'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:product-edit'], ['only' => ['edit', 'update']]);
+        $this->middleware(['permission:product-delete'], ['only' => ['destroy']]);
+    */
+
+    }
+    public function index(): View
     {
-        $users = User::paginate(env('ITEMS_PAGE') );
+        $users = User::with('roles')->get();
+        
         return view('user.index', compact('users'));
     }
 
+    public function list(String $filter = 'student'): View
+    {
+        $users = User::role($filter)->get();
+     //  $users = User::with('roles')->get();
+        return view('user.index', compact('users'));
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create(): View
     {
-        return view('user.create');
+
+        $roles = Role::all();
+        return view('user.create',compact('roles')); 
     }
 
     /**
@@ -28,7 +52,15 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        User::create($request->all());
+        
+        $input = $request->all();
+        if(empty($input['password'])){ 
+            $input['password'] = Hash::make('password');
+        } else {
+            $input['password'] = Hash::make($input['password']);
+        }
+        $user = User::create($input);
+        $user->assignRole($request->input('roles'));
         
         return redirect()->route('user.index')->with('success', 'user Created');
 
@@ -47,7 +79,8 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
-        return view('user.edit', compact('user'));
+        $roles = Role::all();
+        return view('user.edit', compact('user', 'roles'));
     }
 
     /**
@@ -56,8 +89,21 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $user->update($request->all()); 
+        /*
+        $input = $request->all();
+        if(!empty($input['password'])){ 
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = Arr::except($input,array('password'));    
+        }
+    
+        $user = User::find($id);
+        $user->update($input);
 
-        return redirect()->route('user.index')->with('success', 'user Updated');
+        */
+        $user->roles()->sync($request->roles);
+
+        return redirect()->route('user.edit', $user)->with('message', __('User Updated'));
 
     }
 
@@ -68,7 +114,8 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('user.index')->with('danger', 'user Deleted');
+        //return redirect()->route('user.index')->with('danger', 'user Deleted');
+        return back()->with('danger', 'user Deleted');
     
     }
 
@@ -76,7 +123,7 @@ class UserController extends Controller
         return User::paginate(15);
     }
 
-    public function searchPost(Request $request) 
+    public function searchPost(Request $request): View
     {
         $request->validate([ 
            'name' => ['required', 'min:5', 'max:255'] 

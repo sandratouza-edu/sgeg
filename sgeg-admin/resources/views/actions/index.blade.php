@@ -20,6 +20,7 @@
     </section>
 @endsection
 
+@section('plugins.BsCustomFileInput', true)
 
 @section('content')
 
@@ -76,12 +77,6 @@
     
     
     <div class="card-body">
-        @component('components.search')
-        @endcomponent
-
-
-
-
 
     @php
     $heads = [

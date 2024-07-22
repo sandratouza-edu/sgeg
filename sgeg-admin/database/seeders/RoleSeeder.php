@@ -4,7 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class RoleSeeder extends Seeder
 {
@@ -13,25 +16,45 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create([
-            'id' => 1,
-            'name' => 'PDI'
+           //Create roles and initial content permissions
+      
+       $role1 = Role::create(['name' => 'administrator']);
+       $role2 = Role::create(['name' => 'student']);
+       $role3 = Role::create(['name' => 'pdi']);
+       $role4 = Role::create(['name' => 'speacker']);
+       $role5 = Role::create(['name' => 'guest']);
+       
+       $permissions[] = Permission::create(['name' => 'adminall']);
+       $permissions[] = Permission::create(['name' => 'user-admin']);
+       $permissions[] = Permission::create(['name' => 'user-delete']);
+       $permissions[] = Permission::create(['name' => 'user-edit']);
+       $permissions[] = Permission::create(['name' => 'user-read']);
+       $permissions[] = Permission::create(['name' => 'role-admin']);
+       $permissions[] = Permission::create(['name' => 'permission-admin']);
+       $permissions[] = Permission::create(['name' => 'garment-admin']);
+       $permissions[] = Permission::create(['name' => 'degree-admin']);
+       $permissions[] = Permission::create(['name' => 'document-admin']);
+       $permissions[] = Permission::create(['name' => 'document-print']);
+       $permissions[] = Permission::create(['name' => 'image-admin']);
+       $permissions[] = Permission::create(['name' => 'image-upload']);
+       $permissions[] = Permission::create(['name' => 'garment-borrow']);
+       $permissions[] = Permission::create(['name' => 'garment-lend']);
+       $permissions[] = Permission::create(['name' => 'seat-reserve']);
+       $permissions[] = Permission::create(['name' => 'profile']);
+
+       //admin role
+       $role1->syncPermissions($permissions);
+
+        // Usuario admin
+        $admin = User::create([
+            'name' => 'administrator',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password')
         ]);
-        Role::create([
-            'id' => 2,
-            'name' => 'student'
-        ]);
-        Role::create([
-            'id' => 3,
-            'name' => 'doctor'
-        ]);
-        Role::create([
-            'id' => 4,
-            'name' => 'speaker'
-        ]);
-        Role::create([
-            'id' => 5,
-            'name' => 'guest'
-        ]);
+        $admin->assignRole(1);
+ 
+
+
+
     }
 }

@@ -1,46 +1,9 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
-<style>
 
-.seatSelection {
-    text-align: center;
-    padding: 5px;
-      margin: 15px;}
-  
-  .seatsReceipt {text-align: center;}
-  
-  .seatNumber {
-      display: inline;
-      padding: 10px;
-      background-color: #5c86eb;
-      color: #FFF;
-      border-radius: 5px;
-      cursor: default;
-      height: 25px;
-      width: 25px;
-      line-height: 25px;
-      text-align: center;
-   }
-  
-  .seatRow {padding: 10px;}
-  
-  .seatSelected {
-      background-color: lightgreen;
-      color: black;
-   }
-  
-  .seatUnavailable {background-color: gray;}
-  
-  .seatRowNumber {
-      clear: none;
-      display: inline;
-   }
-  
-  .hidden {display: none;}
-  
-  .seatsAmount {max-width: 2em;}
+@section('content_header')
+ <h2>Reserva</h2>
 
-</style>
 
 
 @section('content')
@@ -77,7 +40,55 @@
     </div>
     </div>
 
+@section('css')
+    <link rel="stylesheet" href="/css/seats.css">
+@endsection
 
+@section('js')
+    <script src="/js/seats.js"></script>
+@endsection
+
+<style>
+
+    .seatSelection {
+        text-align: center;
+        padding: 5px;
+          margin: 15px;}
+      
+      .seatsReceipt {text-align: center;}
+      
+      .seatNumber {
+          display: inline;
+          padding: 10px;
+          background-color: #5c86eb;
+          color: #FFF;
+          border-radius: 5px;
+          cursor: default;
+          height: 25px;
+          width: 25px;
+          line-height: 25px;
+          text-align: center;
+       }
+      
+      .seatRow {padding: 10px;}
+      
+      .seatSelected {
+          background-color: lightgreen;
+          color: black;
+       }
+      
+      .seatUnavailable {background-color: gray;}
+      
+      .seatRowNumber {
+          clear: none;
+          display: inline;
+       }
+      
+      .hidden {display: none;}
+      
+      .seatsAmount {max-width: 2em;}
+    
+    </style>
 <script>
 
  // Clicking any seat

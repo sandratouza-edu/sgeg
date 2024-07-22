@@ -37,9 +37,14 @@
     <form action="{{ route('attach.update', $attach->id) }}" method="POST">
         @method('put')
         @csrf
+        
         <div class="form-group">
-            <label for="inputName">uri</label>
-            <input type="text" id="uri" class="form-control" name="name" value="{{ $attach->uri }}">
+            <label for="name"> Name </label>
+            <input type="text" id="name" class="form-control" name="name" value="{{ $attach->name }}">
+        </div>
+        <div class="form-group">
+            <label for="inputName">uri <a href="{{ $attach->uri }}" class="btn btn-info"  >Download</a></label>
+            <input type="text" id="uri" class="form-control" name="uri" value="{{ $attach->uri }}">
         </div>
         <div class="form-group">
             <label for="keywords">keywords</label>
@@ -48,23 +53,53 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="description"> Description</label>
-            <textarea id="description" class="form-control" rows="4" name="description"> {{ $attach->description }} </textarea>
-            <x-adminlte-textarea name="taDesc" label="Description" rows=5 label-class="text-warning" igroup-size="sm"
-                placeholder="Insert description...">
-                <x-slot name="prependSlot">
-                    <div class="input-group-text bg-dark">
-                        <i class="fas fa-lg fa-file-alt text-warning"></i>
-                    </div>
-                </x-slot>
-            </x-adminlte-textarea>
+            <select name="type">
+                <option value="doc" selected>Documento</option>
+                <option value="image" >Imagen</option>
+              </select>
+        </div>
+        <div class="form-group">
+            <div class="card p-4">
+                <label for="description"> Description</label>
+                <textarea id="summernote" class="summernote form-control" rows="4" name="description"> {{ $attach->description }} </textarea>
+    
+            <div class="form-group">
+                <a id="edit" class="btn btn-info" onclick="edit()">Edit</a>
+                <a id="save" class="btn btn-info" onclick="save()">Preview</a>
+            </div>
+            </div>
         </div>
 
         <div class="form-group">
             <a href="{{ route('attach.index') }}" class="btn btn-secondary">Cancel</a>
+        {{ Form::hidden('user_id', Auth::user()->id) }}
             <input type="submit" value="Update" class="btn btn-success float-right">
         </div>
     </form>
 
     
+@endsection
+  
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote(
+            {
+                tabsize: 2,
+                height: 140,
+                lang: 'es-ES' 
+            }
+        );
+    });
+    var edit = function() {
+        $('#summernote').summernote({focus: true});
+        };
+
+    var save = function() {
+        var markup = $('.summernote').summernote('code');
+        $('#summernote').summernote('destroy');
+        };
+
+</script>
 @endsection

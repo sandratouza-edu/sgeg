@@ -15,11 +15,14 @@
 
 </head>
 <body>
-   <h2> hola {{ $name  }} que tal!!! </h2>
+   <h2>  Invitación: {{ $name }} </h2>
    <p>
-    Estas invitado a tu graduación
+      {!! html_entity_decode( $description) !!}
    </p>
+   
+  
    <div class="page-break"></div> 
-   <p>inserta un salto de pagina para controlar los parrafos y tamaño del documento</p>
+   {{ $uri }} 
+    
 </body>
 </html>

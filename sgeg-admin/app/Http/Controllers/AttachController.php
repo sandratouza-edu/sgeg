@@ -32,10 +32,58 @@ class AttachController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        Attach::create($request->all());
+   
+        $data = $request->all();
+        $uri = ucwords(str_replace(' ', ' ', $request['name'])).'.pdf';
+        $data['uri'] = asset('/doc/'.$uri);
         
-        return redirect()->route('attach.index')->with('success', 'Attach Created');
+        $pdf = Pdf::setPaper('letter', 'landscape')->loadView('pdf.letter', $data);
+        $pdf->save($uri);
+      
+        Attach::create($data);
 
+        return redirect()->route('attach.index')->with('success', 'Document Created');
+
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Attach $attach): View
+    {
+        return view('attach.show', compact('attach'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Attach $attach): View
+    {
+        return view('attach.edit', compact('attach'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Attach $attach): RedirectResponse
+    {
+        $attach->update($request->all()); 
+         
+     
+        return redirect()->route('attach.edit', $attach)->with('message', __('Doc Updated'));
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request, Attach $attach): RedirectResponse
+    {
+        $attach->delete();
+
+        return redirect()->route('attach.index')->with('danger', 'attach Deleted');
+    
     }
 
     public function invite()

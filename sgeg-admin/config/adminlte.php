@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>SGEG</b>',
-    'logo_img' => '',//'vendor/adminlte/dist/img/AdminLTELogo.png',
+    //'logo_img' => '',//'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -110,15 +110,15 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'mode' => 'fullscreen',
-        'img' => [
+      /*  'img' => [
             'path' => '', //'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
-        ],
+        ], */
     ],
 
     /*
@@ -318,87 +318,106 @@ return [
 
         [
             'text' => 'Students',
-            'url' => 'user',
+            'url' => 'students',
             'icon' => 'far fa-fw fa-user',
+            'role' => 'admin',  
              
         ],
         [
             'text' => 'PDI',
             'url' => 'pdi',
             'icon' => 'far fa-fw fa-user',
+            'role' => 'admin',  
              
         ],
         [
             'text' => 'Garament',
             'url' => 'garment',
-            'icon' => 'far fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-user-tie',
+            'role' => 'admin|student|pdi',  
             
         ],
         [
             'text' => 'Degree',
             'url' => 'degree',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'fas fa-fw fa-certificate',
+            'role' => 'admin',  
             
+        ],        
+         
+
+            
+       /* [
+            'text' => 'images',
+            'icon' => 'far fa-fw fa-images',
+            'url' => 'attach',
+        ], */
+ 
+        [
+            'text' => 'Documents',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'attach',
+            'label' => 4,
+            'label_color' => 'success',
         ],
+          
         [
             'text' => 'Graduation',
             'icon' => 'fas fa-fw fa-share',
+            'icon_color' => 'yellow',
+            'role' => 'admin',  
             'submenu' => [
                 [
                     'text' => 'Event',
                     'url' => 'reserve',
                 ],
                 [
+                    'text' => 'Send emails',
+                    'url' => 'email',
+                    'icon' => 'far fa-fw fa-envelope',
+                ],
+               /* [
                     'text' => 'Room',
                     'url' => 'reserve',
                 ],
                 [
                     'text' => 'Seat',
                     'url' => 'reserve',
-                ],
+                ], */
             ]
         ],
+    
         [
-            'text' => 'Manage Event',
+            'text' => 'Admin',
             'icon' => 'fas fa-fw fa-share',
-            'icon_color' => 'yellow',
-            'submenu' => [
+            'role' => 'admin',
+            'submenu' => [            
                 [
-                    'text' => 'Send emails',
-                    'url' => 'email',
+                    'text' => 'Roles',
+                    'url' => 'role',
+                    'icon' => 'far fa-fw fa-user', 
+                    'role' => 'admin',                  
                 ],
                 [
-                    'text' => 'Import Students',
+                    'text' => 'Permisos',
+                    'url' => 'permission',
+                    'icon' => 'far fa-fw fa-user',    
+                    'role' => 'admin',                
+                ],
+                [
+                    'text' => 'Users',
                     'url' => 'user',
-                ],
-                [
-                    'text' => 'docs',
-                    'url' => 'attach',
-                ],
-                [
-                    'text' => 'Generate Documents',
-                    'url' => 'pdf',
-                ],
-
-                [
-                    'text' => 'Images',
-                    'url' => 'attach',
-                    'label' => 4,
-                    'label_color' => 'success',
+                    'icon' => 'far fa-fw fa-user',  
+                    'role' => 'admin',  
                 ],
             ],
         ],
 
-        ['header' => 'account_settings'],
+        ['header' => 'account_settings',],
         [
             'text' => 'profile',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
         ],
  
     ],
@@ -439,7 +458,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -484,7 +503,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -523,6 +542,16 @@ return [
                 ],
             ],
         ],
+        'BsCustomFileInput' => [
+        'active' => false,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => true,
+                'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
+            ],
+        ],
+    ],
     ],
 
     /*

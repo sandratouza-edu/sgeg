@@ -24,6 +24,7 @@ class PDIRequest extends FormRequest
         return [
             // Se añaden las validaciones
                 'degree_color' => 'required|max:25|min:3',
+                //'email' => 'required|email|max:250|min:3',
                 'thesis_date' => 'required'
         ];
     }

@@ -23,7 +23,7 @@ class ParticipantRequest extends FormRequest
     {
         return [
             // Se añaden las validaciones
-                'email' => 'required|max:250|min:3',
+                'email' => 'required|email|max:250|min:3',
                 'name' => 'required|max:150|min:3'
         ];
     }

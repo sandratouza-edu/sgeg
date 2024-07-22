@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name'); 
             $table->boolean('available')->default(true);
-            $table->unsignedSmallInteger('height');
-            $table->unsignedSmallInteger('width');
-            $table->unsignedSmallInteger('waist');            
-            $table->string('color');
-            $table->boolean('with_cap')->default(false);
-            $table->unsignedSmallInteger('size_cap');
+            $table->unsignedSmallInteger('height')->nullable();;
+            $table->unsignedSmallInteger('width')->nullable();;
+            $table->unsignedSmallInteger('waist')->nullable();;            
+            $table->string('color')->nullable();;
+            $table->boolean('with_cap')->default(false)->nullable();;
+            $table->unsignedSmallInteger('size_cap')->nullable();;
             $table->unsignedBigInteger('pdi_id');
             
             $table->timestamps();

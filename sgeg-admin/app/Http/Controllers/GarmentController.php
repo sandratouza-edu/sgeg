@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Models\Garment;
+use App\Models\User;
+use App\Models\PDI;
 use App\Http\Requests\GarmentRequest;
 class GarmentController extends Controller
 {
@@ -14,8 +16,10 @@ class GarmentController extends Controller
      */
     public function index(): View
     {
-        $garments = Garment::all();
-        return view('garment.index', compact('garments'));
+        $garments = Garment::with('pdi')->get();
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+
+        return view('garment.index', compact('garments', 'pdis'));
     }
 
 
@@ -24,7 +28,9 @@ class GarmentController extends Controller
      */
     public function create(): View
     {
-        return view('garment.create');
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+        
+        return view('garment.create', compact('pdis'));
     }
 
     /**
@@ -43,6 +49,7 @@ class GarmentController extends Controller
      */
     public function show(Garment $garment): View
     {
+        //$garment = garment::with('pdi')->find($garment);
         return view('garment.show', compact('garment'));
     }
 
@@ -51,7 +58,9 @@ class GarmentController extends Controller
      */
     public function edit(Garment $garment): View
     {
-        return view('garment.edit', compact('garment'));
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+        
+        return view('garment.edit', compact('garment', 'pdis'));
     }
 
     /**

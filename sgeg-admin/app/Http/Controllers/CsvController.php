@@ -21,23 +21,21 @@ class CsvController extends Controller
         //Hacer una custom request para validar
         //sustituir lo que validamos aquí
         $request->validate([
-            'document_csv' => 'required|mimes:csv|max:2048'
+            'document_csv' => 'required' //|mimes:csv,xls,xlsx|max:2048'
         ]);
         try {
             $file = $request->file('document_csv');
             Excel::import(new UserImport, $file);
             return redirect()->route('index');
 
-            //$users = User::all(); //use $filter
-            //return view('index', compact('users'));
         } catch (\Exception $e) {
-            //error - return redirect()->route('index');
+            // return redirect()->route('index');
             dd('Error importing users');
         }
     }
 
     public function export()
     {
-        return Excel::download(new UsersExport, 'alumnos.csv');
+        return Excel::download(new UsersExport, 'alumnos-'.date('Y-m-d').'.csv');
     }
 }

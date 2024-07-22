@@ -26,28 +26,33 @@
         </div>
     </section>
 @endsection
-@if ($errors->any())
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
+
 
 @section('content')
-
-<div>
-<p> </p>
-<h2>Añadir </h2>
+@php
+    if (session()) {
+        if (session('message')== 'success') {
+            echo '<x-adminlte-alert class="bg-teal text-uppercase" icon="fa fa-lg fa-thumbs-up" title="Done" dismissable>
+                complete!
+            </x-adminlte-alert>';
+        }
+    }
+@endphp
+<div class="card">
+    <div class="card-body">
+    <p> </p>
+    <h2>Añadir </h2>
     <form action="{{ route('pdi.store') }}" method="POST">
         @csrf
     
     <div class="form-group">
-        <label for title>Nombre</label>
-        <input type="text" name="name" />
-        <p> </p> @error('name')
-            <p>{{ $message }}</p>
-        <p> </p> @enderror
+        <x-adminlte-input name="usuario" label="usuario" placeholder="Escriba nombre apellidos" label-class="text-lightblue">
+            <x-slot name="prependSlot">
+                <div class="input-group-text">
+                    <i class="fas fa-user text-lightblue"></i>
+                </div>
+            </x-slot>
+        </x-adminlte-input>
     </div>
     <div class="form-group">
         <label for="description">Surname</label>
@@ -59,9 +64,7 @@
     <div class="form-group">
         <label for="description">DNI</label>
         <input type="text" name="dni" />
-        <p> </p> @error('dni')
-        <p>{{ $message }}</p>
-        @enderror
+  
     </div>
     <div class="form-group">
         <label for="description">Email</label>
@@ -69,15 +72,23 @@
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
             </div>
         <input type="text" name="email" />
-        @error('email')
-        <p>{{ $message }}</p>
-        @enderror
+       
     </div>
+    <x-adminlte-select name="state" label="Estado" label-class="text-lightblue"
+igroup-size="lg">
+<x-slot name="prependSlot">
+    <div class="input-group-text bg-gradient-info">
+        <i class="fas fa-car-side"></i>
+    </div>
+</x-slot>
+<option>Disponible</option>
+<option>No disponible</option>
+</x-adminlte-select>
     <div class="form-group">
         <a href="{{ route('pdi.index') }}" class="btn btn-secondary">Cancel</a>
         <input type="submit" value="Create" class="btn btn-success float-right">
     </div>
     </form>
-
+</div>
 </div>
 @endsection

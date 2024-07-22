@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Spatie\Permission\Models\Role;
 
 class UsersExport implements FromCollection
 {
@@ -12,6 +13,8 @@ class UsersExport implements FromCollection
     */
     public function collection()
     {
-        return User::all();
+        //return User::all();
+        $users = User::role('student')->get();
+        return $users;
     }
 }

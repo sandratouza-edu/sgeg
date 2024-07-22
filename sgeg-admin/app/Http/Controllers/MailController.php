@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 class MailController extends Controller
 {
    public function index() {
-        return view('index');
+        return view('emails.index');
    }
 
    public function sendMail() {

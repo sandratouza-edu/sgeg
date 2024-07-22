@@ -34,7 +34,7 @@
 
 @section('content')
     <div>
-        <h2>Editar</h2>
+        <h2>Editar</h2> {{ $pdi }}
 
         <form action="{{ route('pdi.update', $pdi->id) }}" method="POST">
             @method('put')
@@ -44,7 +44,7 @@
                 <input type="text" name="name" value="{{ $pdi->name }}" />
             </div>
             <div class="form-group">
-                <label for="description">color</label>
+                <label for="description">dni</label>
                 <input type="text" name="dni" value="{{ $pdi->dni }}" />
             </div>
             <div class="form-group">
