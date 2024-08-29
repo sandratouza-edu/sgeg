@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Models\Garment;
+use App\Models\GarmentUser;
 use App\Models\User;
-use App\Models\PDI;
+use App\Models\Pdi;
 use App\Http\Requests\GarmentRequest;
 class GarmentController extends Controller
 {
@@ -16,10 +17,9 @@ class GarmentController extends Controller
      */
     public function index(): View
     {
-        $garments = Garment::with('pdi')->get();
-        $pdis = User::role('pdi')->with('pdi')->get(); 
+        $garments = Garment::with('user')->get();
 
-        return view('garment.index', compact('garments', 'pdis'));
+        return view('garment.index', compact('garments'));
     }
 
 
@@ -28,9 +28,9 @@ class GarmentController extends Controller
      */
     public function create(): View
     {
-        $pdis = User::role('pdi')->with('pdi')->get(); 
+        $owners = User::role('pdi')->with('pdi')->get(); 
         
-        return view('garment.create', compact('pdis'));
+        return view('garment.create', compact('owners'));
     }
 
     /**
@@ -49,7 +49,7 @@ class GarmentController extends Controller
      */
     public function show(Garment $garment): View
     {
-        //$garment = garment::with('pdi')->find($garment);
+
         return view('garment.show', compact('garment'));
     }
 
@@ -58,9 +58,9 @@ class GarmentController extends Controller
      */
     public function edit(Garment $garment): View
     {
-        $pdis = User::role('pdi')->with('pdi')->get(); 
+        $owners = User::role('pdi')->with('pdi')->get(); 
         
-        return view('garment.edit', compact('garment', 'pdis'));
+        return view('garment.edit', compact('garment', 'owners'));
     }
 
     /**
@@ -68,6 +68,8 @@ class GarmentController extends Controller
      */
     public function update(GarmentRequest $request, Garment $garment): RedirectResponse
     {
+       
+        
         $garment->update($request->all()); 
 
         return redirect()->route('garment.index')->with('success', 'garment Updated');
@@ -84,4 +86,40 @@ class GarmentController extends Controller
         return redirect()->route('garment.index')->with('danger', 'garment Deleted');
     
     }
+
+    /**
+     * Show the form  borrowing the garment.
+     */
+
+    public function borrow(Garment $garment): View
+    {
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+        
+        $garments = Garment::with('users')->get();
+ 
+        return view('garment.borrow', compact('garment', 'garments',  'pdis'));
+    }
+
+    /**
+     * Save borrowing the garment.
+     */
+    public function borrowSave(Request $request): RedirectResponse
+    {
+         
+        GarmentUser::create($request->all());
+        return redirect()->route('garment.index')->with('success', 'garment Updated');
+    }
+
+    /**
+     * Show the request list to lend the garment.
+     */
+    public function lend(Garment $garment): View
+    {
+        //$list = GarmentUser::get();
+        $garments = Garment::with('pdi')->get();
+        $pdis = User::role('pdi')->with('pdi')->get(); 
+        
+        return view('garment.lend', compact('garments',  'pdis', 'garment'));
+    }
+
 }

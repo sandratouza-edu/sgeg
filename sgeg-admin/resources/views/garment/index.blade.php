@@ -6,15 +6,18 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>Trajes</h2>
+                    <h2>{{ __('Academic Garments') }}</h2>
                 </div>
                 <div class="col-sm-6">
-                    <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('garment.create') }}">
-                            <i class="fas fa-user-tie"></i> New
+                    <div class="btn-group float-sm-right"> 
+                        <a class="btn btn-app bg-secondary bg-info" href="{{ route('garment.borrow') }}">
+                            <i class="fas fa-solid fa-graduation-cap"></i> {{ __('Request') }} 
+                        </a>
+                        <a class="btn btn-app bg-green" href="{{ route('garment.create') }}">
+                            <i class="fas fa-user-tie"></i> {{ __('New') }} 
                         </a>
                         <a class="btn btn-app bg-danger">
-                            <i class="fas fa-inbox"></i> Delete
+                            <i class="fas fa-inbox"></i> {{ __('Delete') }}
                         </a>
                     </div>
                 </div>
@@ -26,75 +29,102 @@
 @section('content')
     @php
         $heads = [
-            'Name',
-            ['label' => 'Owner', 'width' => 40],
-            'Available',
-            ['label' => 'Actions', 'no-export' => true, 'width' => 5],
+            __('Name'),           
+            __('Color'),
+            __('With Cap'),
+            __('Owner'),
+            __('Available'),
+            __('Requested'),
+            ['label' => __('Actions'), 'no-export' => true, 'width' => 5],
+        ];
+        $config = [
+            'language' => [
+                'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
+            ], 
         ];
     @endphp
     <div>
-        <x-adminlte-datatable id="table1" :heads="$heads" head-theme="dark" striped hoverable with-buttons>
+        <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable with-buttons>
             @forelse($garments as $garment)
                 <tr>
                     <td>
                         <a href="{{ route('garment.show', $garment->id) }}"> {{ $garment->name }} </a>
                     </td>
-
                     <td>
-                        @foreach ($pdis as $pdi)
-                            @if($garment->pdi_id == $pdi->id)
-                                {{ $pdi->name }}
-                            @endif
-                        @endforeach
+                        <span  style="color:  {{ $garment->color }}">
+                            <i class="fas fa-square"></i> 
+                        </span>  {{ $garment->color }}   
                     </td>
                     <td>
-                        {{ $garment->avaliable }}
-                        @if ($garment->avaliable)
-                            <a class="btn btn-xs bg-green">
-                                <i class="fa fa-solid fa-lightbulb"></i>
-                            </a>
+                        @if ($garment->with_cap == 1)
+                            <span class="text-green">
+                                <i class="fa fa-solid fa-graduation-cap"></i>
+                            </span>
                         @else
-                            <a class="btn btn-xs bg-brown">
-                                <i class="fa fa-solid fa-lightbulb"></i>
-                            </a>
+                            <span class="text-brown">
+                                <i class="fa fa-solid fa-times"></i>
+                            </span>
                         @endif
                     </td>
                     <td>
+                        @if (!is_null($garment->user)) {{ $garment->user->name}} @endif
+                    </td>
+                    <td>  
+                        @if ($garment->available == 1)
+                            <span class="text-green">
+                                <i class="fas fa-toggle-on"></i>
+                            </span>
+                        @else
+                            <span class="text-brown">
+                                <i class="fas fa-toggle-off"></i>
+                            </span>
+                        @endif
+                    </td>
+                    <td>
+                        <span class="text-orange">  
+                            <i class="fa fa-solid fa-lightbulb"></i>
+                        </span>
+                    </td>
+                    <td>
                         <div class="btn-group">
-                            <a class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit"
+                            <a class="btn btn-xs btn-default text-primary mx-1 shadow" title="{{ __('Edit') }}"
                                 href="{{ route('garment.edit', $garment->id) }}">
                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                             </a>
-                            <form action="{{ route('garment.destroy', $garment) }}" method="POST" class="form-delete">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
-                                    <i class="fa fa-lg fa-fw fa-trash"></i>
-                                </button>
-                            </form>
-                            <a class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details"
+                              
+                            <a class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Details') }}"
                                 href="{{ route('garment.show', $garment->id) }}">
                                 <i class="fa fa-lg fa-fw fa-eye"></i>
                             </a>
+                            <form action="{{ route('garment.destroy', $garment) }}" method="POST" class="form-delete">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow"
+                                    title="{{ __('Delete') }}">
+                                    <i class="fa fa-lg fa-fw fa-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td> List empty</td>
+                    <td>{{ __('List is empty') }}</td>
                 </tr>
             @endforelse
         </x-adminlte-datatable>
     </div>
+ 
 @endsection
-
+ 
 @section('js')
+<script src="/vendor/sweetalert/sweetalert2@11.js"></script>
     @if (session('message'))
         <script>
             $(document).ready(function() {
                 let message = "{{ session('message') }}";
                 Swal.fire({
-                    title: "Action",
+                    title: "{{ __('Action') }}",
                     text: message,
                     icon: "success",
                 })
@@ -107,12 +137,14 @@
             $('.form-delete').submit(function(e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    title: "{{ __('Are you sure you want to delete?') }}",
+                    text: "",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
+                    cancelButtonText: "{{ __('Cancel') }}",
+                    confirmButtonText: "{{ __('Delete') }}"
                 }).then((result) => {
                     //if (result.isConfirmed) {
                     if (result.value) {
@@ -124,5 +156,3 @@
         })
     </script>
 @endsection
-
- 

@@ -4,9 +4,9 @@
 
 @section('content')
 <div>
-<h2>Leer</h2>
+<h2>{{ __('Show') }}</h2>
 
-        <h3>Nombre:{{ $user->name }} -{{ $user->surname }}   </h3>
+        <h3>{{ __('Name') }}: {{ $user->name }}  </h3>
          <h4> {{ $user->dni }} </h4>
          <h4> {{ $user->email }} </h4>
          <h4> {{ $user->dni }} </h4>
@@ -14,7 +14,7 @@
 <p> </p>
 <hr>
 <p>
-<a href="{{ route('user.index') }}">VOLVER</a>
+<a href="{{ route('user.index') }}">{{ __('Back') }}</a>
 </p>
 <p> </p>
 @endsection

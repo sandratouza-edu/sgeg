@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PDIRequest extends FormRequest
+class PdiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,9 @@ class PDIRequest extends FormRequest
     {
         return [
             // Se añaden las validaciones
-                'degree_color' => 'required|max:25|min:3',
+               // 'degree_color' => 'required|max:25|min:3',
                 //'email' => 'required|email|max:250|min:3',
-                'thesis_date' => 'required'
+               // 'thesis_date' => 'required'
         ];
     }
 }

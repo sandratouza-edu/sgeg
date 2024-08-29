@@ -14,7 +14,8 @@ class AttachController extends Controller
      */
     public function index(): View
     {
-        $attachs = Attach::all();
+        $attachs = Attach::all()->where('type','doc');
+        
         return view('attach.index', compact('attachs'));
     }
 
@@ -95,4 +96,17 @@ class AttachController extends Controller
        
         return $pdf->download('myinvite.pdf');
     }
+
+    public function images(): View
+    {
+        $attachs = Attach::with('user')->where('type','image')->get();
+        return view('attach.image-index', compact('attachs'));
+    }
+
+    public function upload(): View
+    {
+        $attachs = Attach::with('user')->where('type','image')->get();
+        return view('attach.image-index', compact('attachs'));
+    }
+
 }

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('surname');
+            $table->string('surname')->nullable();
             $table->string('email')->unique();
             $table->string('dni')->nullable();
             $table->string('phone')->unique()->nullable();
-           // $table->string('phone2')->unique()->nullable();
+            $table->string('phone2')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken()->nullable();
@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
              
-          //  $table->foreign('role_id')->references('id')->on('roles');
+        //    $table->foreign('degree_id')->references('id')->on('degree');
+            $table->foreignId('degree_id')->nullable()->constrained('degree')->nullOnDelete();
         });
     }
 

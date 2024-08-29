@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>Roles</h2>
+                    <h2>{{ __('Roles') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <x-adminlte-button label="Nuevo" class="btn btn-app bg-secondary" icon="fas fa-solid fa-ruler"  data-toggle="modal" data-target="#modalPurple" />
+                        <x-adminlte-button label="Nuevo" class="btn btn-app bg-green" icon="fas fa-solid fa-ruler"  data-toggle="modal" data-target="#modalPurple" />
                     </div>
                 </div>
             </div>
@@ -21,12 +21,12 @@
     <div class="card">
         <div class="card-body">
             @php
-                $heads = [['label' => 'Id', 'width' => 10], 'Name', ['label' => 'Actions', 'no-export' => true, 'width' => 30]];
+                $heads = [['label' => 'Id', 'width' => 10], __('Name'), ['label' => __('Actions'), 'no-export' => true, 'width' => 10]];
 
                 $config = [
                     'language' => [
-                        'url' => url('//cdn.datatables.net/plug-ins/2.1.0/i18n/'.app()->getLocale().'.json'),
-                    ], 
+                        'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
+                    ],
                 ];
 
             @endphp
@@ -53,7 +53,7 @@
                         </td>
                     </tr>
                 @empty
-                    <td> List empty</td>
+                    <td colspan="3"> {{ __('List is empty') }}</td>
                     </tr>
                 @endforelse
             </x-adminlte-datatable>
@@ -61,18 +61,62 @@
     </div>
 
 
-<x-adminlte-modal id="modalPurple" title="Nuevo Rol" theme="secondary"
+<x-adminlte-modal id="modalPurple" title="__('New') __('Rol') " theme="secondary"
     icon="fas fa-bolt" size='lg' disable-animations>
     <form action="{{ route('role.store') }}" method="POST">
         @csrf
-        <x-adminlte-input name="name" label="role" placeholder="Escriba  el rol" label-class="text-grey">
+        <x-adminlte-input name="name" label="__('Rol') " placeholder="Escriba  el rol" label-class="text-grey">
             <x-slot name="prependSlot">
                 <div class="input-group-text">
                     <i class="fas fa-user text-grey"></i>
                 </div>
             </x-slot>
         </x-adminlte-input>
-        <x-adminlte-button type="Submit" label="Guardar" theme="secondary" icon="fas fa-key" />
+        <x-adminlte-button type="Submit" label="{{ __('Save') }}"  class="bg-green" theme="secondary" icon="fas fa-key" />
+        <x-adminlte-button theme="danger" label="{{ __('Cancel') }}" data-dismiss="modal"/>
     </form> 
+    <x-slot name="footerSlot">
+    </x-slot>
 </x-adminlte-modal>
+@endsection
+
+
+@section('js')
+<script src="/vendor/sweetalert/sweetalert2@11.js"></script>
+    @if (session('message'))
+        <script>
+            $(document).ready(function() {
+                let message = "{{ session('message') }}";
+                Swal.fire({
+                    title: "{{ __('Action') }}",
+                    text: message,
+                    icon: "success",
+                })
+            });
+        </script>
+    @endif
+
+    <script>
+        $(document).ready(function() {
+            $('.form-delete').submit(function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: "{{ __('Are you sure you want to delete?') }}",
+                    text: "",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "{{ __('Cancel') }}",
+                    confirmButtonText: "{{ __('Delete') }}"
+                }).then((result) => {
+                    //if (result.isConfirmed) {
+                    if (result.value) {
+                        this.submit();
+                    }
+                });
+            })
+
+        });
+    </script>
 @endsection

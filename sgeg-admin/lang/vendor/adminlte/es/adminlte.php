@@ -2,8 +2,13 @@
 
 return [
 
+    'invitations' => 'Invitaciones',
+    'messages' => 'Mensajes',
+    'graduation' => 'Graduación',
+    'event' => 'Evento',
     'full_name' => 'Nombre completo',
     'email' => 'Email',
+    'rooms' => 'Salones',
     'password' => 'Contraseña',
     'retype_password' => 'Confirmar la contraseña',
     'remember_me' => 'Recordarme',

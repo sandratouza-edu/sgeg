@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('uri');
-            $table->string('name')->nullable();;
-            $table->string('type')->default('doc');;
+            $table->string('name')->nullable();
+            $table->enum('type', ['image', 'doc'])->default('doc');
             $table->text('description')->nullable();
             $table->text('keywords')->nullable();
             $table->unsignedBigInteger('user_id');

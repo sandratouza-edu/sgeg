@@ -5,15 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2> {{ __('Titulaciones') }}</h2>
+                    <h2> {{ __('Degrees') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('degree.create') }}">
-                            <i class="fas fa-solid fa-certificate"></i> {{ __('new') }}
-                            <a class="btn btn-app bg-danger">
-                                <i class="fas fa-inbox"></i> {{ __('delete') }}
-                            </a>
+                        <a class="btn btn-app bg-green" href="{{ route('degree.create') }}">
+                            <i class="fas fa-solid fa-certificate"></i> {{ __('New') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -23,14 +21,14 @@
 
 @section('content')
     @php
-        $heads = ['All', 'Code', ['label' => 'Color', 'width' => 40], 'Title', ['label' => 'Actions']];
+        $heads = [__('Code'), ['label' => __('Color'), 'width' => 40], __('Status'), __('Title'), ['label' => __('Actions')]];
 
         $config = [
             'order' => [[1, 'asc']],
         ];
         $config = [
             'language' => [
-                'url' => url('//cdn.datatables.net/plug-ins/2.1.0/i18n/' . app()->getLocale() . '.json'),
+                'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
             ],
         ];
     @endphp
@@ -41,27 +39,36 @@
                 with-buttons>
                 @forelse($degrees as $degree)
                     <tr>
-                        <td>
-                            <input type="checkbox" name="{{ $degree->id }}" id="{{ $degree->id }}">
-                        </td>
-                        <td> <a href="{{ route('degree.show', $degree->id) }}"> {{ Str::limit($degree->name, 22) }} </a>
+                        <td> <a href="{{ route('degree.show', $degree->id) }}"> {{ Str::limit($degree->name, 42) }} </a>
                         </td>
                         <td>
-                            <a class="text" style="color:  {{ $degree->color }} " href="#"><i
-                                    class="fas fa-square"></i></a>
+                            <span class="text" style="color:  {{ $degree->color }} " href="#">
+                                <i class="fas fa-square"></i>
+                            </span>
                             {{ $degree->color }}
+                        </td>
+                        <td> 
+                            @if ($degree->active == 1)
+                                <span class="text-green">
+                                    <i class="fas fa-toggle-on"></i>
+                                </span>
+                            @else
+                                <span class="text-brown">
+                                    <i class="fas fa-toggle-off"></i>
+                                </span>
+                            @endif
                         </td>
                         <td> {{ $degree->description }} </td>
                         <td>
                             @role('admin')
                             <div class="btn-group">
                                 <a href="{{ route('degree.show', $degree->id) }}">
-                                    <button class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
+                                    <button class="btn btn-xs btn-default text-teal mx-1 shadow" title=" {{ __('Details') }}">
                                         <i class="fa fa-lg fa-fw fa-eye"></i>
                                     </button>
                                 </a>
                                 <a class="link-button" href="{{ route('degree.edit', $degree->id) }}">
-                                    <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
+                                    <button class="btn btn-xs btn-default text-primary mx-1 shadow" title=" {{ __('Edit') }}">
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                     </button>
                                 </a>
@@ -69,7 +76,7 @@
                                 <form action="{{ route('degree.destroy', $degree) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
+                                    <button class="btn btn-xs btn-default text-danger mx-1 shadow" title=" {{ __('Delete') }}">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                     </button>
                                 </form>
@@ -79,7 +86,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td> List empty</td>
+                        <td> {{ __('List Empty') }}</td>
                     </tr>
                 @endforelse
             </x-adminlte-datatable>
@@ -93,25 +100,28 @@
             $(document).ready(function() {
                 let message = "{{ session('message') }}";
                 Swal.fire({
-                    title: "Action",
+                    title: "{{ __('Action') }}",
                     text: message,
                     icon: "success",
                 })
             });
         </script>
     @endif
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
             $('.form-delete').submit(function(e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    title: "{{ __('Are you sure you want to delete?') }}",
+                    text: "",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
+                    cancelButtonText: "{{ __('Cancel') }}",
+                    confirmButtonText: "{{ __('Delete') }}"
                 }).then((result) => {
                     //if (result.isConfirmed) {
                     if (result.value) {
@@ -123,3 +133,4 @@
         })
     </script>
 @endsection
+ 

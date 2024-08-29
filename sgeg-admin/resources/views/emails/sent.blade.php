@@ -11,8 +11,8 @@
 @section('content')
     <p> </p>
     <div>
-        <a href="{{ route('attach.index') }}">Back</a>
-        <h2>Email enviado!</h2>
+        <a href="{{ route('attach.index') }}"> {{ __('Back') }}</a>
+        <h2> {{ __('Email Sent') }}</h2>
         
     </div>
 @endsection 

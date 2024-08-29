@@ -7,9 +7,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>Roles y permisos</h2>
+                    <h2>{{ __('Roles') }}</h2>
                 </div>
                 <div class="col-sm-6">
+                    <div class="btn-group float-sm-right">
+                        <a class="btn btn-app bg-secondary" href="{{ route('role.index') }}">
+                            <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -33,7 +38,7 @@
                     </label>
                 </div>
             @endforeach
-            {!! Form::submit('Asignar permisos', ['class' => 'btn btn-secondary mt-3']) !!}
+            {!! Form::submit('Asignar permisos', ['class' => 'btn bg-green mt-3']) !!}
             {!! Form::close() !!}
         </div>
     </div>

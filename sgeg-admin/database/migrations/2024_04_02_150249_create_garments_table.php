@@ -15,17 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('name'); 
             $table->boolean('available')->default(true);
-            $table->unsignedSmallInteger('height')->nullable();;
-            $table->unsignedSmallInteger('width')->nullable();;
-            $table->unsignedSmallInteger('waist')->nullable();;            
-            $table->string('color')->nullable();;
-            $table->boolean('with_cap')->default(false)->nullable();;
-            $table->unsignedSmallInteger('size_cap')->nullable();;
-            $table->unsignedBigInteger('pdi_id');
+            $table->unsignedSmallInteger('height')->nullable();
+            $table->unsignedSmallInteger('width')->nullable();
+            $table->unsignedSmallInteger('waist')->nullable();         
+            $table->string('color')->nullable();
+            $table->boolean('with_cap')->default(false)->nullable();
+            $table->unsignedSmallInteger('size_cap')->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('user_id');
             
             $table->timestamps();
          //
-            $table->foreign('pdi_id')->references('id')->on('p_d_i_s')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

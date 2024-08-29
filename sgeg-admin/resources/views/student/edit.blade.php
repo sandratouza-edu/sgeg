@@ -11,16 +11,13 @@
 @section('content')
 
 <div>
-    <h2>Editar</h2>
+    <h2>{{ __('Edit') }} {{ __('Student') }}</h2>
 
     <form action="{{ route('user.update', $user->id) }}" method="POST">
         @method('put')
         @csrf
         <label for title>Nombre</label>
         <input type="text" name="name" value="{{ $user->name }}" />
-        <p> </p>
-        <label for="description">Apellidos</label>
-        <input type="text" name="surname" value="{{ $user->surname }}"/>
         <p> </p>
         <label for="description">DNI</label>
         <input type="text" name="dni" value="{{ $user->dni }}"/>
@@ -46,7 +43,7 @@
         $(document).ready(function() {
             let message ="{{ session('message') }}";
             Swal.fire({
-                title: "Action",
+                title: "{{ __('Action') }}",
                 text: message,
                 icon: "success",
             })

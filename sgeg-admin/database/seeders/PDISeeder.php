@@ -5,15 +5,15 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\PDI;
+use App\Models\Pdi;
 
-class PDISeeder extends Seeder
+class PdiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        PDI::factory()->count(20)->create();
+        Pdi::factory()->count(20)->create();
     }
 }

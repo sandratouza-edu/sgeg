@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class SendInvitationMail extends Mailable
 {
@@ -16,7 +17,7 @@ class SendInvitationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public $name="name", public $subject ="example")
     {
         //
     }
@@ -27,7 +28,8 @@ class SendInvitationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Invitation Mail',
+            subject: 'subject',     
+            from : new Address('default@default.com', 'name')
         );
     }
 
@@ -37,7 +39,7 @@ class SendInvitationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.email',
         );
     }
 
@@ -46,8 +48,8 @@ class SendInvitationMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
+    public function attachments($attachment): array
     {
-        return [];
+        return ['attachment'];
     }
 }

@@ -293,31 +293,97 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
+        // Navbar items:        
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'type' => 'language-widget',
+            'icon' => 'flag-icon flag-icon-es',
+            'text' => 'language',
+            'topnav_right' => true,
+            'submenu' => [
+                [
+                    'text'=>'English',
+                    'icon' => 'flag-icon flag-icon-us',
+                    'url'=> '#'
+                ],
+                [
+                    'text'=>'Spanish',
+                    'icon' => 'flag-icon flag-icon-es',
+                    'url'=> '#'
+                ]
+            ]
+        ],
 
         // Sidebar items:
+        
+          
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'graduation',
+            'icon' => 'fas fa-fw fa-share',
+            'icon_color' => 'yellow',
+            'submenu' => [
+                [
+                    'text' => 'event',
+                    'url' => 'reserve',
+                    'role' => 'admin',  
+                ],
+                [
+                    'text' => 'emails',
+                    'url' => 'email',
+                    'icon' => 'far fa-fw fa-envelope',
+                    'role' => 'admin',  
+                ], 
+                [
+                    'text' => 'messages',
+                    'url' => 'message',
+                    'icon' => 'fab fa-telegram-plane',
+                    'role' => 'admin',  
+                ],             
+                [
+                    'text' => 'images',
+                    'icon' => 'far fa-fw fa-images',
+                    'url' => 'image',
+                    'role' => 'admin|pdi|student', 
+                ],  
+            ]
         ],
         [
-            'text' => 'blog',
-            'url' => 'admin',
-            'can' => 'manage-blog',
+            'text' => 'invitations',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'attach',
         ],
-         
-
+        
         [
-            'text' => 'Students',
+            'text' => 'garments',
+            'url' => 'garment',
+            'icon' => 'fas fa-fw fa-user-tie',
+            'role' => 'admin|student|pdi',  
+            'submenu' => [
+                [
+                    'text' => 'list',
+                    'url' => 'garment',
+                    'icon' => 'fas fa-fw fa-graduation-cap', 
+                    'role' => 'admin|pdi', 
+                ],
+                [
+                    'text' => 'requests',
+                    'url' => 'garment-lend',
+                    'icon' => 'fas fa-fw fa-graduation-cap', 
+                    'role' => 'admin|pdi', 
+                ],
+                [
+                    'text' => 'borrow',
+                    'url' => 'garment-borrow',
+                    'icon' => 'fas fa-fw fa-graduation-cap', 
+                    'role' => 'admin|pdi|student', 
+                ],
+            ]
+        ],
+        [
+            'text' => 'students',
             'url' => 'students',
             'icon' => 'far fa-fw fa-user',
             'role' => 'admin',  
@@ -328,88 +394,50 @@ return [
             'url' => 'pdi',
             'icon' => 'far fa-fw fa-user',
             'role' => 'admin',  
-             
-        ],
-        [
-            'text' => 'Garament',
-            'url' => 'garment',
-            'icon' => 'fas fa-fw fa-user-tie',
-            'role' => 'admin|student|pdi',  
-            
-        ],
-        [
-            'text' => 'Degree',
-            'url' => 'degree',
-            'icon' => 'fas fa-fw fa-certificate',
-            'role' => 'admin',  
-            
-        ],        
-         
-
-            
-       /* [
-            'text' => 'images',
-            'icon' => 'far fa-fw fa-images',
-            'url' => 'attach',
-        ], */
- 
-        [
-            'text' => 'Documents',
-            'icon' => 'far fa-fw fa-file',
-            'url' => 'attach',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-          
-        [
-            'text' => 'Graduation',
-            'icon' => 'fas fa-fw fa-share',
-            'icon_color' => 'yellow',
-            'role' => 'admin',  
-            'submenu' => [
-                [
-                    'text' => 'Event',
-                    'url' => 'reserve',
-                ],
-                [
-                    'text' => 'Send emails',
-                    'url' => 'email',
-                    'icon' => 'far fa-fw fa-envelope',
-                ],
-               /* [
-                    'text' => 'Room',
-                    'url' => 'reserve',
-                ],
-                [
-                    'text' => 'Seat',
-                    'url' => 'reserve',
-                ], */
-            ]
-        ],
-    
+        ], 
         [
             'text' => 'Admin',
             'icon' => 'fas fa-fw fa-share',
             'role' => 'admin',
             'submenu' => [            
                 [
-                    'text' => 'Roles',
-                    'url' => 'role',
-                    'icon' => 'far fa-fw fa-user', 
+                    'text' => 'settings',
+                    'url' => 'settings',
+                    'icon' => 'fas fa-fw fa-tools', 
                     'role' => 'admin',                  
                 ],
                 [
-                    'text' => 'Permisos',
+                    'text' => 'degrees',
+                    'url' => 'degree',
+                    'icon' => 'fas fa-fw fa-certificate',
+                    'role' => 'admin',  
+                ],     
+                [
+                    'text' => 'rooms',
+                    'url' => 'room',
+                    'icon' => 'fas fa-fw fa-archway',
+                    'role' => 'admin',  
+                ],     
+                [
+                    'text' => 'roles',
+                    'url' => 'role',
+                    'icon' => 'fas fa-fw fa-directions', 
+                    'role' => 'admin',                  
+                ],
+                [
+                    'text' => 'permissions',
                     'url' => 'permission',
-                    'icon' => 'far fa-fw fa-user',    
+                    'icon' => 'fas fa-fw fa-exclamation-triangle',    
                     'role' => 'admin',                
                 ],
                 [
-                    'text' => 'Users',
+                    'text' => 'users',
                     'url' => 'user',
                     'icon' => 'far fa-fw fa-user',  
                     'role' => 'admin',  
                 ],
+                   
+                 
             ],
         ],
 
@@ -503,7 +531,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
@@ -528,7 +556,7 @@ return [
             ],
         ],
         'Summernote' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
@@ -551,9 +579,26 @@ return [
                 'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
             ],
         ],
+        'BootstrapColorpicker' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css',
+                ],
+            ],
+        ],
+        
     ],
     ],
-
+ //'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.4.0/css/bootstrap-colorpicker.css',
+ //'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.4.0/js/bootstrap-colorpicker.min.js',
     /*
     |--------------------------------------------------------------------------
     | IFrame

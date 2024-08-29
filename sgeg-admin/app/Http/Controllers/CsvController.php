@@ -13,7 +13,7 @@ class CsvController extends Controller
 {
     public function index($filter=null) {
 
-        $users = User::all(); //use $filter
+        $users = User::with('roles')->get();
         return view('actions.index', compact('users'));
     }
     
@@ -25,13 +25,16 @@ class CsvController extends Controller
         ]);
         try {
             $file = $request->file('document_csv');
-            Excel::import(new UserImport, $file);
+            $data['role'] = 2; // $request->role;
+            $data['degree'] = 1; //$request->degree;
+            Excel::import(new UserImport($data), $file);
             return redirect()->route('index');
 
         } catch (\Exception $e) {
-            // return redirect()->route('index');
-            dd('Error importing users');
+             return redirect()->route('index');
+            // dd('Error importing users');
         }
+        
     }
 
     public function export()

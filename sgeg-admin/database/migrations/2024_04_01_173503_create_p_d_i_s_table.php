@@ -11,18 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('p_d_i_s', function (Blueprint $table) {
+        Schema::create('pdis', function (Blueprint $table) {
             $table->id();
-            $table->string('degree_color')->nullable();;
-            $table->date('thesis_date')->nullable();;
+            $table->unsignedBigInteger('degree')->nullable(); 
+            $table->date('thesis_date')->nullable();
             //$table->timestamps();
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('is_goodfather')->nullable();;
+            $table->unsignedBigInteger('is_goodfather')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
           
             $table->foreign('is_godfather')->references('id')->on('degrees')->onDelete('set null');
+            $table->foreign('degree')->references('id')->on('degrees')->onDelete('set null');
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('p_d_i_s');
+        Schema::dropIfExists('pdis');
     }
 };

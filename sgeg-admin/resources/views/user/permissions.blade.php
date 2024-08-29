@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>permissions</h2>
+                    <h2>{{ __('Permissions') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <x-adminlte-button label="Nuevo" class="btn btn-app bg-secondary" icon="fas fa-solid fa-user-lock"  data-toggle="modal" data-target="#modalPurple" />
+                        <x-adminlte-button label="{{ __('New')}}" class="btn btn-app bg-green" icon="fas fa-solid fa-user-lock"  data-toggle="modal" data-target="#modalPurple" />
                     </div>
                 </div>
             </div>
@@ -21,12 +21,12 @@
     <div class="card">
         <div class="card-body">
             @php
-                $heads = [['label' => 'Id', 'width' => 10], 'Name', ['label' => 'Actions', 'no-export' => true, 'width' => 30]];
+                $heads = [['label' => __('Id'), 'width' => 10], __('Name'), ['label' => __('Actions'), 'no-export' => true, 'width' => 10]];
 
                 $config = [
                     'language' => [
-                        'url' => url('//cdn.datatables.net/plug-ins/2.1.0/i18n/'.app()->getLocale().'.json'),
-                    ], 
+                        'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
+                    ],
                 ];
 
             @endphp
@@ -37,23 +37,15 @@
                         <td>{{ $permission->name }}</td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('permission.edit', $permission) }}"
+                                <a href="#"  data-toggle="modal" data-target="#modalDetail" data-name="{{ $permission->name }}" data-roles="{{ $permission->roles }}"
                                     class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
-                                    <i class="fa fa-lg fa-fw fa-pen"></i>
+                                    <i class="fa fa-lg fa-fw fa-eye"></i>
                                 </a>
-                                <form action="{{ route('permission.destroy', $permission) }}" method="POST" class="form-delete">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow"
-                                        title="Delete">
-                                        <i class="fa fa-lg fa-fw fa-trash"></i>
-                                    </button>
-                                </form>
                             </div>
                         </td>
                     </tr>
                 @empty
-                    <td> List empty</td>
+                    <td> {{ __('List is empty') }}</td>
                     </tr>
                 @endforelse
             </x-adminlte-datatable>
@@ -61,18 +53,51 @@
     </div>
 
 
-<x-adminlte-modal id="modalPurple" title="Nuevo Permiso" theme="secondary"
-    icon="fas fa-bolt" size='lg' disable-animations>
-    <form action="{{ route('permission.store') }}" method="POST">
-        @csrf
-        <x-adminlte-input name="name" label="permission" placeholder="Escriba  el permiso" label-class="text-grey">
-            <x-slot name="prependSlot">
-                <div class="input-group-text">
-                    <i class="fas fa-solid fa-user-lock"></i>
-                </div>
-            </x-slot>
-        </x-adminlte-input>
-        <x-adminlte-button type="Submit" label="Guardar" theme="secondary" icon="fas fa-key" />
-    </form> 
-</x-adminlte-modal>
+    <x-adminlte-modal id="modalPurple" title="Nuevo Permiso" theme="secondary"
+        icon="fas fa-bolt" size='lg' disable-animations>
+        <form action="{{ route('permission.store') }}" method="POST">
+            @csrf
+            <x-adminlte-input name="name" label="permission" placeholder="Escriba  el permiso" label-class="text-grey">
+                <x-slot name="prependSlot">
+                    <div class="input-group-text">
+                        <i class="fas fa-solid fa-user-lock"></i>
+                    </div>
+                </x-slot>
+            </x-adminlte-input>
+            <x-adminlte-button type="Submit" label="Guardar" theme="secondary" icon="fas fa-key" />
+        </form> 
+    </x-adminlte-modal>
+
+
+    <x-adminlte-modal id="modalDetail" title="{{ __('Permission') }}" theme="secondary"
+        icon="fas fa-eye" size='lg' disable-animations>
+    <div>  
+        <div class="modal-header">
+            <h4 id="permission"></h4>
+        </div>
+        <div class="modal-body">
+            <h3> {{ __('Rols') }}</h3>
+            <div id="roles">
+            </div>    
+        </div>
+    </x-adminlte-modal>
 @endsection
+
+@section('js')
+    <script>
+        $('#modalDetail').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) 
+            var permission = button.data('name');
+            var modal = $(this);
+            modal.find('#permission').text( permission);
+            var roles =  button.data('roles');
+            for (let clave in roles){
+                let p = document.createElement("div");
+                p.innerHTML = '<h4> <span class="badge badge-primary text-dark">'+roles[clave]['name']+ "</span></h4>";
+                modal.find('.modal-body #roles').append(p);
+            
+            }
+           
+        })
+    </script>
+  @endsection

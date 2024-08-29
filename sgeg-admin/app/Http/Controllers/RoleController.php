@@ -73,8 +73,10 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, Role $role): RedirectResponse
     {
-        //
+        $role->delete();
+
+        return redirect()->route('role.index')->with('danger', __('Deleted ok'));
     }
 }

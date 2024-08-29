@@ -6,18 +6,18 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>Titulaciones</h2>
+                    <h2>{{ __('Degrees') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
                         <a class="btn btn-app bg-secondary" href="{{ route('user.index') }}">
-                            <i class="fas fa-solid fa-arrow-rotate-left"></i> Back
+                            <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }}
                         </a>
                         <a class="btn btn-app bg-secondary" href="{{ route('user.create') }}">
-                            <i class="fas fa-solid fa-certificate"></i> New
+                            <i class="fas fa-solid fa-certificate"></i> {{ __('New') }}
                         </a>
                         <a class="btn btn-app bg-danger" href="{{ route('user.destroy', $user) }}">
-                            <i class="fas fa-inbox"></i> Delete
+                            <i class="fas fa-inbox"></i> {{ __('Delete') }}
                         </a>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <h3>
-                    {{ $user->name }} -{{ $user->surname }}
+                    {{ $user->name }}  
 
                 </h3>
         </div>
@@ -39,6 +39,8 @@
             <h4> {{ $user->dni }} </h4>
             <h4> {{ $user->email }} </h4>
             <h4> {{ $user->dni }} </h4>
+            <p> {{ __('Degree') }}: {{ $degrees->find($user->degree_id)->name }}</p>  
+            <p> {{ __('Degree') }}: {{ $user->degree->name }}</p>  
         </div>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">

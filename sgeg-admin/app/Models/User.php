@@ -5,7 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,7 +38,9 @@ class User extends Authenticatable
         'password',
         'surname',
         'dni',
-        'phone'
+        'phone',
+        'phone2',
+        'degree_id'
     ];
 
     /**
@@ -71,6 +75,22 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+
+    public function pdi(): HasOne
+    {
+        return $this->hasOne(Pdi::class);
+    }
+
+    public function degree(): BelongsTo
+    {
+        return $this->belongsTo(Degree::class);
+    }
+
+    public function garment(): HasMany
+    {
+        return $this->hasMany(Garment::class);
+    }
+
     //Polimorfico con un solo valor
     public function attach(): MorphOne
     {
@@ -83,13 +103,14 @@ class User extends Authenticatable
     
     }
 
-    public function pdi(): BelongsTo
+    
+    public function seats():belongsToMany
     {
-        return $this->belongsTo(PDI::class);
-    }
+        return $this->belongsToMany(Seat::class, 'seat_user');
+    } 
 
-    public function degree(): HasOne
+    public function garments():belongsToMany
     {
-        return $this->hasOne(Degree::class);
-    }
+        return $this->belongsToMany(Garment::class, 'garment_users')->withPivot(['status','reserved_at','description']);
+    } 
 }

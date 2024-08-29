@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 use App\Models\User;
+use App\Models\Pdi;
+use App\Models\Degree;
 use Spatie\Permission\Models\Role;
 
 
@@ -24,17 +27,26 @@ class UserController extends Controller
     */
 
     }
+     /**
+     * Render list of users.
+     */
     public function index(): View
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles')->with('degree')->get();
         
         return view('user.index', compact('users'));
     }
 
+    /**
+     * Render list of students.
+     */
     public function list(String $filter = 'student'): View
     {
+        
         $users = User::role($filter)->get();
-     //  $users = User::with('roles')->get();
+
+        //$degrees = Degree::where('active', '1')->get();
+
         return view('user.index', compact('users'));
     }
     /**
@@ -42,9 +54,9 @@ class UserController extends Controller
      */
     public function create(): View
     {
-
         $roles = Role::all();
-        return view('user.create',compact('roles')); 
+        $degrees = Degree::all();
+        return view('user.create',compact('roles', 'degrees')); 
     }
 
     /**
@@ -59,11 +71,16 @@ class UserController extends Controller
         } else {
             $input['password'] = Hash::make($input['password']);
         }
+        
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
+        if(in_array('pdi', $request->roles)) {
+            $pdi = Pdi::create(['user_id' => $user->id]);
+        }
+
         
         return redirect()->route('user.index')->with('success', 'user Created');
-
+       
     }
 
     /**
@@ -71,7 +88,8 @@ class UserController extends Controller
      */
     public function show(User $user): View
     {
-        return view('user.show', compact('user'));
+        $degrees = Degree::all();
+        return view('user.show', compact('user','degrees'));
     }
 
     /**
@@ -80,7 +98,8 @@ class UserController extends Controller
     public function edit(User $user): View
     {
         $roles = Role::all();
-        return view('user.edit', compact('user', 'roles'));
+        $degrees = Degree::all();
+        return view('user.edit', compact('user', 'roles', 'degrees'));
     }
 
     /**
@@ -119,20 +138,12 @@ class UserController extends Controller
     
     }
 
-    public function indexAPI() {
-        return User::paginate(15);
-    }
-
-    public function searchPost(Request $request): View
+    public function multiDestroy(Request $request, User $user): Response
     {
-        $request->validate([ 
-           'name' => ['required', 'min:5', 'max:255'] 
-        ], [
-            // Custom message
-            'name.required' => 'Can not be empty'
-        ]);
-        $users = User::where('name', 'LIKE', '%'.$request->name.'%')->paginate(env('ITEMS_PAGE') );
+        
+        User::whereIn('id', $request->get('selected'))->delete();
 
-        return view ('user.index', compact('users'));
+        return response("Selected users deleted successfully.", 200);
+    
     }
 }

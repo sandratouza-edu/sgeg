@@ -8,8 +8,12 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\GarmentController;
 use App\Http\Controllers\DegreeController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CsvController;
 use App\Http\Controllers\AttachController;
+use App\Http\Controllers\ReserveController;
+use App\Http\Controllers\RoomController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,16 +39,31 @@ Route::middleware([
     })->name('dashboard');
     
   //  Route::middleware('permission:adminall')->group(function () {
-        Route::get('/search', [UserController::class, 'search'])->name('search-get');
-        Route::post('/search', [UserController::class, 'searchPost'])->name('search');
-
+       
         //Resources
         Route::resource('/user', UserController::class)->names('user');
         Route::resource('/garment', GarmentController::class)->names('garment');
         Route::resource('/pdi', PDIController::class)->names('pdi');
         Route::resource('/degree', DegreeController::class)->names('degree');
-        Route::resource('/image', AttachController::class)->names('image');
         Route::resource('/attach', AttachController::class)->names('attach');
+        Route::resource('/room', RoomController::class)->names('room');
+
+
+        //actions
+        Route::get('/search', [UserController::class, 'search'])->name('search-get');
+        Route::post('/search', [UserController::class, 'searchPost'])->name('search');
+        Route::get('/garment-borrow', [GarmentController::class, 'borrow'])->name('garment.borrow');
+        Route::put('/garment-save', [GarmentController::class, 'borrowSave'])->name('garment.borrowSave');
+        Route::get('/garment-lend', [GarmentController::class, 'lend'])->name('garment.lend');
+        Route::get('/image', [AttachController::class, 'images'])->name('image.index');
+        Route::get('/upload', [AttachController::class, 'upload'])->name('image.upload');
+
+        //Multi delete
+        Route::post('/multi-delete', [UserController::class, 'multiDestroy'])->name('user.multi-delete');
+       
+        Route::post('/assign-godfather', [PDIController::class, 'assignGodfather'])->name('pdi.assign-godfather');
+
+
         //Route::group(['middleware' => ['permission:role-admin']], function () {
             Route::resource('/role', RoleController::class)->names('role');
        // });
@@ -54,13 +73,19 @@ Route::middleware([
    // });
 
     // student
-    Route::get('/students', [UserController::class, 'list'])->name('students');
+    Route::get('/students', [UserController::class, 'list', 'filter'=>'student'])->name('students');
     //Send email
     Route::get('/email', [MailController::class, 'index'])->name('email');
     Route::get('/sendmail', [MailController::class, 'sendMail'])->name('sendmail');
+    Route::get('/preview', [MailController::class, 'previewMail'])->name('previewmail');
+    //Message notification
+    Route::get('/message', [MessageController::class, 'index'])->name('message');
+    Route::get('/sendmessage', [MessageController::class, 'sendMessage'])->name('sendmessage');
 
+    
     //Reserve
-    Route::view('/reserve', 'reserve')->name('reserve');
+    Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
+
 
     //CSV import
     Route::get('/useractions', [CsvController::class, 'index'])->name('useractions');
@@ -80,6 +105,7 @@ Route::middleware([
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
-    Route::get('/admin/settings', [App\Http\Controllers\HomeController::class, 'index'])->name('settings');
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
+    Route::post('/save', [App\Http\Controllers\SettingsController::class, 'save'])->name('saveSettings');
 
 });

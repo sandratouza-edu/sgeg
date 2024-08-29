@@ -13,7 +13,7 @@ class UsersExport implements FromCollection
     */
     public function collection()
     {
-        //return User::all();
+        //return User::all(); // filter by role and degree
         $users = User::role('student')->get();
         return $users;
     }

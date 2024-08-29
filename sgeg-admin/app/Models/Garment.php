@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class Garment extends Model
@@ -21,12 +22,19 @@ class Garment extends Model
         'size_cap',
         'color',
         'with_cap',
-        'pdi_id'
+        'user_id',
+        'available',
+        'description'
     ];
 
-    public function pdi(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(PDI::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function users():belongsToMany
+    {
+        return $this->belongsToMany(User::class, 'garment_user')->withPivot(['status','reserved_at','description']);
+    } 
 
 }
