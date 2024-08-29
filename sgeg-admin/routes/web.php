@@ -55,6 +55,8 @@ Route::middleware([
         Route::get('/garment-borrow', [GarmentController::class, 'borrow'])->name('garment.borrow');
         Route::put('/garment-save', [GarmentController::class, 'borrowSave'])->name('garment.borrowSave');
         Route::get('/garment-lend', [GarmentController::class, 'lend'])->name('garment.lend');
+        Route::post('/garment-status/{garment}', [GarmentController::class, 'status'])->name('garment.status');
+        Route::post('/request-delete/{garment}', [GarmentController::class, 'requestDelete'])->name('garment.requestDelete');
         Route::get('/image', [AttachController::class, 'images'])->name('image.index');
         Route::get('/upload', [AttachController::class, 'upload'])->name('image.upload');
 

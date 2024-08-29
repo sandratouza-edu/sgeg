@@ -34,7 +34,7 @@ class Garment extends Model
 
     public function users():belongsToMany
     {
-        return $this->belongsToMany(User::class, 'garment_user')->withPivot(['status','reserved_at','description']);
+        return $this->belongsToMany(User::class, 'garment_user')->as('requested')->withPivot(['garment_id','status','reserved_at','description']);
     } 
 
 }

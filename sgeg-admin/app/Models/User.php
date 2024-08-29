@@ -85,7 +85,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Degree::class);
     }
-
+    
+    /* User pdi is owner */
     public function garment(): HasMany
     {
         return $this->hasMany(Garment::class);
@@ -109,8 +110,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Seat::class, 'seat_user');
     } 
 
+    /* User borrow some garments */
     public function garments():belongsToMany
     {
-        return $this->belongsToMany(Garment::class, 'garment_users')->withPivot(['status','reserved_at','description']);
+        return $this->belongsToMany(Garment::class, 'garment_user')->withPivot(['user_id','status','reserved_at','description']);
     } 
 }

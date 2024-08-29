@@ -68,7 +68,6 @@ class GarmentController extends Controller
      */
     public function update(GarmentRequest $request, Garment $garment): RedirectResponse
     {
-       
         
         $garment->update($request->all()); 
 
@@ -93,11 +92,10 @@ class GarmentController extends Controller
 
     public function borrow(Garment $garment): View
     {
-        $pdis = User::role('pdi')->with('pdi')->get(); 
         
-        $garments = Garment::with('users')->get();
+        $garments = Garment::with('user')->where('available', 1)->get();
  
-        return view('garment.borrow', compact('garment', 'garments',  'pdis'));
+        return view('garment.borrow', compact('garment', 'garments'));
     }
 
     /**
@@ -105,21 +103,37 @@ class GarmentController extends Controller
      */
     public function borrowSave(Request $request): RedirectResponse
     {
-         
-        GarmentUser::create($request->all());
-        return redirect()->route('garment.index')->with('success', 'garment Updated');
+
+        $user = User::find($request->user_id);
+        $user->garments()->attach($request->garment_id,['status' => 'pending','reserved_at' => now(), 'description'=>$request->description]);
+
+        return redirect()->route('garment.request')->with('success', 'garment Updated');
     }
 
+     
     /**
      * Show the request list to lend the garment.
      */
     public function lend(Garment $garment): View
     {
-        //$list = GarmentUser::get();
-        $garments = Garment::with('pdi')->get();
-        $pdis = User::role('pdi')->with('pdi')->get(); 
+        $garments = Garment::with('user')->get();        
         
-        return view('garment.lend', compact('garments',  'pdis', 'garment'));
+        return view('garment.lend', compact('garments'));
     }
 
+    public function status(Request $request, Garment $garment): RedirectResponse
+    {
+                
+        $garment->users()->wherePivot('reserved_at', $request->reserved_at)->updateExistingPivot($request->user, ['status' => $request->status] );
+
+        return redirect()->route('garment.lend')->with('success', 'Status Updated');
+
+    }
+
+    public function requestDelete(Request $request, Garment $garment): RedirectResponse
+    {
+       $garment->users()->wherePivot('reserved_at', $request->reserved_at)->detach();
+
+        return redirect()->route('garment.lend')->with('success', 'garment Deleted');
+    }
 }

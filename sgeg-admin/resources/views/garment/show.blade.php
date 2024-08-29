@@ -79,8 +79,8 @@
         </div>
 
         <div class="card-footer">
-            <i class="fa fa-solid fa-toggle-on text-green"></i> = Not avalilable
-            <i class="fa fa-solid fa-toggle-off text-brown"></i> = Avalilable
+            <i class="fa fa-solid fa-toggle-on text-green"></i> = Not available
+            <i class="fa fa-solid fa-toggle-off text-brown"></i> = Available
         </div>
 
     </div>

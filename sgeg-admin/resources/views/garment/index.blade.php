@@ -34,7 +34,7 @@
             __('With Cap'),
             __('Owner'),
             __('Available'),
-            __('Requested'),
+            __('Requests'),
             ['label' => __('Actions'), 'no-export' => true, 'width' => 5],
         ];
         $config = [
@@ -51,7 +51,7 @@
                         <a href="{{ route('garment.show', $garment->id) }}"> {{ $garment->name }} </a>
                     </td>
                     <td>
-                        <span  style="color:  {{ $garment->color }}">
+                        <span style="color:  {{ $garment->color }}">
                             <i class="fas fa-square"></i> 
                         </span>  {{ $garment->color }}   
                     </td>
@@ -82,7 +82,9 @@
                     </td>
                     <td>
                         <span class="text-orange">  
-                            <i class="fa fa-solid fa-lightbulb"></i>
+                            @if (count($garment->users)> 0) 
+                            <i class="fa fa-solid fa-lightbulb"></i> ( {{count($garment->users) }}) 
+                            @endif
                         </span>
                     </td>
                     <td>
