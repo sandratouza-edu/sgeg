@@ -1,3 +1,4 @@
+ 
 <x-action-section>
     <x-slot name="title">
         {{ __('Browser Sessions') }}
@@ -96,3 +97,4 @@
         </x-dialog-modal>
     </x-slot>
 </x-action-section>
+ 

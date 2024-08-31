@@ -403,6 +403,7 @@ return [
                 [
                     'text' => 'settings',
                     'url' => 'settings',
+                     //'can' => 'admin-all',
                     'icon' => 'fas fa-fw fa-tools', 
                     'role' => 'admin',                  
                 ],
@@ -421,12 +422,14 @@ return [
                 [
                     'text' => 'roles',
                     'url' => 'role',
+                    //'can' => 'role-admin',
                     'icon' => 'fas fa-fw fa-directions', 
                     'role' => 'admin',                  
                 ],
                 [
                     'text' => 'permissions',
                     'url' => 'permission',
+                     //'can' => 'permission-admin',
                     'icon' => 'fas fa-fw fa-exclamation-triangle',    
                     'role' => 'admin',                
                 ],
@@ -444,7 +447,7 @@ return [
         ['header' => 'account_settings',],
         [
             'text' => 'profile',
-            'url' => 'admin/settings',
+            'url' => 'user/profile',
             'icon' => 'fas fa-fw fa-user',
         ],
  

@@ -26,20 +26,23 @@ use App\Http\Controllers\RoomController;
 */
 
 Route::view('/', 'index')->name('index');
-Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
-
+ 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-  //  Route::middleware('permission:adminall')->group(function () {
-       
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+        
+        //Ejemplos middlewares
+    //  Route::middleware('permission:adminall')->group(function () {
+    // Route::middleware('role:admin', 'role:pdi', 'role:student')->group(function () {
+        //Si se quiere excluir una comprobacion de middleware.
+        //Route::resource('/user', PDIController::class)->names('pdi')->withoutMiddleware('role:pdi');
+
         //Resources
         Route::resource('/user', UserController::class)->names('user');
         Route::resource('/garment', GarmentController::class)->names('garment');
@@ -100,7 +103,7 @@ Route::middleware([
     //template added
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    //Auth::routes();
+
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
@@ -108,3 +111,4 @@ Route::middleware([
     Route::post('/save', [App\Http\Controllers\SettingsController::class, 'save'])->name('saveSettings');
 
 });
+ 

@@ -97,7 +97,7 @@ class AttachController extends Controller
     {
         if(Storage::disk('local')->exists(public_path($attach->uri))) {
             $res = Storage::delete(public_path($attach->uri));
-            dd($res);
+            
         }
         $attach->delete();
 
