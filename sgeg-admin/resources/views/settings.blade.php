@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('admin') }}">
+                        <a class="btn btn-app bg-secondary" href="{{ route('settings') }}">
                             <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }}
                         </a>
                     </div>

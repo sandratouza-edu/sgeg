@@ -47,7 +47,7 @@ class UserController extends Controller
 
         //$degrees = Degree::where('active', '1')->get();
 
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users', 'filter'));
     }
     /**
      * Show the form for creating a new resource.
@@ -144,6 +144,17 @@ class UserController extends Controller
         User::whereIn('id', $request->get('selected'))->delete();
 
         return response("Selected users deleted successfully.", 200);
+    
+    }
+
+    public function multiSend(Request $request, User $user): RedirectResponse
+    {
+       
+        $users = User::whereIn('id', explode(',', $request->get('selected')));
+dd($users);
+        return redirect()->route('email.send-multiple', $user);
+
+        
     
     }
 }

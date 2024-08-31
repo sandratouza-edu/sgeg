@@ -6,12 +6,23 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Users') }}</h2>
+                    @if (isset($filter) && ($filter =='student'))
+                        <h2>{{ __('Students') }}</h2>
+                    @else
+                        <h2>{{ __('Users') }}</h2>
+                    @endif
                 </div>
                 <div class="col-sm-6">
                     @role('admin')
                    
                     <div class="btn-group float-sm-right">
+                        <form action="{{ route('multi-send') }}" method="POST" class="form-multisend">
+                            @csrf
+                            <button class="btn btn-app bg-yellow" id="multi-send">
+                                <i class="fas fa-envelope"></i> {{ __('Send Email') }}
+                            </button>
+                            <input type="hidden" value="" name="selected" class="selected">
+                        </form>
                         <button class="btn btn-app bg-blue" id="check-all">
                             <i class="fas fa-users"></i> {{ __('Select All') }}
                         </button>
@@ -67,10 +78,9 @@
             @else
                 <x-adminlte-datatable id="tableU" :heads="$heads" :config="$config" head-theme="dark" striped hoverable
                     with-buttons>
-
                     @forelse($users as $user)
                         <tr>
-                            <td> {{ $user->id }}  
+                            <td>  
                                 <input class="checkbox" type="checkbox" name="c-{{ $user->id }}" value="{{ $user->id }}">
                             </td>
                             <td>{{ $user->name }}   </td>
@@ -104,11 +114,11 @@
                                 @role('admin')
                                     <div class="btn-group">
                                         <a href="{{ route('user.show', $user) }}"
-                                            class="btn btn-xs btn-default text-primary mx-1 shadow" title="{{ __('Edit') }}">
+                                            class="btn btn-xs btn-default text-primary mx-1 shadow" title="{{ __('Show') }}">
                                             <i class="fa fa-lg fa-fw fa-eye"></i>
                                         </a>
                                         <a href="{{ route('user.edit', $user) }}"
-                                            class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Details') }}">
+                                            class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Edit') }}">
                                             <i class="fa fa-lg fa-fw fa-pen"></i>
                                         </a>
                                         <form action="{{ route('user.destroy', $user) }}" method="POST" class="form-delete">
@@ -229,6 +239,33 @@
                   });
                 }
               });
+            });
+
+            $('.form-multisend').submit(function(e) {
+                e.preventDefault();
+              var button = $(this);
+              var selected = [];
+              $('#tableU .checkbox:checked').each(function() {
+                selected.push($(this).val());
+              });
+              $('.form-multisend .selected').attr('value', selected);
+           
+              Swal.fire({
+                  icon: 'info',
+                  title: "Multi: {{ __('Are you sure you want to send an invitation?') }}",
+                  text: "",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "{{ __('Cancel') }}",
+                  confirmButtonText: "{{ __('Send') }}"
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+                    
             });
     </script>
 @endsection

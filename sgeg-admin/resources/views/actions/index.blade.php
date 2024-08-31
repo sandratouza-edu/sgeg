@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('admin') }}">
+                        <a class="btn btn-app bg-secondary" href="{{ route('settings') }}">
                             <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }} 
                         </a>
                     </div>
@@ -39,10 +39,11 @@
                     <button type="submit" class="btn btn-default float-right">{{ __('Cancel') }}</button>
                 </div>
             </div>
-
+        </div>
+            <div class="col-md-6">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('Export') }}</h3>
+                    <h3 class="card-title">{{ __('Export') }} -  {{ __('Students') }}</h3>
                 </div>
                 <div class="card-body">
                     @component('components.csv-export')
@@ -52,18 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">{{ __('Configuration') }}</h3>
-                </div>
-                <div class="card-body">
-                    Config
-                </div>
-                <div class="card-footer">
-                </div>
-            </div>
-        </div>
+          
         <div class="col-md-12">
 
             <div class="card card-info">
@@ -112,15 +102,10 @@
                                     <td> <a href="{{ route('sendmail') }}"> {{ $user->email }} </a></td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="{{ __('Edit') }}">
+                                            <a href="{{ route('user.edit', $user) }}"
+                                            class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Edit') }}">
                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
-                                            </button>
-                                            <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="{{ __('Delete') }}">
-                                                <i class="fa fa-lg fa-fw fa-trash"></i>
-                                            </button>
-                                            <button class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Details') }}">
-                                                <i class="fa fa-lg fa-fw fa-eye"></i>
-                                            </button>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

@@ -11,7 +11,7 @@
                 <div class="card-header">  {{ env('APP_NAME') }}  </div>
 
                 <div class="card-body">
-                    {{ route('login') }}
+                   <a href="{{ route('login') }} ">Login</a> 
                 </div>
             </div>
         </div>

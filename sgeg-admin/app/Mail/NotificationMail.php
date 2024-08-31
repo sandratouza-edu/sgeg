@@ -28,8 +28,8 @@ class NotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Evento Graduación', //$subject,     
-            from : new Address('sgeg@sgeg.com', 'SGEG')
+            subject: 'Notification',     
+            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
         );
     }
 

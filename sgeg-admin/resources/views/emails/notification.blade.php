@@ -1,24 +1,13 @@
 @component('mail::message')
+    {{ env('APP_NAME') }}
     {{ __('You have been invited to join the :team team!', ['team' => $invitation->team->name]) }}
 
-    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::registration()))
-        {{ __('If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the team invitation:') }}
-
-        @component('mail::button', ['url' => route('register')])
-        {{ __('Create Account') }}
-        @endcomponent
-
-        {{ __('If you already have an account, you may accept this invitation by clicking the button below:') }}
-
-    @else
-        {{ __('You may accept this invitation by clicking the button below:') }}
-        
-    @endif
-
-    Acceda a la plataforma
+    {{ __('You may accept this invitation by clicking the button below:') }}
+     
+   <!-- Acceda a la plataforma
     Compruebe los datos personales si son correctos
     Use link to telegram channel para estar actualizado
-    Confirme sus invitados
+    Confirme sus invitados -->
 
     @component('mail::button', ['url' => $acceptUrl])
         {{ __('Accept Invitation') }}

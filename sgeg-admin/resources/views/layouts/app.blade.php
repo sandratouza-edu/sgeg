@@ -21,12 +21,12 @@
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">
-         <!--    @ livewire('navigation-menu') -->
-
+         
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h1>{{ env('APP_NAME') }} </h1>
                         {{ $header }}
                     </div>
                 </header>
@@ -42,6 +42,6 @@
 
         @stack('modals')
 
-        @livewireScripts
+       
     </body>
 </html>

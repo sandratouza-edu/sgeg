@@ -168,7 +168,6 @@
 
 
 @section('js')
-            //  $('#modalAssign').find('#is_godfather').val(7);
     <script>
         $('#modalAssign').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget); // Button that triggered the modal

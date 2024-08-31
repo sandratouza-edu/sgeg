@@ -25,8 +25,11 @@ use App\Http\Controllers\RoomController;
 |
 */
 
-Route::view('/', 'index')->name('index');
-Route::view('/contact', 'contact')->name('contact');
+ 
+Route::get('/', function () {
+    return redirect('/login');
+});
+
  
 Route::middleware([
     'auth:sanctum',
@@ -41,7 +44,7 @@ Route::middleware([
     //  Route::middleware('permission:adminall')->group(function () {
     // Route::middleware('role:admin', 'role:pdi', 'role:student')->group(function () {
         //Si se quiere excluir una comprobacion de middleware.
-        //Route::resource('/user', PDIController::class)->names('pdi')->withoutMiddleware('role:pdi');
+        //Route::resource('/pdi', PDIController::class)->names('pdi')->withoutMiddleware('role:pdi');
 
         //Resources
         Route::resource('/user', UserController::class)->names('user');
@@ -50,7 +53,6 @@ Route::middleware([
         Route::resource('/degree', DegreeController::class)->names('degree');
         Route::resource('/attach', AttachController::class)->names('attach');
         Route::resource('/room', RoomController::class)->names('room');
-
 
         //actions
         Route::get('/search', [UserController::class, 'search'])->name('search-get');
@@ -64,9 +66,9 @@ Route::middleware([
         Route::get('/upload', [AttachController::class, 'upload'])->name('image.upload');
         Route::post('/image-save', [AttachController::class, 'imageSave'])->name('image.uploadSave');
 
-        //Multi delete
+        //Multiple op
         Route::post('/multi-delete', [UserController::class, 'multiDestroy'])->name('user.multi-delete');
-       
+
         Route::post('/assign-godfather', [PDIController::class, 'assignGodfather'])->name('pdi.assign-godfather');
 
 
@@ -84,6 +86,11 @@ Route::middleware([
     Route::get('/email', [MailController::class, 'index'])->name('email');
     Route::get('/sendmail', [MailController::class, 'sendMail'])->name('sendmail');
     Route::get('/preview', [MailController::class, 'previewMail'])->name('previewmail');
+    Route::get('/multi-send', [MailController::class, 'multiSend'])->name('multi-sendform');
+    Route::post('/multi-send', [MailController::class, 'multiSend'])->name('multi-send');
+    Route::post('/multi-sendMail', [MailController::class, 'multiSendMail'])->name('multi-sendMail');
+
+
     //Message notification
     Route::get('/message', [MessageController::class, 'index'])->name('message');
     Route::get('/sendmessage', [MessageController::class, 'sendMessage'])->name('sendmessage');
@@ -105,10 +112,15 @@ Route::middleware([
 
 
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+  //  Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
     Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
     Route::post('/save', [App\Http\Controllers\SettingsController::class, 'save'])->name('saveSettings');
 
 });
- 
+Route::get('/home', function () {
+    return redirect('/login');
+});
+Route::get('/admin', function () {
+    return redirect('/login');
+});

@@ -326,10 +326,10 @@ return [
             'icon_color' => 'yellow',
             'submenu' => [
                 [
-                    'text' => 'event',
-                    'url' => 'reserve',
-                    'role' => 'admin',  
-                ],
+                    'text' => 'invitations',
+                    'icon' => 'far fa-fw fa-file',
+                    'url' => 'attach',
+                ],              
                 [
                     'text' => 'emails',
                     'url' => 'email',
@@ -348,13 +348,13 @@ return [
                     'url' => 'image',
                     'role' => 'admin|pdi|student', 
                 ],  
+                [
+                    'text' => 'event',
+                    'url' => 'reserve',
+                    'role' => 'admin',  
+                ],
             ]
-        ],
-        [
-            'text' => 'invitations',
-            'icon' => 'far fa-fw fa-file',
-            'url' => 'attach',
-        ],
+        ],     
         
         [
             'text' => 'garments',
