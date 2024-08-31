@@ -1,1 +1,1 @@
-<h2>{{ env(SGEG) }}</h2>
+<h2>{{ env('APP_NAME') }}</h2>
