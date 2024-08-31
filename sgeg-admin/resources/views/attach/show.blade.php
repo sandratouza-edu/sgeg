@@ -13,7 +13,7 @@
                     <a class="btn btn-app bg-secondary" href="{{ route('attach.index') }}">
                         <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }} 
                     </a>                   
-                    <a class="btn btn-app bg-yellow" href="{{ $attach->uri }}">
+                    <a class="btn btn-app bg-yellow" href="{{ asset($attach->uri) }}">
                         <i class="fas fa-download"></i> {{ __('Download') }}
                     </a>
                     <a class="btn btn-app bg-blue" href="{{ route('email', $attach->id) }}">
@@ -39,15 +39,15 @@
         <div class="card-body">
             {!! html_entity_decode( $attach->description) !!}
             <h4>  
-                <a href="{{ $attach->uri }}" class="btn btn-info"  > {{ __('Download') }} </a>
-                <a href="{{ route('email', $attach->id) }}" class="btn btn-info bg-green" > {{ __('Send') }} </a>
+                @if( !empty($attach->uri))
+                    <a href="{{ asset($attach->uri) }}" class="btn btn-info"  > {{ __('Download') }} </a>
+                    <a href="{{ route('email', $attach->id) }}" class="btn btn-info bg-green" > {{ __('Send') }} </a>
+                @endif
             </h4>
         </div>
 
         <div class="card-footer">
-             
         </div>
-
     </div>
 @endsection
  

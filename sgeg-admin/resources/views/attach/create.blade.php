@@ -12,9 +12,7 @@
                         <a class="btn btn-app bg-secondary" href="{{ route('attach.index') }}">
                             <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }}
                         </a>
-                        <a class="btn btn-app bg-danger">
-                            <i class="fas fa-trash"></i> {{ __('Delete') }}
-                        </a>
+                       
                     </div>
                 </div>
             </div>

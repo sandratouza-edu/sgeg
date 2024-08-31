@@ -18,7 +18,7 @@ class CsvController extends Controller
     }
     
     public function import(Request $request) {
-        //Hacer una custom request para validar
+        // custom request to validate
         //sustituir lo que validamos aquí
         $request->validate([
             'document_csv' => 'required' //|mimes:csv,xls,xlsx|max:2048'

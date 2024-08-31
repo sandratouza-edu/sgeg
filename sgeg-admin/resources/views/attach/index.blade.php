@@ -38,8 +38,8 @@
                 with-buttons>
                 @forelse($attachs as $attach)
                     <tr>
-                        <td> <a href="{{ route('attach.show', $attach) }}"> {{ Str::limit($attach->name, 80) }} </a> </td>
-                        <td> {{ $attach->keywords }} </td>
+                        <td> <strong>  <a href="{{ route('attach.show', $attach) }}"> {{ Str::limit($attach->name, 80) }} </a> </strong></td>
+                        <td> {{ $attach->keywords }}  </td>
                         <td>
                             <div class="btn-group">
                                 <a class="link-button" href="{{ route('email', $attach->id) }}">
@@ -69,7 +69,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td>{{ __('List is empty') }} </td>
+                        <td colspan="3">{{ __('List is empty') }} </td>
                     </tr>
                 @endforelse
             </x-adminlte-datatable>

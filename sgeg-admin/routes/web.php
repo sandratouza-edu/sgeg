@@ -59,6 +59,7 @@ Route::middleware([
         Route::post('/request-delete/{garment}', [GarmentController::class, 'requestDelete'])->name('garment.requestDelete');
         Route::get('/image', [AttachController::class, 'images'])->name('image.index');
         Route::get('/upload', [AttachController::class, 'upload'])->name('image.upload');
+        Route::post('/image-save', [AttachController::class, 'imageSave'])->name('image.uploadSave');
 
         //Multi delete
         Route::post('/multi-delete', [UserController::class, 'multiDestroy'])->name('user.multi-delete');
@@ -95,11 +96,7 @@ Route::middleware([
     Route::post('/import', [CsvController::class, 'import'])->name('import');
     Route::get('/export', [CsvController::class, 'export'])->name('export');
 
-    //PDF invite
-    Route::get('/pdf', [AttachController::class, 'invite'])->name('invite');
-    Route::get('/document', [AttachController::class, 'index'])->name('index');
-    Route::get('/docCreate', [AttachController::class, 'invite'])->name('create');
-
+  
     //template added
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

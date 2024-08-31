@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\AttachRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use App\Models\Attach;
-
+use App\Models\Setting;
+ 
 class AttachController extends Controller
 {
    /**
@@ -25,6 +29,7 @@ class AttachController extends Controller
      */
     public function create(): View
     {
+
         return view('attach.create');
     }
 
@@ -34,17 +39,17 @@ class AttachController extends Controller
     public function store(Request $request): RedirectResponse
     {
    
-        $data = $request->all();
-        $uri = ucwords(str_replace(' ', ' ', $request['name'])).'.pdf';
-        $data['uri'] = asset('/doc/'.$uri);
-        
-        $pdf = Pdf::setPaper('letter', 'landscape')->loadView('pdf.letter', $data);
-        $pdf->save($uri);
+        $data = $request->all();        
+       
+        $uri = ucwords(time()."-".str_replace(' ', '_', $request['name'])).'.pdf';
+        $data['uri'] =(env('ASSETS_PATH').$uri);
+
+        $pdf = Pdf::setPaper(Setting::where('key','paper')->first()->value, Setting::where('key','orientation')->first()->value)->loadView('pdf.letter', $data);
+        $pdf->save(public_path($data['uri']));
       
         Attach::create($data);
 
         return redirect()->route('attach.index')->with('success', 'Document Created');
-
 
     }
 
@@ -69,10 +74,19 @@ class AttachController extends Controller
      */
     public function update(Request $request, Attach $attach): RedirectResponse
     {
-        $attach->update($request->all()); 
-         
+        $data = $request->all();
+        if(Storage::exists(public_path($attach->uri))) {
+            Storage::delete(public_path($attach->uri));
+        }
+        $uri = ucwords(time()."-".str_replace(' ', '_', $request['name'])).'.pdf';
+        $data['uri'] = (env('ASSETS_PATH').$uri);
+        
+        $pdf = Pdf::setPaper(Setting::where('key','paper')->first()->value, Setting::where('key','orientation')->first()->value)->loadView('pdf.letter', $data);
+        $pdf->save(public_path($data['uri']));
+        
+        $attach->update($data); 
      
-        return redirect()->route('attach.edit', $attach)->with('message', __('Doc Updated'));
+        return redirect()->route('attach.index', $attach)->with('message', __('Doc Updated'));
 
     }
 
@@ -81,20 +95,18 @@ class AttachController extends Controller
      */
     public function destroy(Request $request, Attach $attach): RedirectResponse
     {
+        if(Storage::disk('local')->exists(public_path($attach->uri))) {
+            $res = Storage::delete(public_path($attach->uri));
+            dd($res);
+        }
         $attach->delete();
 
-        return redirect()->route('attach.index')->with('danger', 'attach Deleted');
+        if($attach->type == 'image') {
+            return redirect()->route('image.index')->with('danger', 'Image Deleted');
+        } else {
+            return redirect()->route('attach.index')->with('danger', 'attach Deleted');
+        }
     
-    }
-
-    public function invite()
-    {
-        //$pdf = Pdf::loadView('pdf.attach');
-        $data = ['name' => "Sandra"];
-        $pdf = Pdf::setPaper('letter', 'landscape')->loadView('pdf.letter', $data);
-       // $pdf->save('myAttahc.pdf');
-       
-        return $pdf->download('myinvite.pdf');
     }
 
     public function images(): View
@@ -105,8 +117,48 @@ class AttachController extends Controller
 
     public function upload(): View
     {
-        $attachs = Attach::with('user')->where('type','image')->get();
-        return view('attach.image-index', compact('attachs'));
+     
+        return view('attach.image-upload');
     }
 
+    public function imageSave(Request $request): RedirectResponse
+    {
+        
+        $image = new Attach;
+        $uri = ucwords(time()."-".str_replace(' ', '_', $request->name).'.'.$request->image->extension());
+        $request->image->move(public_path(env('ASSETS_IMAGES')), $uri);
+        $image->uri = env('ASSETS_IMAGES').$uri;
+        $image->name = $request->name;
+        $image->keywords = $request->keywords;
+        $image->description = $request->description;
+        $image->user_id = Auth::user()->id;
+        $image->type = "image";
+      
+        $image->save();
+
+        return redirect()->route('image.index')->with('success', 'Document Created');
+
+    }
+
+    /*
+    Ejemplo generación desde una vista
+    public function invite()
+    {
+        //$pdf = Pdf::loadView('pdf.attach');
+        $data = ['name' => "Sandra"];
+        $pdf = Pdf::setPaper('letter', 'landscape')->loadView('pdf.letter', $data);
+       // $pdf->save('myAttahc.pdf');
+       
+        return $pdf->download('myinvite.pdf');
+    }
+
+    public function generatePdf() {
+        $pdf = Pdf::loadView('pdf.attach'); //Param la vista que lo genera
+        
+        $pdf->save('/myAttahc.pdf'); //ruta para guardarlo desde public
+        //ver public_path()
+        
+        return $pdf->download('nombrefichero.pdf'); //Param nombre del fichero
+    }
+*/
 }
