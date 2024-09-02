@@ -9,4 +9,7 @@ use App\Models\User;
 class SeatUser extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+    
 }

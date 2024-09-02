@@ -14,6 +14,7 @@ class Room extends Model
     protected $fillable = [
         'name',
         'structure',
+        'description'
     ];
 
     protected function structure(): Attribute {

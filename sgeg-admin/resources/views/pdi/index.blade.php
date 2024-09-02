@@ -48,8 +48,8 @@
                         @endif
                     </td>
                     <td>  
-                        @if (!is_null($pdi->user->degree_id) &&  ($pdi->user->degree_id >0) )
-                            {{ $degrees->find($pdi->user->degree_id)->name }} 
+                        @if (isset($pdi->user->degree) &&  !is_null($pdi->user->degree) )
+                            {{ $degrees->find($pdi->user->degree)->name }} 
                         @endif
                     </td>                    
                     <td>

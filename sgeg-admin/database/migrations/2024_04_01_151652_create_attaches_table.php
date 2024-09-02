@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->enum('type', ['image', 'doc'])->default('doc');
             $table->text('description')->nullable();
-            $table->text('keywords')->nullable();
+            $table->string('keywords')->nullable();
             $table->unsignedBigInteger('user_id');
 
             // Definir la clave foránea

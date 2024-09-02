@@ -39,6 +39,6 @@ class CsvController extends Controller
 
     public function export()
     {
-        return Excel::download(new UsersExport, 'alumnos-'.date('Y-m-d').'.csv');
+        return Excel::download(new UsersExport, 'sgeg-students-'.date('Y-m-d').'.csv');
     }
 }

@@ -35,17 +35,16 @@
                     @component('components.csv-form')
                     @endcomponent
                 </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-default float-right">{{ __('Cancel') }}</button>
-                </div>
+                
             </div>
         </div>
             <div class="col-md-6">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('Export') }} -  {{ __('Students') }}</h3>
+                    <h3 class="card-title">{{ __('Export') }} -  {{ __('Users') }}</h3>
                 </div>
                 <div class="card-body">
+                  
                     @component('components.csv-export')
                     @endcomponent
                 </div>

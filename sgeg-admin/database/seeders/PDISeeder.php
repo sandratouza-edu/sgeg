@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Pdi;
 
-class PdiSeeder extends Seeder
+class PDISeeder extends Seeder
 {
     /**
      * Run the database seeds.

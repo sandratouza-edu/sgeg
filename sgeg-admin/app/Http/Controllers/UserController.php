@@ -16,16 +16,7 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     public function __construct() {
-       // $this->middleware('can: adminall')->only('index');
-     // $this->middleware('can: edit user')->only('edit');
-    // $this->middleware(['permission:read|edit|delete']);
-    /*
-        $this->middleware(['permission:product-list|product-create|product-edit|product-delete'], ['only' => ['index', 'show']]);
-        $this->middleware(['permission:product-create'], ['only' => ['create', 'store']]);
-        $this->middleware(['permission:product-edit'], ['only' => ['edit', 'update']]);
-        $this->middleware(['permission:product-delete'], ['only' => ['destroy']]);
-    */
-
+      
     }
      /**
      * Render list of users.
@@ -151,7 +142,7 @@ class UserController extends Controller
     {
        
         $users = User::whereIn('id', explode(',', $request->get('selected')));
-dd($users);
+ 
         return redirect()->route('email.send-multiple', $user);
 
         
