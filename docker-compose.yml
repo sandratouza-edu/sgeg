@@ -1,0 +1,56 @@
+# ruta: /mnt/project/sandra/app
+version: "3.7"
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8090:80"
+    volumes:
+      - ./sgeg:/var/www
+      #- ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+ 
+    networks:
+      - network_sgeg
+  db:
+    platform: linux/amd64
+    image: mysql
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - "3366:3306"
+    environment:
+      MYSQL_DATABASE: sgeg24DB
+      MYSQL_PASSWORD: sgeg_password
+      MYSQL_USER: sgeg_user
+      MYSQL_ROOT_PASSWORD: mysql
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - network_sgeg
+  sgeg:
+    build:
+      #args:
+       # user: usgeg
+       # uid: 1004
+      context: ./
+      dockerfile: Dockerfile
+    #image: sgeg24
+    container_name: sgeg
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "9000:9000"
+    working_dir: /var/www
+    volumes:
+      - ./sgeg:/var/www
+    networks:
+      - network_sgeg
+networks:
+  network_sgeg:
+    driver: bridge
+volumes:
+  dbdata:

@@ -1,0 +1,7 @@
+{
+    "require": {
+        "laravel/jetstream": "^4.3",
+        "livewire/livewire": "^3.4",
+        "maatwebsite/excel": "^3.1"
+    }
+}
