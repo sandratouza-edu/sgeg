@@ -61,8 +61,9 @@
                             </div>
                             <div class="form-group">
                                 <x-adminlte-input name="pagination" label="{{ __('Items per page') }}" value="{{ $ordered['pagination'] }}" label-class="text-lightblue"/>
-                            </div>
-                            
+                            </div>                            
+                        </div>
+                        <div class="card-footer">
                         </div>
                     </div>
                 </div>

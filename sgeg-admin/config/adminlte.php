@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>SGEG</b>',
-    //'logo_img' => '',//'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => '/assets/img/sgeg-white.png', 
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -84,13 +84,13 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => '',//'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => '/assets/img/sgeg-gray.png',
             'alt' => 'Auth Logo',
             'class' => '',
-            'width' => 50,
-            'height' => 50,
+            'width' => 70,
+            'height' => 70,
         ],
     ],
 
@@ -112,13 +112,13 @@ return [
     'preloader' => [
         'enabled' => false,
         'mode' => 'fullscreen',
-      /*  'img' => [
-            'path' => '', //'vendor/adminlte/dist/img/AdminLTELogo.png',
+        'img' => [
+            'path' => '/assets/img/sgeg-gray.png', 
             'alt' => 'Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
-        ], */
+        ],  
     ],
 
     /*
@@ -302,7 +302,7 @@ return [
             'type' => 'language-widget',
             'icon' => 'flag-icon flag-icon-es',
             'text' => 'language',
-            'topnav_right' => true,
+            'topnav_right' => false,
             'submenu' => [
                 [
                     'text'=>'English',
@@ -311,6 +311,11 @@ return [
                 ],
                 [
                     'text'=>'Spanish',
+                    'icon' => 'flag-icon flag-icon-es',
+                    'url'=> '#'
+                ],
+                [
+                    'text'=>'Galician',
                     'icon' => 'flag-icon flag-icon-es',
                     'url'=> '#'
                 ]
@@ -350,7 +355,14 @@ return [
                 ],  
                 [
                     'text' => 'event',
+                    'icon' => 'far fa-fw fa-calendar',
                     'url' => 'reserve',
+                    'role' => 'admin',  
+                ],
+                [
+                    'text' => 'Escaleta',
+                    'icon' => 'fas fa-fw fa-window-maximize',
+                    'url' => 'staircase',
                     'role' => 'admin',  
                 ],
             ]

@@ -18,18 +18,51 @@
                             <div class="col-12">
                                 {{ $user->name }}
                                 Asientos:
-
                                 @foreach ($user->seats as $as)
                                     <p>{{ $as->position }} {{ $as->reserved_at }}</p>
                                 @endforeach
                                 <hr>
-                                <p>Asientos </p>
-                                @foreach ($seats as $seat)
-                                    <p> {{ $seat->position }} -> {{ $seat->user }} </p>
-                                @endforeach
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-6 d-flex align-items-stretch flex-column">
+                                @for ($i = 4; $i < 9; $i++)
+                                    <div class="seatRow">
+                                        <div class="seatRowNumber">
+                                            Row - {{ $i }}
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                        @for ($j = 0; $j < 12-$i; $j++)
+                                            <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="tooltip" title="{{ _('Free') }}"
+                                                value="{{ $i }}{{ $j }}" aria-checked="false"
+                                                focusable="true" tabindex="-1" class=" seatNumber seatUnavailable">
+                                                {{ $j }}</div> 
+                                        @endfor
+                                        <div id="1_8" role="checkbox" value="45" aria-checked="false" data-toggle="tooltip" title="{{ _('Reserved') }}"
+                                            focusable="true" tabindex="-1" class=" seatNumber ">8</div>
+                                        </div>
+                                    </div>
+                                @endfor
+                            </div>
+                            <div class="col-6 d-flex align-items-stretch flex-column">
+                                @for ($i = 4; $i < 9; $i++)
+                                    <div class="seatRow">
+                                        <div class="seatRowNumber">
+                                            R-{{ $i }}
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                        @for ($j = 0; $j < 12-$i; $j++)
+                                            <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="tooltip" title="{{ _('Free') }}"
+                                                value="{{ $i }}{{ $j }}" aria-checked="false"
+                                                focusable="true" tabindex="-1" class=" seatNumber seatUnavailable">
+                                                {{ $j }}</div> 
+                                        @endfor
+                                        <div id="1_8" role="checkbox" value="45" aria-checked="false" data-toggle="tooltip" title="{{ _('Reserved') }}"
+                                            focusable="true" tabindex="-1" class=" seatNumber ">8</div>
+                                        </div>
+                                    </div>
+                                @endfor
+                            </div>
                             <div class="col-12  d-flex align-items-stretch flex-column">
                                 @for ($i = 0; $i < 9; $i++)
                                     <div class="seatRow">

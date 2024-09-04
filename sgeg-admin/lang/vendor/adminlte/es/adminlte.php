@@ -6,6 +6,7 @@ return [
     'messages' => 'Mensajes',
     'graduation' => 'Graduación',
     'event' => 'Evento',
+    'staircase' => 'Escaleta',
     'full_name' => 'Nombre completo',
     'email' => 'Email',
     'rooms' => 'Salones',

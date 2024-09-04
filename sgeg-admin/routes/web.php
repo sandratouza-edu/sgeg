@@ -98,7 +98,8 @@ Route::middleware([
     
     //Reserve
     Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
-
+    Route::get('/staircase', [ReserveController::class, 'staircase'])->name('staircase');
+    
 
     //CSV import
     Route::get('/useractions', [CsvController::class, 'index'])->name('useractions');

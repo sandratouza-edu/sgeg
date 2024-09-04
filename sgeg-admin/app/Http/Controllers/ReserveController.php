@@ -21,6 +21,18 @@ class ReserveController extends Controller
         return view('actions.reserve', compact('user', 'seats'));
     }
 
+    
+
+    public function staircase()
+    {
+    //    $users = User::with('seat')->get();
+        
+        $seats = Seat::all();
+       // $seats = User::with('user')->get();
+        
+        return view('actions.staircase', compact('seats'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
