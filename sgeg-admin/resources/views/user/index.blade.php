@@ -34,12 +34,16 @@
                         <a class="btn btn-app bg-secondary"  href="{{ route('user.create') }}">
                             <i class="fas fa-user-plus"></i> {{ __('New') }}
                         </a>
+                        @can('import')
                         <a class="btn btn-app bg-success"  href="{{ route('userImport') }}">
                             <i class="fas fa-users"></i> {{ __('Import') }}
                         </a>
+                        @endcan
+                        @can('export')
                         <a class="btn btn-app bg-orange" href="{{ route('export') }}">
                             <i class="fas fa-users"></i> {{ __('Export') }}
                         </a> 
+                        @endcan
                     </div>
                     @endrole
                 </div>

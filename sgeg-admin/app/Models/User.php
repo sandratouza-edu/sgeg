@@ -93,14 +93,14 @@ class User extends Authenticatable
     }
 
     //Polimorfico con un solo valor
-    public function attach(): MorphOne
+    public function attachment(): MorphOne
     {
-        return $this->morphOne(Attach::class, 'attachable');
+        return $this->morphOne(Attachment::class, 'attachmentable');
     
     }
-    public function attachs(): MorphMany
+    public function attachments(): MorphMany
     {
-        return $this->morphMany(Attach::class, 'attachable');
+        return $this->morphMany(Attachment::class, 'attachmentsable');
     
     }
 

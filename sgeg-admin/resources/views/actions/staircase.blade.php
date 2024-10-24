@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <a href="{{ route('attach.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+                <a href="{{ route('attachment.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
                 {{ Form::hidden('user_id', Auth::user()->id) }}
                 {{ Form::hidden('type', "doc") }}
                 <input type="submit" value="{{ __('Create') }}" class="btn btn-success float-right">

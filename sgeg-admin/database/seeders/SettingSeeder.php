@@ -35,5 +35,6 @@ class SettingSeeder extends Seeder
         ];
  
         Setting::insert($settings);
+        
     }
 }

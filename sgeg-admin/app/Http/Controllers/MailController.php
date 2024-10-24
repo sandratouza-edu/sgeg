@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Degree;
-use App\Models\Attach;
+use App\Models\Attachment;
 
 class MailController extends Controller
 {
@@ -21,7 +21,7 @@ class MailController extends Controller
         $roles = Role::all();
         $degrees = Degree::all();
         $selected = "";
-        $invitations = Attach::all()->where('type','doc');
+        $invitations = Attachment::all()->where('type','doc');
         return view('emails.index', compact('degrees', 'roles', 'selected', 'invitations'));
      }
 
@@ -37,7 +37,7 @@ class MailController extends Controller
         
         $roles = Role::all();
         $degrees = Degree::all();
-        $invitations = Attach::all()->where('type','doc');
+        $invitations = Attachment::all()->where('type','doc');
 
         return view('emails.index', compact('recipients','degrees', 'roles', 'invitations', 'selected'));
     }

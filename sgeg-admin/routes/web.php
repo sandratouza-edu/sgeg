@@ -10,7 +10,7 @@ use App\Http\Controllers\DegreeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CsvController;
-use App\Http\Controllers\AttachController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\RoomController;
 
@@ -51,7 +51,7 @@ Route::middleware([
         Route::resource('/garment', GarmentController::class)->names('garment');
         Route::resource('/pdi', PDIController::class)->names('pdi');
         Route::resource('/degree', DegreeController::class)->names('degree');
-        Route::resource('/attach', AttachController::class)->names('attach');
+        Route::resource('/attachment', AttachmentController::class)->names('attachment');
         Route::resource('/room', RoomController::class)->names('room');
 
         //actions
@@ -62,25 +62,28 @@ Route::middleware([
         Route::get('/garment-lend', [GarmentController::class, 'lend'])->name('garment.lend');
         Route::post('/garment-status/{garment}', [GarmentController::class, 'status'])->name('garment.status');
         Route::post('/request-delete/{garment}', [GarmentController::class, 'requestDelete'])->name('garment.requestDelete');
-        Route::get('/image', [AttachController::class, 'images'])->name('image.index');
-        Route::get('/upload', [AttachController::class, 'upload'])->name('image.upload');
-        Route::post('/image-save', [AttachController::class, 'imageSave'])->name('image.uploadSave');
+        Route::get('/image', [AttachmentController::class, 'images'])->name('image.index');
+        Route::get('/upload', [AttachmentController::class, 'upload'])->name('image.upload');
+        Route::post('/image-save', [AttachmentController::class, 'imageSave'])->name('image.uploadSave');
 
         //Multiple op
         Route::post('/multi-delete', [UserController::class, 'multiDestroy'])->name('user.multi-delete');
 
         Route::post('/assign-godfather', [PDIController::class, 'assignGodfather'])->name('pdi.assign-godfather');
 
-
-        //Route::group(['middleware' => ['permission:role-admin']], function () {
-            Route::resource('/role', RoleController::class)->names('role');
+ 
+            
        // });
-        Route::group(['middleware' => ['role:admin','permission:permission-admin']], function () {
+        Route::group(['middleware' => ['role:administrator']], function () {
+            Route::resource('/role', RoleController::class)->names('role');
             Route::resource('/permission', PermissionController::class)->names('permission');
         });
    // });
 
+    Route::group(['middleware' => ['permission:students-admin']], function () {
     // student
+    });
+
     Route::get('/students', [UserController::class, 'list', 'filter'=>'student'])->name('students');
     //Send email
     Route::get('/email', [MailController::class, 'index'])->name('email');

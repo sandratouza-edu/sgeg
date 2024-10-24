@@ -1,8 +1,6 @@
 FROM php:8.2-fpm-alpine
 
  
-WORKDIR /var/www/
-
 RUN apk update && apk add \
     curl \
     libpng-dev \
@@ -13,7 +11,11 @@ RUN apk update && apk add \
 RUN docker-php-ext-install pdo pdo_mysql \
     && apk --no-cache add nodejs npm
 
+
+
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+WORKDIR /var/www/
 
 USER root
 

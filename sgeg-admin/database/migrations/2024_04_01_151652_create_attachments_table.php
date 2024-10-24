@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attaches', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('uri');
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('type', ['image', 'doc'])->default('doc');
             $table->text('description')->nullable();
             $table->string('keywords')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
             // Definir la clave foránea
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attaches');
+        Schema::dropIfExists('attachments');
     }
 };

@@ -5,14 +5,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Invitation') }}</h2>
+                    <h2>{{ __('Image') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('attach.index') }}">
+                        <a class="btn btn-app bg-secondary" href="{{ route('image.index') }}">
                             <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }}
                         </a>
-                       
+                        
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
     @endif
 
 
-    <form action="{{ route('attach.store') }}" method="POST">
+    <form action="{{ route('image.uploadSave') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="name"> {{ __('Name') }} </label>
@@ -46,19 +46,26 @@
             </div>
         </div>
         <div class="form-group">
+            <x-adminlte-input-file name="image" igroup-size="sm" placeholder=" file..." value="{{ old('image') }}">
+                <x-slot name="prependSlot">
+                    <div class="input-group-text bg-lightblue">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                </x-slot>
+            </x-adminlte-input-file>
+        </div>
+        <div class="form-group">
             <div class="card p-4">
-                <label for="description"> {{ __('Text') }} </label>
-                <textarea id="summernote" class="summernote form-control" rows="4" name="description"> {{ old('description') }} </textarea>               
+                <label for="description"> {{ __('Text') }}</label>
+                <textarea id="summernote" class="summernote form-control" rows="4" name="description"> {{ old('description') }} </textarea>
             </div>
         </div>
         <div class="form-group">
-            <a href="{{ route('attach.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
-            {{ Form::hidden('user_id', Auth::user()->id) }}
-            {{ Form::hidden('type', "doc") }}
+            <a href="{{ route('attachment.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+           
             <input type="submit" value="{{ __('Create') }}" class="btn btn-success float-right">
         </div>
     </form>
-
 
 @endsection
 
@@ -66,6 +73,8 @@
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endsection
+
+@section('plugins.BsCustomFileInput', true)
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>

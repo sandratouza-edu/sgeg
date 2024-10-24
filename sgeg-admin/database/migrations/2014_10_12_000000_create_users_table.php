@@ -26,8 +26,7 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
              
-        //    $table->foreign('degree_id')->references('id')->on('degree');
-            $table->foreignId('degree_id')->nullable()->constrained('degree')->nullOnDelete();
+    
         });
     }
 

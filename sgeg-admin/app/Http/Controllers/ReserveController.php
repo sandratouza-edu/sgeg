@@ -14,7 +14,7 @@ class ReserveController extends Controller
     public function index()
     {
     //    $users = User::with('seat')->get();
-        $user = User::find(290);
+        $user = User::find(2);
         $seats = Seat::all();
        // $seats = User::with('user')->get();
         

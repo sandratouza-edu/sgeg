@@ -17,9 +17,9 @@ class PdiFactory extends Factory
     public function definition(): array
     {
         return [
-            'degree_color' => fake('es_ES')->safeColorName(),
+            'degree' => fake()->numberBetween(1,8), 
             'thesis_date' => fake()->date(),
-       //     'user_id' => fake()->numberBetween(1,20), //Cambiar buscar por role
+            'user_id' => fake()->numberBetween(1,20),  
         ];
     }
 } 

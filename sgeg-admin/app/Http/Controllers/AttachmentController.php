@@ -8,19 +8,19 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\AttachRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use App\Models\Attach;
+use App\Models\Attachment;
 use App\Models\Setting;
  
-class AttachController extends Controller
+class AttachmentController extends Controller
 {
    /**
      * Display a listing of the resource.
      */
     public function index(): View
     {
-        $attachs = Attach::all()->where('type','doc');
+        $attachments = Attachment::all()->where('type','doc');
         
-        return view('attach.index', compact('attachs'));
+        return view('attachment.index', compact('attachments'));
     }
 
 
@@ -30,7 +30,7 @@ class AttachController extends Controller
     public function create(): View
     {
 
-        return view('attach.create');
+        return view('attachment.create');
     }
 
     /**
@@ -47,36 +47,36 @@ class AttachController extends Controller
         $pdf = Pdf::setPaper(Setting::where('key','paper')->first()->value, Setting::where('key','orientation')->first()->value)->loadView('pdf.letter', $data);
         $pdf->save(public_path($data['uri']));
       
-        Attach::create($data);
+        Attachment::create($data);
 
-        return redirect()->route('attach.index')->with('success', 'Document Created');
+        return redirect()->route('attachment.index')->with('success', 'Document Created');
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Attach $attach): View
+    public function show(Attachment $attachment): View
     {
-        return view('attach.show', compact('attach'));
+        return view('attachment.show', compact('attachment'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attach $attach): View
+    public function edit(Attachment $attachment): View
     {
-        return view('attach.edit', compact('attach'));
+        return view('attachment.edit', compact('attachment'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attach $attach): RedirectResponse
+    public function update(Request $request, Attachment $attachment): RedirectResponse
     {
         $data = $request->all();
-        if(Storage::exists(public_path($attach->uri))) {
-            Storage::delete(public_path($attach->uri));
+        if(Storage::exists(public_path($attachment->uri))) {
+            Storage::delete(public_path($attachment->uri));
         }
         $uri = ucwords(time()."-".str_replace(' ', '_', $request['name'])).'.pdf';
         $data['uri'] = (env('ASSETS_PATH').$uri);
@@ -84,47 +84,47 @@ class AttachController extends Controller
         $pdf = Pdf::setPaper(Setting::where('key','paper')->first()->value, Setting::where('key','orientation')->first()->value)->loadView('pdf.letter', $data);
         $pdf->save(public_path($data['uri']));
         
-        $attach->update($data); 
+        $attachment->update($data); 
      
-        return redirect()->route('attach.index', $attach)->with('message', __('Doc Updated'));
+        return redirect()->route('attachment.index', parameters: $attachment)->with('message', __('Doc Updated'));
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Attach $attach): RedirectResponse
+    public function destroy(Request $request, Attachment $attachment): RedirectResponse
     {
-        if(Storage::disk('local')->exists(public_path($attach->uri))) {
-            $res = Storage::delete(public_path($attach->uri));
+        if(Storage::disk('local')->exists(public_path($attachment->uri))) {
+            $res = Storage::delete(public_path($attachment->uri));
             
         }
-        $attach->delete();
+        $attachment->delete();
 
-        if($attach->type == 'image') {
+        if($attachment->type == 'image') {
             return redirect()->route('image.index')->with('danger', 'Image Deleted');
         } else {
-            return redirect()->route('attach.index')->with('danger', 'attach Deleted');
+            return redirect()->route('attachment.index')->with('danger', 'attachment Deleted');
         }
     
     }
 
     public function images(): View
     {
-        $attachs = Attach::with('user')->where('type','image')->get();
-        return view('attach.image-index', compact('attachs'));
+        $attachments = Attachment::with('user')->where('type','image')->get();
+        return view('attachment.image-index', compact('attachments'));
     }
 
     public function upload(): View
     {
      
-        return view('attach.image-upload');
+        return view('attachment.image-upload');
     }
 
     public function imageSave(Request $request): RedirectResponse
     {
         
-        $image = new Attach;
+        $image = new Attachment;
         $uri = ucwords(time()."-".str_replace(' ', '_', $request->name).'.'.$request->image->extension());
         $request->image->move(public_path(env('ASSETS_IMAGES')), $uri);
         $image->uri = env('ASSETS_IMAGES').$uri;
@@ -144,7 +144,7 @@ class AttachController extends Controller
     Ejemplo generación desde una vista
     public function invite()
     {
-        //$pdf = Pdf::loadView('pdf.attach');
+        //$pdf = Pdf::loadView('pdf.attachment');
         $data = ['name' => "Sandra"];
         $pdf = Pdf::setPaper('letter', 'landscape')->loadView('pdf.letter', $data);
        // $pdf->save('myAttahc.pdf');
@@ -153,7 +153,7 @@ class AttachController extends Controller
     }
 
     public function generatePdf() {
-        $pdf = Pdf::loadView('pdf.attach'); //Param la vista que lo genera
+        $pdf = Pdf::loadView('pdf.attachment'); //Param la vista que lo genera
         
         $pdf->save('/myAttahc.pdf'); //ruta para guardarlo desde public
         //ver public_path()

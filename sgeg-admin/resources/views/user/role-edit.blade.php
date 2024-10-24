@@ -21,8 +21,21 @@
     </section>
 @endsection
 
+@section('css')
+	<link rel="stylesheet" href="/css/custom.css">
+@endsection
 
 @section('content')
+
+<style>
+
+#columns{
+   column-count:4;
+   column-gap:20px;
+   list-style: none;
+}
+
+</style>
     <div class="card">
         <div class="card-header">
             <h4> ROL: {{ $role->name }}</h4>
@@ -30,14 +43,16 @@
         <div class="card-body">
             <h5>Permisos</h5>
             {!! Form::model($role, ['route' => ['role.update', $role], 'method' => 'put']) !!}
-            @foreach ($permissions as $permission)
-                <div>
-                    <label>
-                        {!! Form::checkbox('permissions[]', $permission->id, $role->hasPermissionTo($permission->id) ? : false, ['class' => 'mr-1']) !!}
-                        {{ $permission->name }}
-                    </label>
-                </div>
-            @endforeach
+            <ul id="columns">
+                @foreach ($permissions as $permission)
+                    <li>
+                        <label>
+                            {!! Form::checkbox('permissions[]', $permission->id, $role->hasPermissionTo($permission->id) ? : false, ['class' => 'mr-1']) !!}
+                            {{ $permission->name }}
+                        </label>
+                    </li>
+                @endforeach
+            </ul>
             {!! Form::submit('Asignar permisos', ['class' => 'btn bg-green mt-3']) !!}
             {!! Form::close() !!}
         </div>

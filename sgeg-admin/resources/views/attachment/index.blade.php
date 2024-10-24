@@ -5,15 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Images') }}</h2>
+                    <h2>{{ __('Invitations') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-green" href="{{ route('image.upload') }}">
-                            <i class="fas fa-solid fa-image"></i> {{ __('New') }}
-                        </a>
-                        <a class="btn btn-app bg-danger">
-                            <i class="fas fa-inbox"></i> {{ __('Delete') }}
+                        <a class="btn btn-app bg-green" href="{{ route('attachment.create') }}">
+                            <i class="fas fa-solid fa-mobile"></i> {{ __('New') }}
                         </a>
                     </div>
                 </div>
@@ -24,31 +21,46 @@
 
 @section('content')
     @php
-        $heads = [__('All'), __('Title'), __('Owner'), __('URI'), __('Actions')];
+        $heads = [__('Title'), __('Keywords'), ['label' => __('Actions'), 'no-export' => true, 'width' => 10]];
 
         $config = [
             'order' => [[1, 'asc']],
+            'language' => [
+                'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
+            ], 
         ];
-
     @endphp
-
     <div>
-        @if ($attachs->isEmpty())
+        @if ($attachments->isEmpty())
             <p>{{ __('List is empty') }}</p>
         @else
-            <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable with-buttons>
-                @forelse($attachs as $attach)
+            <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable
+                with-buttons>
+                @forelse($attachments as $attachment)
                     <tr>
-                        <td> <input type="checkbox" name="" id=" {{ $attach->id }}"> </td>
-                        <td> {{ $attach->name }} </td>
-                        <td> {{ $attach->user->name }} </td>
-                        <td> <a href="{{$attach->uri }}"> {{ Str::limit($attach->name, 122) }} </a> </td>
+                        <td> <strong>  <a href="{{ route('attachment.show', $attachment) }}"> {{ Str::limit($attachment->name, 80) }} </a> </strong></td>
+                        <td> {{ $attachment->keywords }}  </td>
                         <td>
                             <div class="btn-group">
-                                <form action="{{ route('attach.destroy', $attach) }}" method="POST" class="form-delete">
+                                <a class="link-button" href="{{ route('email', $attachment->id) }}">
+                                    <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Enviar">
+                                        <i class="fa fa-lg fa-fw fa-envelope"></i>
+                                    </button>
+                                </a>
+                                <a href="{{ route('attachment.show', $attachment->id) }}">
+                                    <button class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
+                                        <i class="fa fa-lg fa-fw fa-eye"></i>
+                                    </button>
+                                </a>
+                                <a class="link-button" href="{{ route('attachment.edit', $attachment->id) }}">
+                                    <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
+                                        <i class="fa fa-lg fa-fw fa-pen"></i>
+                                    </button>
+                                </a>
+                                <form action="{{ route('attachment.destroy', $attachment) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="{{ __('Delete') }}">
+                                    <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                     </button>
                                 </form>
@@ -57,7 +69,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td> {{ __('List is empty') }}</td>
+                        <td colspan="3">{{ __('List is empty') }} </td>
                     </tr>
                 @endforelse
             </x-adminlte-datatable>

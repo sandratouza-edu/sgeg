@@ -296,14 +296,14 @@ return [
         // Navbar items:        
         [
             'type' => 'fullscreen-widget',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type' => 'language-widget',
             'icon' => 'flag-icon flag-icon-es',
             'text' => 'language',
-            'topnav_right' => false,
-            'submenu' => [
+            'topnav_right' => true,
+          /*  'submenu' => [
                 [
                     'text'=>'English',
                     'icon' => 'flag-icon flag-icon-us',
@@ -319,7 +319,7 @@ return [
                     'icon' => 'flag-icon flag-icon-es',
                     'url'=> '#'
                 ]
-            ]
+            ] */
         ],
 
         // Sidebar items:
@@ -329,35 +329,38 @@ return [
             'text' => 'graduation',
             'icon' => 'fas fa-fw fa-share',
             'icon_color' => 'yellow',
+            //'role' => 'admin',
             'submenu' => [
                 [
                     'text' => 'invitations',
                     'icon' => 'far fa-fw fa-file',
-                    'url' => 'attach',
+                    'url' => 'attachment',
+                    'can' => 'admin-all',  
                 ],              
                 [
                     'text' => 'emails',
                     'url' => 'email',
                     'icon' => 'far fa-fw fa-envelope',
-                    'role' => 'admin',  
+                    'can' => 'email-admin',  
                 ], 
                 [
                     'text' => 'messages',
                     'url' => 'message',
                     'icon' => 'fab fa-telegram-plane',
                     'role' => 'admin',  
+                    'can' => 'message-admin',
                 ],             
                 [
                     'text' => 'images',
                     'icon' => 'far fa-fw fa-images',
                     'url' => 'image',
-                    'role' => 'admin|pdi|student', 
+                    'can' => 'attachment-admin', 
                 ],  
                 [
                     'text' => 'event',
                     'icon' => 'far fa-fw fa-calendar',
                     'url' => 'reserve',
-                    'role' => 'admin',  
+                    'can' => 'event-admin',  
                 ],
                 [
                     'text' => 'Escaleta',
@@ -372,25 +375,25 @@ return [
             'text' => 'garments',
             'url' => 'garment',
             'icon' => 'fas fa-fw fa-user-tie',
-            'role' => 'admin|student|pdi',  
+            'can' => 'garment-admin|garment-lend',  
             'submenu' => [
                 [
                     'text' => 'list',
                     'url' => 'garment',
                     'icon' => 'fas fa-fw fa-graduation-cap', 
-                    'role' => 'admin|pdi', 
+                    'can' => 'garment-lend', 
                 ],
                 [
                     'text' => 'requests',
                     'url' => 'garment-lend',
                     'icon' => 'fas fa-fw fa-graduation-cap', 
-                    'role' => 'admin|pdi', 
+                    'can' => 'garment-lend', 
                 ],
                 [
                     'text' => 'borrow',
                     'url' => 'garment-borrow',
                     'icon' => 'fas fa-fw fa-graduation-cap', 
-                    'role' => 'admin|pdi|student', 
+                    'can' => 'garment-borrow', 
                 ],
             ]
         ],
@@ -398,69 +401,68 @@ return [
             'text' => 'students',
             'url' => 'students',
             'icon' => 'far fa-fw fa-user',
-            'role' => 'admin',  
+            'can' => 'user-admin',  
              
         ],
         [
             'text' => 'PDI',
             'url' => 'pdi',
             'icon' => 'far fa-fw fa-user',
-            'role' => 'admin',  
+            'can' => 'user-admin',  
         ], 
         [
             'text' => 'Admin',
             'icon' => 'fas fa-fw fa-share',
-            'role' => 'admin',
-            'submenu' => [            
-                [
-                    'text' => 'settings',
-                    'url' => 'settings',
-                     //'can' => 'admin-all',
-                    'icon' => 'fas fa-fw fa-tools', 
-                    'role' => 'admin',                  
-                ],
+            'can' => 'admin-all',
+            'submenu' => [                           
                 [
                     'text' => 'degrees',
                     'url' => 'degree',
                     'icon' => 'fas fa-fw fa-certificate',
-                    'role' => 'admin',  
+                    'can' => 'degree-admin',  
                 ],     
                 [
                     'text' => 'rooms',
                     'url' => 'room',
                     'icon' => 'fas fa-fw fa-archway',
-                    'role' => 'admin',  
+                    'can' => 'room-admin',  
                 ],     
                 [
                     'text' => 'roles',
                     'url' => 'role',
-                    //'can' => 'role-admin',
+                    'can' => 'role-admin',
                     'icon' => 'fas fa-fw fa-directions', 
-                    'role' => 'admin',                  
                 ],
                 [
                     'text' => 'permissions',
                     'url' => 'permission',
-                     //'can' => 'permission-admin',
+                    'can' => 'permission-admin',
                     'icon' => 'fas fa-fw fa-exclamation-triangle',    
-                    'role' => 'admin',                
                 ],
                 [
                     'text' => 'users',
                     'url' => 'user',
                     'icon' => 'far fa-fw fa-user',  
-                    'role' => 'admin',  
+                    'can' => 'user-admin',  
                 ],
                    
                  
             ],
         ],
 
-        ['header' => 'account_settings',],
+        ['header' => 'settings',],
         [
             'text' => 'profile',
             'url' => 'user/profile',
             'icon' => 'fas fa-fw fa-user',
+            //'can' => 'profile',
+        ],
+        [
+            'text' => 'setting',
+            'url' => 'settings',
+            'icon' => 'fas fa-fw fa-tools', 
+            'can' => 'admin-all',
+        
         ],
  
     ],
@@ -659,5 +661,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

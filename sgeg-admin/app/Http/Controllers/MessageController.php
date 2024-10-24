@@ -25,7 +25,7 @@ class MessageController extends Controller
                         // ->latest()
                         
                         // (Optional). Limit to 2 updates (By default, updates starting with the earliest unconfirmed update are returned).
-                        ->limit(10)
+                        ->limit(100)
                         
                         // (Optional). Add more params to the request.
                         ->options([
@@ -35,7 +35,6 @@ class MessageController extends Controller
         $results = ""; 
         if($updates['ok']) {
             // Chat ID
-            dump($updates);
             if (isset($updates['result'])) {
                 $results = $updates['result'];
             }

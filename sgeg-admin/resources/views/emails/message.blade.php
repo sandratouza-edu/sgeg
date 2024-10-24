@@ -9,10 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary"  >
-                            <i class="fas fa-solid fa-envelope"></i> {{ __('New') }}
-                        </a>
-                        
+                       
                     </div>
                 </div>
             </div>

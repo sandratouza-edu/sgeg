@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
        $role5 = Role::create(['name' => 'guest']);
        
        $permissions[] = Permission::create(['name' => 'adminall']);
-       $permissions[] = Permission::create(['name' => 'user-admin']);
+       $permissions[] = Permission::create(['name' => 'user-admin'])->syncRoles(['administrator']);
        $permissions[] = Permission::create(['name' => 'user-delete']);
        $permissions[] = Permission::create(['name' => 'user-edit']);
        $permissions[] = Permission::create(['name' => 'user-read']);
@@ -36,11 +36,26 @@ class RoleSeeder extends Seeder
        $permissions[] = Permission::create(['name' => 'document-admin']);
        $permissions[] = Permission::create(['name' => 'document-print']);
        $permissions[] = Permission::create(['name' => 'image-admin']);
-       $permissions[] = Permission::create(['name' => 'image-upload']);
-       $permissions[] = Permission::create(['name' => 'garment-borrow']);
-       $permissions[] = Permission::create(['name' => 'garment-lend']);
-       $permissions[] = Permission::create(['name' => 'seat-reserve']);
-       $permissions[] = Permission::create(['name' => 'profile']);
+       $permissions[] = Permission::create(['name' => 'image-upload'])->syncRoles(['administrator','student','pdi']);
+       $permissions[] = Permission::create(['name' => 'garment-borrow'])->syncRoles(['administrator', 'pdi']);
+       $permissions[] = Permission::create(['name' => 'garment-lend'])->syncRoles(['administrator','student', 'pdi']);
+       $permissions[] = Permission::create(['name' => 'seat-reserve'])->syncRoles(['administrator','student', 'pdi']);
+       $permissions[] = Permission::create(['name' => 'profile'])->syncRoles(['administrator','student', 'pdi']);
+       
+
+       $permissions[] = Permission::create(['name' => 'admin-all']);
+       $permissions[] = Permission::create(['name' => 'email-admin']);
+       $permissions[] = Permission::create(['name' => 'email-delete']);
+       $permissions[] = Permission::create(['name' => 'email-edit']);
+       $permissions[] = Permission::create(['name' => 'email-read']);
+       $permissions[] = Permission::create(['name' => 'message-admin']);
+       $permissions[] = Permission::create(['name' => 'attachment-admin']);
+       $permissions[] = Permission::create(['name' => 'event-admin']);
+       $permissions[] = Permission::create(['name' => 'room-admin']);
+    
+       $permissions[] = Permission::create(['name' => 'import']);
+       $permissions[] = Permission::create(['name' => 'export']);
+    
 
        //admin role
        $role1->syncPermissions($permissions);
@@ -53,7 +68,19 @@ class RoleSeeder extends Seeder
         ]);
         $admin->assignRole(1);
  
+        //Creados a posteriori
+        // Permission::create(['name' => 'export'])->syncRoles(['role1','role2'])
+        // 	User::create([ … ])->assignRole('Admin');
 
+       
+
+        $student = User::create([
+            'name' => 'student',
+            'email' => 'student@example.com',
+            'password' => Hash::make('password')
+        ]);
+        $student->assignRole($role2);
+ 
 
 
     }
