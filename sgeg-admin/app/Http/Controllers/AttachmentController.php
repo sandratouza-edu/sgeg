@@ -39,10 +39,14 @@ class AttachmentController extends Controller
     public function store(Request $request): RedirectResponse
     {
    
-        $data = $request->all();        
-       
         $uri = ucwords(time()."-".str_replace(' ', '_', $request['name'])).'.pdf';
-        $data['uri'] =(env('ASSETS_PATH').$uri);
+        $data['uri'] = (env('ASSETS_PATH').$uri);
+      
+        $data['name'] = $request->name;
+        $data['keywords'] = $request->keywords;
+        $data['type'] = "doc";     
+        $data['description'] = $request->description;
+        $data['user_id'] = Auth::user()->id;
 
         $pdf = Pdf::setPaper(Setting::where('key','paper')->first()->value, Setting::where('key','orientation')->first()->value)->loadView('pdf.letter', $data);
         $pdf->save(public_path($data['uri']));
@@ -74,7 +78,11 @@ class AttachmentController extends Controller
      */
     public function update(Request $request, Attachment $attachment): RedirectResponse
     {
-        $data = $request->all();
+        $data['name'] = $request->name;
+        $data['keywords'] = $request->keywords;
+        $data['type'] = "doc";     
+        $data['description'] = $request->description;
+        $data['user_id'] = Auth::user()->id;
         if(Storage::exists(public_path($attachment->uri))) {
             Storage::delete(public_path($attachment->uri));
         }

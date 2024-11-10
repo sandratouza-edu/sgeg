@@ -14,7 +14,7 @@ class RoomController extends Controller
      */
     public function index(): View
     {
-        $rooms = Room::get();
+        $rooms = Room::all();
 
         return view('room.index', compact('rooms'));
     }
@@ -118,7 +118,7 @@ class RoomController extends Controller
     public function update(Request $request, Room $room): RedirectResponse
     {
         $room->update($request->all()); 
-dd($room);
+
         return redirect()->route('room.index')->with('success', 'Room Updated');
 
     }

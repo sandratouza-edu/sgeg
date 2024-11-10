@@ -107,7 +107,7 @@ class GarmentController extends Controller
         $user = User::find($request->user_id);
         $user->garments()->attach($request->garment_id,['status' => 'pending','reserved_at' => now(), 'description'=>$request->description]);
 
-        return redirect()->route('garment.request')->with('success', 'garment Updated');
+        return redirect()->route('garment.lend')->with('success', 'garment Updated');
     }
 
      
