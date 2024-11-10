@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('attachment.create') }}">
+                        <a class="btn btn-app bg-secondary" href="{{ route('email') }}">
                             <i class="fas fa-solid fa-envelope"></i> {{ __('New') }}
                         </a>
                         <a class="btn btn-app bg-danger">

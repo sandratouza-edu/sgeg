@@ -60,7 +60,7 @@
                         </td>
                         <td> {{ $degree->description }} </td>
                         <td>
-                            @role('admin')
+                            @can('degree-admin')
                             <div class="btn-group">
                                 <a href="{{ route('degree.show', $degree->id) }}">
                                     <button class="btn btn-xs btn-default text-teal mx-1 shadow" title=" {{ __('Details') }}">
@@ -81,7 +81,7 @@
                                     </button>
                                 </form>
                             </div>
-                            @endrole
+                            @endcan
                         </td>
                     </tr>
                 @empty

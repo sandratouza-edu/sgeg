@@ -40,8 +40,9 @@
             __('Owner'),    
             ['label' => __('Properties'), 'width' => 10],
             __('Requested by'),
-            __('Date') ,  __('Description') , __('Status') ,
+            __('Date') ,  __('Description') ,
             ['label' => __('Actions'), 'no-export' => true, 'width' => 7],
+            __('Status') ,
             ['label' => __('Delete'), 'width' => 2],
         ];
         $config = [
@@ -67,15 +68,12 @@
                     {{ __('Color') }}: <i class="fas fa-square" style="color:  {{ $garment->color }}"></i> 
                     - {{ __('Waist') }}: {{ $garment->waist }}  {{ __('Height') }}: {{ $garment->height }}  {{ __('Width') }}: {{ $garment->width }} 
                      @if ($garment->with_cap) {{ __('Cap Size') }}: {{ $garment->size_cap }} @endif  
-                </td>
-                
+                </td>                
                 @foreach ($garment->users as $key => $usr) 
                     @if ($key > 0 ) </tr><tr> @endif 
                     <td> {{ $usr->name }} </td> 
                     <td> {{ $usr->requested->reserved_at }}</td> <td> {{ $usr->requested->description }} </td> 
-                    <td> 
-                        {{ __($usr->requested->status) }}                       
-                    </td>
+                    
                     <td> 
                         <div class="btn-group">
                             <form action="{{ route('garment.status', $garment) }}" method="POST" class="form-status">
@@ -96,18 +94,21 @@
                                     <i class="fa fa-lg fa-fw fa-ban"></i>
                                 </button>
                             </form>
-                            </div>
-                        </td>
-                        <td> 
-                            <form action="{{ route('garment.requestDelete', $garment) }}" method="POST" class="form-delete">
-                                @csrf
-                                <input type="hidden" name="reserved_at" value="{{  $usr->requested->reserved_at }}">
-                                <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow"
-                                    title="{{ __('Delete') }}">
-                                    <i class="fa fa-lg fa-fw fa-trash"></i>
-                                </button>
-                            </form>
-                        
+                        </div>
+                    </td>
+                    <td> 
+                        {{ __($usr->requested->status) }}                       
+                    </td>
+                    <td> 
+                        <form action="{{ route('garment.requestDelete', $garment) }}" method="POST" class="form-delete">
+                            @csrf
+                            <input type="hidden" name="reserved_at" value="{{  $usr->requested->reserved_at }}">
+                            <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow"
+                                title="{{ __('Delete') }}">
+                                <i class="fa fa-lg fa-fw fa-trash"></i>
+                            </button>
+                        </form>
+                    
                     </td> 
                 @endforeach
             </tr>

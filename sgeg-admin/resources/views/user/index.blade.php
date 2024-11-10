@@ -13,8 +13,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    @role('admin')
-                   
+                    @can('user-admin')
                     <div class="btn-group float-sm-right">
                         <form action="{{ route('multi-send') }}" method="POST" class="form-multisend">
                             @csrf
@@ -45,7 +44,7 @@
                         </a> 
                         @endcan
                     </div>
-                    @endrole
+                    @endcan
                 </div>
             </div>
         </div>
@@ -68,6 +67,7 @@
                 ];
 
                 $config = [
+                    'pageLength' => 10,
                     'language' => [
                         //'url' => url('//cdn.datatables.net/plug-ins/2.1.0/i18n/'.app()->getLocale().'.json'),
                         'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),

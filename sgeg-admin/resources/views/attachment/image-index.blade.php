@@ -42,7 +42,7 @@
                         <td> <input type="checkbox" name="" id=" {{ $attachment->id }}"> </td>
                         <td> {{ $attachment->name }} </td>
                         <td> {{ $attachment->user->name }} </td>
-                        <td> <a href="{{$attachment->uri }}"> {{ Str::limit($attachment->name, 122) }} </a> </td>
+                        <td> <a href="{{$attachment->uri }}" target="_blank"> {{ Str::limit($attachment->name, 122) }} </a> </td>
                         <td>
                             <div class="btn-group">
                                 <form action="{{ route('attachment.destroy', $attachment) }}" method="POST" class="form-delete">

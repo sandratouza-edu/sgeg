@@ -1,4 +1,7 @@
 
+    body:not(.layout-fixed) .main-sidebar {
+        min-height: 200%!important;
+    }
     .seatSelection {
         text-align: center;
         padding: 5px;

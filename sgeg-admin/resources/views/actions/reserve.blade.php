@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Event') }}</h2>
+                    <h2>{{ __('rev') }}</h2>
                 </div>
                 <div class="col-sm-6">
                      
@@ -17,7 +17,6 @@
 @endsection
 
 @section('content')
-    <div class="container">
             <div class="card">
                 <div class="card-header">
                     <form action="" method="POST">
@@ -29,12 +28,12 @@
                        
                         <div class="form-group">
                             <div class="card p-4">
-                                <label for="description"> {{ __('Staircase') }} </label>
+                                <label for="description"> {{ __('summernote') }} </label>
                                 <textarea id="summernote" class="summernote form-control" rows="4" name="description"> {{ old('description') }} </textarea>               
                             </div>
                         </div>
                         <div class="form-group">
-                            <a href="{{ route('attachment.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+                            <a href="{{ route('event.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
                             {{ Form::hidden('user_id', Auth::user()->id) }}
                             {{ Form::hidden('type', "doc") }}
                             <input type="submit" value="{{ __('Create') }}" class="btn btn-success float-right">
@@ -43,7 +42,7 @@
                     @isset ($user)
                     <div>
                         {{ $user->name }}
-                        Asientos:
+                        {{ __('Seats') }}
                         @foreach ($user->seats as $as)
                         <p>{{ $as->position }} {{ $as->reserved_at }}</p>
                         @endforeach
@@ -204,9 +203,6 @@
                     </div>
                 </div>
             </div>
-    </div>
- 
-
 @endsection
 
 @section('css')

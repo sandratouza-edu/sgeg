@@ -48,13 +48,12 @@
         <div class="form-group">
             <div class="card p-4">
                 <label for="description"> {{ __('Text') }} </label>
-                <textarea id="summernote" class="summernote form-control" rows="4" name="description"> {{ old('description') }} </textarea>               
+                <textarea id="summernote" class="summernote form-control" rows="14" name="description"> {{ old('description') }} </textarea>               
             </div>
         </div>
         <div class="form-group">
             <a href="{{ route('attachment.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
-            {{ Form::hidden('user_id', Auth::user()->id) }}
-            {{ Form::hidden('type', "doc") }}
+          
             <input type="submit" value="{{ __('Create') }}" class="btn btn-success float-right">
         </div>
     </form>
@@ -75,7 +74,7 @@
             $('#summernote').summernote(
                 {
                     tabsize: 2,
-                    height: 140,
+                    height: 320,
                     lang: 'es-ES' 
                 }
             );
