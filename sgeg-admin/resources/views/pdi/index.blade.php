@@ -57,8 +57,8 @@
                     </td>
                     <td>  
                         @if(!is_null($pdi->user))
-                        @component('components.telegram-button', ['phone' => $pdi->user->phone])
-                        @endcomponent
+                            @component('components.telegram-button', ['phone' => $pdi->user->phone])
+                            @endcomponent
                         @endif
                     </td>
                     <td>
@@ -77,7 +77,7 @@
                                     data-assigned="{{  $pdi->is_godfather }}" data-route="{{ route('pdi.assign-godfather', $pdi)  }}"  data-pdi="{{ $pdi->id }}">
                                      <i class="fas fa-user-alt-slash"></i>
                                 </a>
-                                   <small>{{ $degrees->find($pdi->is_godfather)->name }}  </small>
+                                   <small>&nbsp;{{ $degrees->find($pdi->is_godfather)->name }}  </small>
                             @else
                                 <a href="#" class="link-button bg-brown" label="{{ __('Assign') }}" data-toggle="modal" data-target="#modalAssign" 
                                 data-route="{{ route('pdi.assign-godfather', $pdi)  }}" data-pdi="{{ $pdi->id }}">

@@ -43,7 +43,8 @@
             ], 
         ];
     @endphp
-    <div>
+    <div class="card">
+        <div class="card-body">
         <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable with-buttons>
             @forelse($garments as $garment)
                 <tr>
@@ -115,8 +116,8 @@
                 </tr>
             @endforelse
         </x-adminlte-datatable>
+        </div>
     </div>
- 
 @endsection
  
 @section('js')

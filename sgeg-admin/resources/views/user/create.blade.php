@@ -78,7 +78,6 @@
                 </x-adminlte-input>
                 </div>
                 <div class="form-group">
-                    @role('admin')
                         <label for="name" class="text-lightblue"> {{ _('ROLES') }} </label>
                         <div class="card">                          
                             <div class="card-body">
@@ -93,7 +92,6 @@
 
                             </div>
                         </div>
-                    @endrole
                 </div>
                 <div class="form-group"> 
                     @php

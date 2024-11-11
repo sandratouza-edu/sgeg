@@ -125,7 +125,7 @@
     <div class="form-group">
         <input type="submit" value="{{ __('Update') }}" class="btn btn-success float-right">
         {!! Form::close() !!}
-    </div>
+    </div>ole
         </div>
     </div>
     <p> </p>

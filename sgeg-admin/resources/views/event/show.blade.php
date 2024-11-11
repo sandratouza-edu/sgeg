@@ -13,8 +13,11 @@
                     <a class="btn btn-app bg-secondary" href="{{ route('room.index') }}">
                         <i class="fas fa-solid fa-reply-all"></i> {{ __('Back') }} 
                     </a>
-                    <a class="btn btn-app bg-green" href="{{ route('room.create') }}">
+                    <a class="btn btn-app bg-secondary" href="{{ route('room.create') }}">
                         <i class="fas fa-solid fa-certificate"></i> {{ __('New') }} 
+                    </a>
+                    <a class="btn btn-app bg-danger" href="{{ route('room.index') }}">                            
+                        <i class="fas fa-inbox"></i> {{ __('Delete') }}
                     </a>
                 </div>
             </div>

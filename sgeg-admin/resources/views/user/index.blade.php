@@ -89,16 +89,24 @@
                             </td>
                             <td>{{ $user->name }}   </td>
                             <td>
-                                <a class="btn btn-xs bg-info" href="{{ route('sendmail') }}">
-                                    <i class="fab fa-telegram-plane"></i>
-                                </a> 
-                                {{ iconv("UTF-8", "ISO-8859-1//IGNORE", $user->phone) }}
+                                @can('send-msg')
+                                    @if(!is_null($user->phone))
+                                        @component('components.telegram-button', ['phone' => $user->phone])
+                                        @endcomponent
+                                    @endif
+                                @else 
+                                 {{ iconv("UTF-8", "ISO-8859-1//IGNORE", $user->phone) }}
+                                @endcan
                             </td>
                             <td> 
+                                @can('send-email')
                                 <a href="{{ route('sendmail') }}"> 
                                     <i class="fas fa-envelope text-lightblue"></i> 
                                     </a>
                                 <a href="{{ route('sendmail') }}"> {{ $user->email }} </a>
+                                @else
+                                    {{ $user->email }}
+                                @endcan
                             </td>
                             <td>
                                 @if(!empty($user->getRoleNames()))
@@ -115,16 +123,19 @@
                                 @endif
                             </td>
                             <td>
-                                @role('admin')
+                                @can('user-admin')
                                     <div class="btn-group">
                                         <a href="{{ route('user.show', $user) }}"
                                             class="btn btn-xs btn-default text-primary mx-1 shadow" title="{{ __('Show') }}">
                                             <i class="fa fa-lg fa-fw fa-eye"></i>
                                         </a>
+                                        @can('user-edit')
                                         <a href="{{ route('user.edit', $user) }}"
                                             class="btn btn-xs btn-default text-teal mx-1 shadow" title="{{ __('Edit') }}">
                                             <i class="fa fa-lg fa-fw fa-pen"></i>
                                         </a>
+                                        @endcan
+                                        @can('user-delete')
                                         <form action="{{ route('user.destroy', $user) }}" method="POST" class="form-delete">
                                             @csrf
                                             @method('delete')
@@ -133,8 +144,9 @@
                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                             </button>
                                         </form>
+                                        @endcan
                                     </div>
-                                @endrole
+                                @endcan
                             </td>
                         </tr>
                     @empty

@@ -36,11 +36,16 @@
                         <td>{{ $role->id }} </td>
                         <td>{{ $role->name }} </td>
                         <td>
-                            <div class="btn-group">
+                            <div class="btn-group">                               
+                                @can('role-edit')
                                 <a href="{{ route('role.edit', $role) }}"
                                     class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
                                     <i class="fa fa-lg fa-fw fa-pen"></i>
                                 </a>
+                                @endcan
+                                {{-- Cambiar a la lógica no permitir borrar los roles principales--}}
+                                @if ($role->id >3)
+                                @can('role-delete')
                                 <form action="{{ route('role.destroy', $role) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('delete')
@@ -49,6 +54,8 @@
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                     </button>
                                 </form>
+                                @endcan
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -61,11 +68,11 @@
     </div>
 
 
-<x-adminlte-modal id="modalPurple" title="__('New') __('Rol') " theme="secondary"
+<x-adminlte-modal id="modalPurple" title="{{ __('New') }} {{ __('Rol') }}" theme="secondary"
     icon="fas fa-bolt" size='lg' disable-animations>
     <form action="{{ route('role.store') }}" method="POST">
         @csrf
-        <x-adminlte-input name="name" label="__('Rol') " placeholder="Escriba  el rol" label-class="text-grey">
+        <x-adminlte-input name="name" label="{{ __('Rol') }}" placeholder="Escriba  el rol" label-class="text-grey">
             <x-slot name="prependSlot">
                 <div class="input-group-text">
                     <i class="fas fa-user text-grey"></i>

@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Rooms') }}</h2>
+                    <h2>{{ __('Events') }}</h2>
                 </div>
                 <div class="col-sm-6">
                     <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-green" href="{{ route('room.create') }}">
+                        <a class="btn btn-app bg-secondary" href="{{ route('event.create') }}">
                             <i class="fas fa-solid fa-mobile"></i> {{ __('New') }}
                         </a>
                         <a class="btn btn-app bg-danger">
@@ -23,8 +23,9 @@
 @endsection
 
 @section('content')
+<div class="card">
     @php
-        $heads = [ __('Name'),
+        $heads = [ __('Name'), __('Date'), __('Room'),
                  ['label' => __('Actions'), 'no-export' => true, 'width' => 10],
         ];
 
@@ -35,29 +36,30 @@
             ], 
         ];
     @endphp
-    <div class="card">
-        <div class="card-body">
-        @if ($rooms->isEmpty())
+    <div>
+        @if ($events->isEmpty())
             <p>{{ __('List is empty') }}</p>
         @else
             <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable
                 with-buttons>
-                @forelse($rooms as $room)
+                @forelse($events as $event)
                     <tr>
-                        <td> {{ $room->name }} </td>
+                        <td> {{ $event->title }} </td>
+                        <td> {{ $event->date }} </td>
+                        <td> {{ $event->room_id }} </td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('room.show', $room->id) }}">
+                                <a href="{{ route('event.show', $event->id) }}">
                                     <button class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
                                         <i class="fa fa-lg fa-fw fa-eye"></i>
                                     </button>
                                 </a>
-                                <a class="link-button" href="{{ route('room.edit', $room->id) }}">
+                                <a class="link-button" href="{{ route('event.edit', $event->id) }}">
                                     <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                     </button>
                                 </a>
-                                <form action="{{ route('room.destroy', $room) }}" method="POST" class="form-delete">
+                                <form action="{{ route('event.destroy', $event) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
@@ -74,8 +76,8 @@
                 @endforelse
             </x-adminlte-datatable>
         @endif
-        </div>
     </div>
+</div>
 @endsection
 
 @section('js')
