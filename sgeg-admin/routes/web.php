@@ -11,7 +11,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CsvController;
 use App\Http\Controllers\AttachmentController;
-use App\Http\Controllers\ReserveController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\RoomController;
 
 /*
@@ -53,6 +53,7 @@ Route::middleware([
         Route::resource('/degree', DegreeController::class)->names('degree');
         Route::resource('/attachment', AttachmentController::class)->names('attachment');
         Route::resource('/room', RoomController::class)->names('room');
+        Route::resource('/event', EventController::class)->names('event');
 
         //actions
         Route::get('/search', [UserController::class, 'search'])->name('search-get');
@@ -71,23 +72,24 @@ Route::middleware([
 
         Route::post('/assign-godfather', [PDIController::class, 'assignGodfather'])->name('pdi.assign-godfather');
 
- 
-            
        // });
-        Route::group(['middleware' => ['role:administrator']], function () {
-            Route::resource('/role', RoleController::class)->names('role');
-            Route::resource('/permission', PermissionController::class)->names('permission');
-        });
-   // });
+        // });
 
-    Route::group(['middleware' => ['permission:students-admin']], function () {
+    Route::group(['middleware' => ['role:administrator']], function () {
+        Route::resource('/role', RoleController::class)->names('role');
+        Route::resource('/permission', PermissionController::class)->names('permission');
+    });
+  
+
+    Route::group(['middleware' => ['permission:user-admin']], function () {
     // student
     });
 
-    Route::get('/students', [UserController::class, 'list', 'filter'=>'student'])->name('students');
+    Route::get('/students', [UserController::class, 'list', 'filter'=>'student'])->name('students')->can('user-admin');
     //Send email
     Route::get('/email', [MailController::class, 'index'])->name('email');
     Route::get('/sendmail', [MailController::class, 'sendMail'])->name('sendmail');
+    Route::post('/sendmail', [MailController::class, 'sendUserMail'])->name('sendusermail');
     Route::get('/preview', [MailController::class, 'previewMail'])->name('previewmail');
     Route::get('/multi-send', [MailController::class, 'multiSend'])->name('multi-sendform');
     Route::post('/multi-send', [MailController::class, 'multiSend'])->name('multi-send');
@@ -100,8 +102,8 @@ Route::middleware([
 
     
     //Reserve
-    Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
-    Route::get('/staircase', [ReserveController::class, 'staircase'])->name('staircase');
+    Route::get('/reserve', [EventController::class, 'reserve'])->name('reserve');
+    Route::get('/staircase', [EventController::class, 'staircase'])->name('staircase');
     
 
     //CSV import

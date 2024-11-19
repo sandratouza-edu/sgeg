@@ -23,6 +23,7 @@
 @endsection
 
 @section('content')
+    @include('layouts.message')
     @php
         $heads = [ __('Name'),
                  ['label' => __('Actions'), 'no-export' => true, 'width' => 10],

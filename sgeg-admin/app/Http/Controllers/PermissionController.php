@@ -33,7 +33,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $role = Permission::create(['name' => $request->input('name')]);
+        $role = Permission::create(['name' => $request->input('name'),  'guard_name' => 'web' ]);
         return back();
     }
 

@@ -29,6 +29,7 @@
     <div class="card">
         <div class="card-body">
             <form action="{{ route('event.update', $event->id) }}" method="POST">
+                @method('put')
                 @csrf
                 <div class="form-group">
                     <x-adminlte-input name="title" id="title" label="{{ __('Title') }}" label-class="text-lightblue" value="{{ $event->title }}">
@@ -85,6 +86,8 @@
 @section('css')
 <link rel="stylesheet" href="/assets/css/seats.css">
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+@endsection
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>

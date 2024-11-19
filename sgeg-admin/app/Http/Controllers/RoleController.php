@@ -33,7 +33,7 @@ class RoleController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create(['name' => $request->input('name'),  'guard_name' => 'web' ]);
         return back();
     }
 

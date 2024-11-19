@@ -35,6 +35,8 @@ return [
     'users' => 'Usuarios',
     'degrees' => 'Titulaciones',
     'list' => 'Listado',
+    'events' => 'Eventos',
+    'staircase' => 'Escaleta',
     'language' => 'Idioma',
     'English' => 'Inglés',
     'Spanish' => 'Español',

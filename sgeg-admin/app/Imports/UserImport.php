@@ -6,6 +6,7 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Setting;
 
 class UserImport implements ToModel, WithHeadingRow
 {   
@@ -22,26 +23,51 @@ class UserImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
 
-// Apellidos y nombre	D.N.I.	N.I.A.	Direcci�n electr�nica	Fecha nacimiento	G�nero	Direcci�n habitual	Tel�fono habitual	Direcci�n durante el curso		Tel�fono durante el curso					Veces. Matri.			Conv. Cons.			As/Cr Matri.			As/Cr Super.			R�gimen permanencia			Grupo de matr�cula			Plan del estudiante			Fecha de matr�cula
-//AGUL GEZ, Iria   49682422P	273318		lia.aglo@alumnado.uvigo.gal	22/08/04	Urb. Aguas Mansas. R�a R�o Sil, 32, 15174 - Acea de Ama	698132558�/�619050347					Urb. Aguas Mansas. R�a R�o Sil, 32, 15174 - Acea de Ama											698132558�/�619050347					1			0			66			42			0-Tiempo Completo			52684Redes - 1-			11395-O06G460V01 G.  Inteligencia Arti			04-09-2023
+        //get column names from settings 
+        $settings = Setting::get(['key', 'value']);
+        $config =[];
+        
+        foreach ($settings as $setting) {
+            $config[$setting->key] = $setting->value;
+        }
+        try {
+            $rowname = preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', strtolower(iconv("UTF-8", "ISO-8859-1//IGNORE", $config['col_name']))));
+            $rowemail = preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', strtolower(iconv("UTF-8", "ISO-8859-1//IGNORE", $config['col_email']))));
+            $rowphone = preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', strtolower(iconv("UTF-8", "ISO-8859-1//IGNORE", $config['col_phone']))));
+            $rowdni = preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', strtolower(iconv("UTF-8", "ISO-8859-1//IGNORE", $config['col_dni']))));
 
-var_dump($this->data);
+            $phones = explode("/", $row[$rowphone]);
+            
+            $user = new User([
+                'name' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row[$rowname]),
+                'email' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row[$rowemail]),
+                'dni' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row[$rowdni]),
+                'phone' => iconv("UTF-8", "ISO-8859-1//IGNORE",  $phones[0]),
+                //add +34 - if dont have
+                'phone2' => iconv("UTF-8", "ISO-8859-1//IGNORE", array_key_exists(1, $phones)? $phones[1]:null ),
+                'email_verified_at' => now(),
+                'degree_id' => $this->data['degree'],
+                'password' =>  Hash::make('password')
+            ]);
 
-//get column names from settings 
-        $phones = explode("/", $row['telefono']);
-        $user = new User([
-            'name' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row['nombre']),
-            'email' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row['email']).'fake',
-            'dni' => iconv("UTF-8", "ISO-8859-1//IGNORE", $row['dni']),
-            'phone' => iconv("UTF-8", "ISO-8859-1//IGNORE",  $phones[0]),
-            //add +34 - if dont have
-            'phone2' => iconv("UTF-8", "ISO-8859-1//IGNORE", array_key_exists(1, $phones)? $phones[1]:null ),
-            'email_verified_at' => now(),
-            'degree_id' => $this->data['degree'],
-            'password' =>  Hash::make('password')
-        ]);
-        $user->assignRole($this->data['role']);
+            $user->assignRole($this->data['role']);
 
-        return $user;
+            return $user;
+        } catch (\Exception $e) {
+           // dd('Error importing users');
+        }
     }
 }
+/* 
+     ["apellidos_y_nombre"]=>
+     ["dni"]=>
+     ["direccin_electrnica"]=>
+     ["fecha_nacimiento"]=>
+     ["telfono_habitual"]=>
+     ["direccin_durante_el_curso"]=>
+     ["telfono_durante_el_curso"]=>
+     ["grupo_de_matrcula"]=>
+     ["plan_del_estudiante"]=>
+     ["fecha_de_matrcula"]=>
+  */
+  

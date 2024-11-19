@@ -20,6 +20,7 @@
 @endsection
 
 @section('content')
+@include('layouts.message')
     <div class="container">
         <form action="{{ route('saveSettings') }}" method="POST">
             @csrf
@@ -78,8 +79,7 @@
                             <div class="form-group">
                                 <x-adminlte-input name="col_name" label="{{ __('Name') }}" value="{{ $ordered['col_name'] }}" label-class="text-lightblue"/>
                                 <x-adminlte-input name="col_email" label="{{ __('Email') }}" value="{{ $ordered['col_email'] }}" label-class="text-lightblue"/>
-                                <x-adminlte-input name="col_phone" label="{{ __('Phone') }}" value="{{ $ordered['col_phone'] }}" label-class="text-lightblue"/>
-                                <x-adminlte-input name="col_phone2" label="{{ __('Phone') }} 2" value="{{ $ordered['col_phone2'] }}" label-class="text-lightblue"/>
+                                <x-adminlte-input name="col_phone" label="{{ __('Phone') }}" value="{{ $ordered['col_phone'] }}" label-class="text-lightblue"/>                              
                                 <x-adminlte-input name="col_dni" label="{{ __('dni') }}" value="{{ $ordered['col_dni'] }}"  label-class="text-lightblue"/>
                             </div>
                         </div>

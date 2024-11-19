@@ -349,25 +349,26 @@ return [
                     'icon' => 'fab fa-telegram-plane',
                     'role' => 'admin',  
                     'can' => 'message-admin',
-                ],             
+                ],                             
+                [
+                    'text' => 'events',
+                    'icon' => 'far fa-fw fa-calendar',
+                    'url' => 'event',
+                    'can' => 'event-admin',  
+                ],
                 [
                     'text' => 'images',
                     'icon' => 'far fa-fw fa-images',
                     'url' => 'image',
                     'can' => 'attachment-admin', 
                 ],  
-                [
-                    'text' => 'event',
-                    'icon' => 'far fa-fw fa-calendar',
-                    'url' => 'reserve',
-                    'can' => 'event-admin',  
-                ],
-                [
-                    'text' => 'Escaleta',
+            /*    [
+                    'text' => 'staircase',
                     'icon' => 'fas fa-fw fa-window-maximize',
                     'url' => 'staircase',
                     'role' => 'admin',  
                 ],
+            */
             ]
         ],     
         
@@ -375,7 +376,7 @@ return [
             'text' => 'garments',
             'url' => 'garment',
             'icon' => 'fas fa-fw fa-user-tie',
-            'can' => 'garment-admin|garment-lend',  
+            'can' => 'garment-admin',  
             'submenu' => [
                 [
                     'text' => 'list',

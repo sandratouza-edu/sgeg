@@ -5,17 +5,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h2>{{ __('Email') }}</h2>
+                    <h2>{{ __('Send') }} {{ strtolower(__('Email')) }}</h2>
                 </div>
                 <div class="col-sm-6">
-                    <div class="btn-group float-sm-right">
-                        <a class="btn btn-app bg-secondary" href="{{ route('email') }}">
-                            <i class="fas fa-solid fa-envelope"></i> {{ __('New') }}
-                        </a>
-                        <a class="btn btn-app bg-danger">
-                            <i class="fas fa-inbox"></i> {{ __('Delete') }}
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -34,29 +27,41 @@
         </div>
         <div class="card">
             <div class="card-header">  <label> {{ __('Recipients')}}  </label> </div>
-            <div class="card-body">    
-                @if (!empty($selected)) 
-                    <div class="form-group">
-                        <label for="recipient"> <i class="fas fa-user"></i> {{ __('Recipients') }} </label>
-                        <input type="hidden"  class="form-control" name="recipients" value="{{ $recipients }}" readonly>
-                        <input type="text"  class="form-control" name="selected" value="{{ $selected }}" readonly>
-                        <span>{{ __('Selected from users list') }}</span>
+            <div class="card-body">
+            <div class=" container-fluid">   
+                <div class="row">
+                    <div class="col-md-6">                
+                        <div class="form-group">
+                            <label for="emails"> <i class="fas fa-at"></i> {{ __('Emails') }} </label>
+                            <input type="text" id="emails" class="form-control" name="emails" value="">
+                            <span>{{ __('Comma separated') }}</span>
+                        </div>
+
+                        @if (!empty($selected)) 
+                            <div class="form-group">
+                                <label for="recipient"> <i class="fas fa-user"></i> {{ __('Recipients') }} </label>
+                                <input type="hidden"  class="form-control" name="recipients" value="{{ $recipients }}" readonly>
+                                <input type="text"  class="form-control" name="selected" value="{{ $selected }}" readonly>
+                                <span>{{ __('Selected from users list') }}</span>
+                            </div>
+                        @endif
+                        
                     </div>
-                @endif
-                <div class="form-group">
-                    <label for="emails"> <i class="fas fa-at"></i> {{ __('Emails') }} </label>
-                    <input type="text" id="emails" class="form-control" name="emails" value="">
-                    <span>{{ __('Comma separated') }}</span>
-                </div>
-                <div class="form-group">  
-                    <label for="group"> <i class="fas fa-user"></i> {{ __('Lists') }} </label>
-                    <input type="text" id="group" class="form-control" name="group" value="">
-                    <br><a href="#" class="link-button btn bg-green" label="{{ __('Groups') }}" data-toggle="modal" data-target="#modalAssign" >
-                        {{ __('Search') }}
-                    </a>
+                    <div class="col-md-6">
+                        <div class="form-group">  
+                            <label for="group"> <i class="fas fa-user"></i> {{ __('Send') }} {{ strtolower(__('Email')) }} {{ strtolower(__('Lists')) }}: -  {{ __('Roles') }}, {{ __('Degrees') }} </label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalAssign" >  {{ __('Search') }}</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" id="group" class="form-control" name="group" value="">
+                              </div>
+                        </div>
+                    </div>
                 </div>
             </div>  
-        </div>
+        </div></div>
 
         <div class="form-group">
         @php
@@ -99,7 +104,7 @@
                 }
                 $options2 = [];
                 foreach ($roles as $role) {
-                        $options2[$role->id] = $role->name; 
+                        $options2[$role->name] = $role->name; 
                 }
             @endphp
         
@@ -143,7 +148,7 @@
         event.preventDefault;
     });
     $('#roles').on('change', function() {
-        if (this.value == 2) {
+        if (this.value == 'student') {
             $('.students.hidden').show();
         } else {
             $('.students.hidden').hide();
@@ -151,8 +156,8 @@
     });
     $('#modalAssign').on('hidden.bs.modal', function (e) {
         let dg = '';
-        if ($('.form-sendMail #roles option:selected' ).val() == 2) {
-            dg = "-"+$('.form-sendMail #degree option:selected' ).text();
+        if ($('.form-sendMail #roles option:selected' ).val() == 'student') {
+            dg = "-" + $('.form-sendMail #degree option:selected' ).text();
         }
         $('.form-sendMail #group').attr('value', $('.form-sendMail #roles option:selected' ).text() + dg );
         

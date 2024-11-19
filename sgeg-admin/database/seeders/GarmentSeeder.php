@@ -14,7 +14,7 @@ class GarmentSeeder extends Seeder
     public function run(): void
     {
      
-        Garment::factory()->count(10)->create(); 
+        Garment::factory()->count(2)->create(); 
         
     }
 }

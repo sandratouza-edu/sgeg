@@ -21,6 +21,7 @@
 @endsection
 
 @section('content')
+    @include('layouts.message')
     @php
         $heads = [
             __('Name'),
@@ -38,7 +39,8 @@
             ], 
         ];
     @endphp
-    <div>
+    <div class="card">
+        <div class="card-body">
         <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" head-theme="dark" striped hoverable with-buttons>
             @forelse($pdis as $pdi)
                 <tr>
@@ -62,13 +64,14 @@
                         @endif
                     </td>
                     <td>
-                        <a class="btn btn-xs bg-info" data-toggle="modal" data-target="#modalEmail">
-                            <i class="fas fa-envelope"></i> 
-                        </a>   
                         @if (!is_null($pdi->user))
-                        {{ $pdi->user->email }} 
-                        @endif
-                     
+                        <a href="#" class="btn btn-xs bg-info" id="emailUser" data-toggle="modal" data-target="#modalEmail"
+                            data-email="{{  $pdi->user->email }}">
+                            <i class="fas fa-envelope"></i> 
+                            
+                            {{ $pdi->user->email }} 
+                        </a>   
+                        @endif                     
                     </td>
                     <td>
                         <div class="btn-group"> 
@@ -116,28 +119,9 @@
             @endforelse
         </x-adminlte-datatable>
     </div>
-    
-    <x-adminlte-modal id="modalEmail" title="{{ __('Email') }}" theme="secondary" icon="fas fa-envelope" size='lg' disable-animations>
-        <form action="{{ route('sendmail') }}" method="POST">
-            @csrf
-            <x-adminlte-input name="title" label="email" placeholder="{{ __('Title') }}" label-class="text-grey">
-                <x-slot name="prependSlot">
-                    <div class="input-group-text">
-                        <i class="fas fa-user text-grey"></i>
-                    </div>
-                </x-slot>
-            </x-adminlte-input>
-            <x-adminlte-input name="text" label="email" placeholder="{{ __('Text') }}" label-class="text-grey">
-                <x-slot name="prependSlot">
-                    <div class="input-group-text">
-                        <i class="fas fa-user text-grey"></i>
-                    </div>
-                </x-slot>
-            </x-adminlte-input>
-            <x-adminlte-button type="Submit" label="{{ __('Send') }}" theme="secondary" icon="fas fa-envelope" />
-        </form> 
-    </x-adminlte-modal>
+</div>
 
+    @include('user.partials.modal-message')
 
     <x-adminlte-modal id="modalAssign" title="{{ __('Degrees') }}" theme="secondary" icon="fab fa-edit" size='lg' disable-animations>
         <h4> {{ __('Godfather') }}  </h4>
@@ -180,6 +164,14 @@
 
            modal.find('#assign').attr('action', url);
            event.preventDefault;
+        });
+        $('#modalEmail').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var email = button.data('email');
+            var modal = $(this);
+            modal.find('#recipient').val(email);
+ 
+            event.preventDefault;
         });
     </script>
     <script src="/vendor/sweetalert/sweetalert2@11.js"></script>

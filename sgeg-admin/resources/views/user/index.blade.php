@@ -53,6 +53,8 @@
 
 
 @section('content')
+    @include('layouts.message')
+    
     <div class="card">
         <div class="card-body">
             @php
@@ -100,10 +102,12 @@
                             </td>
                             <td> 
                                 @can('send-email')
-                                <a href="{{ route('sendmail') }}"> 
-                                    <i class="fas fa-envelope text-lightblue"></i> 
-                                    </a>
-                                <a href="{{ route('sendmail') }}"> {{ $user->email }} </a>
+                                    <a href="#" class="btn btn-xs bg-info" id="emailUser" data-toggle="modal" data-target="#modalEmail"
+                                        data-email="{{  $user->email }}">
+                                        <i class="fas fa-envelope"></i> 
+                                        
+                                        {{ $user->email }} 
+                                    </a>   
                                 @else
                                     {{ $user->email }}
                                 @endcan
@@ -158,6 +162,7 @@
             @endif
         </div>
     </div>
+    @include('user.partials.modal-message')
 @endsection
 
 @section('js')
@@ -198,6 +203,14 @@
 
         });
 
+        $('#modalEmail').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var email = button.data('email');
+            var modal = $(this);
+            modal.find('#recipient').val(email);
+ 
+            event.preventDefault;
+        });
         $("#check-all").on('click', function() {
            
             $('#tableU .checkbox').prop('checked', true);

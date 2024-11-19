@@ -44,7 +44,7 @@
                                 </a>
                                 @endcan
                                 {{-- Cambiar a la lógica no permitir borrar los roles principales--}}
-                                @if ($role->id >3)
+                                @if ($role->id >5)
                                 @can('role-delete')
                                 <form action="{{ route('role.destroy', $role) }}" method="POST" class="form-delete">
                                     @csrf

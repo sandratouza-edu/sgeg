@@ -19,8 +19,8 @@ class Room extends Model
 
     protected function structure(): Attribute {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
+            get: fn ($value) => json_decode($value, associative: true),
+            set: fn ($value) => $value,
         );
         
     }

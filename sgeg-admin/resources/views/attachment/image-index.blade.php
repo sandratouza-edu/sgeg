@@ -28,11 +28,13 @@
 
         $config = [
             'order' => [[1, 'asc']],
+            'language' => [
+                'url' => url('/vendor/datatables-plugins/lang/'.app()->getLocale().'.json'),
+            ], 
         ];
-
     @endphp
-
-    <div>
+    <div class="card">
+        <div class="card-body">
         @if ($attachments->isEmpty())
             <p>{{ __('List is empty') }}</p>
         @else
@@ -45,6 +47,11 @@
                         <td> <a href="{{$attachment->uri }}" target="_blank"> {{ Str::limit($attachment->name, 122) }} </a> </td>
                         <td>
                             <div class="btn-group">
+                                <a href="{{$attachment->uri }}" target="_blank">
+                                    <button class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
+                                        <i class="fa fa-lg fa-fw fa-eye"></i>
+                                    </button>
+                                </a>
                                 <form action="{{ route('attachment.destroy', $attachment) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('DELETE')
@@ -63,6 +70,7 @@
             </x-adminlte-datatable>
         @endif
     </div>
+</div>
 @endsection
 
 @section('js')

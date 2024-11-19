@@ -24,6 +24,7 @@
 
 @section('content')
 <div class="card">
+    <div class="card-body">
     @php
         $heads = [ __('Name'), __('Date'), __('Room'),
                  ['label' => __('Actions'), 'no-export' => true, 'width' => 10],
@@ -36,7 +37,7 @@
             ], 
         ];
     @endphp
-    <div>
+    
         @if ($events->isEmpty())
             <p>{{ __('List is empty') }}</p>
         @else
@@ -77,6 +78,7 @@
             </x-adminlte-datatable>
         @endif
     </div>
+</div>
 </div>
 @endsection
 

@@ -28,10 +28,10 @@ class CsvController extends Controller
             $data['role'] = 2; // $request->role;
             $data['degree'] = 1; //$request->degree;
             Excel::import(new UserImport($data), $file);
-            return redirect()->route('index');
+            return redirect()->route('user.index');
 
         } catch (\Exception $e) {
-             return redirect()->route('index');
+            return redirect()->route('user.index');
             // dd('Error importing users');
         }
         

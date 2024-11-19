@@ -17,7 +17,7 @@ class GarmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake('es_ES')->sentence(),
+            'name' => 'Traje '.fake('es_ES')->randomElement(['mediano','grande','pequeño']),
             'height' => fake()->numberBetween(100,220),
             'width' => fake()->numberBetween(40,80),
             'waist' => fake()->numberBetween(40,100),

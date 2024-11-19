@@ -21,7 +21,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake('es_ES')->firstName(),
+            'name' => fake('es_ES')->firstName().' '. fake('es_ES')->lastName().' '. fake('es_ES')->lastName(),
             'email' => fake('es_ES')->unique()->safeEmail(),
             'surname' => fake('es_ES')->lastName(),
             'dni' =>  fake('es_ES')->dni(),
@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_photo_path' => null,
             'current_team_id' => null,
-            //'role_id' => $this->faker->numberBetween(1,5),
+            //'role_id' => $this->faker->numberBetween(2,3),
         ];
     }
 

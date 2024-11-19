@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\InvitationMail;
+use App\Mail\MessageMail;
 use App\Mail\NotificationMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,39 +46,29 @@ class MailController extends Controller
     public function multiSendMail(Request $request): RedirectResponse
     {
       
-        
         $content = array();
         $content['subject'] = $request->subject;
         $content['attachment'] = $request->invitation;
         $content['text'] = $request->description;
-        
-        if (!empty($request->recipients)) {
-            $recipients = json_decode($request->recipients);
-            
-            foreach ($recipients as $recipient) {
-                Mail::to($recipient->email)
-                    ->send(new InvitationMail($recipient->name, $content))
-                    ->attach('pathfile');
-            }
-        }
+       
         if (!is_null($request->roles)) {
             $filter = $request->roles;
-
-            if (!is_null($request->degree)) {
-                $users = $users = User::role($filter)->get();
+ 
+            if (!is_null($request->degree) && ($request->degree > 0)) {
+                $users = User::role($filter)->where('degree_id', $request->degree)->get();
             } else {
-                $users = $users = User::role($filter)->wherein('degree_id', $request->degree)->get();
+                $users = User::role($filter)->get();
             }
             if(!empty($users)) {
                 foreach ($users as $recipient) {
-                    Mail::to($recipient->email)
+                     Mail::to($recipient->email)
                         ->send(new InvitationMail($recipient->name, $content))
-                        ->attach('pathfile');
+                        ->attach('pathfile'); 
                 }
             }
         }
 
-        return redirect()->route('email.send-multiple', compact('recipients'));
+        return redirect()->route('multi-send')->with('success', 'email sent');
 
         
     
@@ -85,12 +76,28 @@ class MailController extends Controller
      public function sendMail(): View {
          //Mail::to(Auth::user()->email); // email al usuario autenticado
          // Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
-         Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
-         //Mail::to('sandratouza@gmail.com')->bcc('sandra.pereira@edu.xunta.gal')
-         //     ->send(new ExampleMail('Sandra', 'mail de ejemplo'))->attach('pathfile');;
+            Mail::to(env('MAIL_TO_TEST'))->send(new InvitationMail(env('MAIL_NAME_TEST'))); 
+            //Mail::to('sandratouza@gmail.com')->bcc('sandra.pereira@edu.xunta.gal')
+            //     ->send(new ExampleMail('Sandra', 'mail de ejemplo'))->attach('pathfile');;
 
          return view('emails.sent');
-     }
+     } 
+
+    public function sendUserMail(Request $request): RedirectResponse 
+    {
+
+        $content = array();
+        $content['subject'] = $request->subject;
+        $content['text'] = $request->description;
+        
+        if (!empty($request->recipient)) {
+           
+                Mail::to($request->recipient)
+                    ->send(new MessageMail($request->recipient, $content));
+        }
+
+        return redirect()->route('user.index')->with('success', 'email sent');
+    }
 
      public function previewMail() {
           return ( new InvitationMail(env('MAIL_NAME_TEST')))->render();
@@ -103,10 +110,10 @@ class MailController extends Controller
      public function sendNotification() {
           //get from database
           $response =  Mail::to('sandratouza@gmail.com')->bcc('sandra.pereira@edu.xunta.gal')
-              ->send(new NotificationMail('Sandra', 'mail de ejemplo'));
+              ->send(new NotificationMail('Sandra', 'notificacion de ejemplo'));
               //->attach('/files/attached.txt');
           // Mail::bcc()
-          dump($response);
+          //dump($response);
       }
       
   }
