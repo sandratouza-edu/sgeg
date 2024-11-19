@@ -1,0 +1,47 @@
+
+    body:not(.layout-fixed) .main-sidebar {
+        min-height: 200%!important;
+    }
+    .seatSelection {
+        text-align: center;
+        padding: 5px;
+        margin: 15px;
+    }
+
+    .seatsReceipt {
+        text-align: center;
+    }
+
+    .seatNumber {
+        margin: 3px;
+        background-color: #5c86eb;
+        color: #FFF;
+        border-radius: 5px;
+        cursor: default;
+        height: 28px;
+        width: 28px;
+        line-height: 28px;
+        text-align: center;
+    }
+
+    .seatSelected {
+        background-color: lightgreen;
+        color: black;
+    }
+
+    .seatUnavailable {
+        background-color: gray;
+    }
+
+    .seatRowNumber {
+        clear: none;
+        display: inline;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .seatsAmount {
+        max-width: 2em;
+    }
