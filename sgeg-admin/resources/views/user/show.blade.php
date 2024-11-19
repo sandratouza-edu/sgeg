@@ -39,8 +39,8 @@
             <h4> {{ $user->dni }} </h4>
             <h4> {{ $user->email }} </h4>
             <h4> {{ $user->dni }} </h4>
-            <p> {{ __('Degree') }}: {{ $degrees->find($user->degree_id)->name }}</p>  
-            <p> {{ __('Degree') }}: {{ $user->degree->name }}</p>  
+            <p> {{ __('Degree') }}: {{ $degrees->find($user->degree_id)->name ?? '' }}</p>  
+            <p> {{ __('Degree') }}: {{ $user->degree->name ?? '' }}</p>  
         </div>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">

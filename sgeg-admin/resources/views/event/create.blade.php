@@ -73,8 +73,9 @@
             <div class="form-group">
                 <div class="card p-4">
                     <label for="summernote"> {{ __('staircase') }} </label>
-                    <textarea id="summernote" class="form-control" rows="4"
-                        name="description"> {{ old('description') }} </textarea>
+                    <textarea id="summernote" class="form-control" rows="4" name="description"> 
+                        {{ old('description') }} 
+                    </textarea>
                 </div>
 
                 @include('event.room-render')

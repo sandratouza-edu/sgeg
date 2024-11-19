@@ -1,4 +1,7 @@
 <x-adminlte-modal id="modalAssign" title="{{ __('Participants') }}" theme="secondary" icon="fab fa-edit" size='lg' disable-animations>
+    <form action="{{ route('reserve') }}" id="assignSeat" method="POST">
+        @method('post')
+        @csrf
     <div>
         @php
             $heads2 = [
@@ -16,7 +19,6 @@
 
         @endphp
 
-
         @if ($users->isEmpty())
             <p>{{ __('List Empty') }}</p>
         @else
@@ -25,10 +27,10 @@
 
                 @forelse($users as $user)
                     <tr>
-                        <td> <x-checkbox name="terms" id="{{ $user->id }}"  /> {{ $user->name }}  </td>
+                        <td> <x-checkbox id="{{ $user->name }}" value="{{ $user->id }}" name="user_id" /> {{ $user->name }}  </td>
                         <td>
                             @if(!empty($user->getRoleNames()))
-                            @foreach($user->getRoleNames() as $v)
+                                @foreach($user->getRoleNames() as $v)
                                 <label class="badge badge-secondary text-dark">{{ $v }}</label>
                                 @endforeach
                             @endif
@@ -49,135 +51,74 @@
             </x-adminlte-datatable>
         @endif
     </div>
+    <x-adminlte-input type="hidden" name="number_id" id="number_id" value="2"> </x-adminlte-input>
+    <x-adminlte-input type="hidden" name="room_id" value="{{ $event->room_id }}"> </x-adminlte-input>
+    <x-adminlte-button type="submit" label="{{ __('Assign') }}" class="bg-green" theme="secondary" />
     
-    <x-adminlte-button type="button" label="{{ __('Assign') }}" class="bg-green" theme="secondary" data-dismiss="modal" />
+</form>
 </x-adminlte-modal>
 
-
 <div class="room-render">
-    @isset ($user)
-    <div>
-        {{ $user->name }}
-        Asientos:
-        @foreach ($user->seats as $as)
-        <p>{{ $as->position }} {{ $as->reserved_at }}</p>
-        @endforeach
-        <hr>
+    
+    <div class="card-header">
+        <h2> {{ $room->name }}  </h2>
     </div>
-    @endisset
+    <div class="card-body">
+        @php($seat = 0)
+        <p>
+            @isset($room->structure['numareas'] )
+            <label for="">Areas: {{ $room->structure['numareas'] }} </label>
+                @foreach ($room->structure['areas'] as $area)
+                <div class="row">
+                    @isset($area['numsections'] )
+                        @foreach ($area['sections'] as $index=>$section)
+                            @if ($index < $area['numsections']/2)
+                                <div class="col-{{ 12/$area['numsections'] }} d-flex align-items-center flex-column">
+                                    <label for="">Seccion {{ $index+1 }} - Derecha </label>                                                                          
+                                    @for ($i = 1; $i <= $section['rows'] ; $i++) 
+                                        <div class="seatRow"> 
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <label for="">Fila {{ $section['rows']-$i+1 }} </label>
+                                                @for ($j = 1; $j <= $section['cols']-$i; $j++) 
+                                                    <div id="Fila {{ $section['rows']-$i+1 }} _{{ $j }}"  data-number="{{ $seat++ }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" aria-checked="false" focusable="true" tabindex="-1" 
+                                                    class="seatNumber @if(in_array($seat, $positions)) seatSelected @endif">
+                                                    {{ $j }}
+                                                    </div>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    @endfor
+                                </div>
+                            @else
+                                <div class="col-{{ 12/$area['numsections'] }} d-flex align-items-center flex-column">
+                                    <label for="">Seccion {{ $index+1 }} - Izquierda</label>                                                                            
+                                    @for ($i = 1; $i <= $section['rows'] ; $i++) 
+                                        <div class="seatRow">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                               
+                                                @for ($j = 1; $j <= $section['cols']-$i; $j++) 
+                                                    <div id="Fila{{ $section['rows']-$i+1 }}_{{ $j }}" data-number="{{ $seat++ }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}"  aria-checked="false" focusable="true" tabindex="-1" 
+                                                    class=" seatNumber @if(in_array($seat, $positions)) seatSelected @endif">
+                                                    {{ ($j) }} 
+                                                    </div>
+                                                @endfor
+                                                <label for="">Fila {{ $section['rows']-$i+1 }} </label>
+                                            </div>
+                                        </div>
+                                    @endfor
+                                </div>
+                            @endif
+                        @endforeach
+                    @endisset
+                </div>
+
+                @endforeach
+            @endisset
+        </p>
+    </div>
 
     <div class="row">
-        <div class="col-6 d-flex align-items-stretch flex-column">
-        <div class="row">
-            <div class="col-6 d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 4; $i++) 
-                    <div class="seatRow">
-                        <div class="seatRowNumber">
-                            Row-{{ 4-$i }}
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            @for ($j = 0; $j <= 13-1-$i; $j++) 
-                                <div id="a{{ $i }}_{{ $j }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class="seatNumber">
-                                    {{ $j+1 }}
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                @endfor
-            </div>
-            <div class="col-6 d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 4; $i++) 
-                    <div class="seatRow">
-                        <div class="seatRowNumber">
-                            Row-{{ 4-$i }}
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            @for ($j = 0; $j <= 13-1-$i; $j++) 
-                                <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class=" seatNumber">
-                                {{ $j+1 }}
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                @endfor
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 7; $i++) 
-                <div class="seatRow">
-                    <div class="seatRowNumber">
-                        Row-{{ 7-$i }}
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        @for ($j = 0; $j <= 22-2-$i; $j++) 
-                            <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class=" seatNumber ">
-                            {{ $j+1 }}
-                            </div>
-                        @endfor
-                    </div>
-                </div>
-                @endfor
-            </div>
-        </div>
-        </div>
-        <div class="col-6 d-flex align-items-stretch flex-column">
-        <div class="row">
-            <div class="col-6 d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 4; $i++) 
-                    <div class="seatRow">
-                        <div class="seatRowNumber">
-                            Row-{{ 4-$i }}
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            @for ($j = 0; $j <= 13-1-$i; $j++) 
-                                <div id="a{{ $i }}_{{ $j }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class="seatNumber">
-                                    {{ $j+1 }}
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                @endfor
-            </div>
-            <div class="col-6 d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 4; $i++) 
-                    <div class="seatRow">
-                        <div class="seatRowNumber">
-                            Row-{{ 4-$i }}
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            @for ($j = 0; $j <= 13-1-$i; $j++) 
-                                <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="modal" data-target="#modalAssign" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class=" seatNumber">
-                                {{ $j+1 }}
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                @endfor
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12  d-flex align-items-stretch flex-column">
-                @for ($i = 0; $i < 7; $i++) 
-                <div class="seatRow">
-                    <div class="seatRowNumber">
-                        Row-{{ 7-$i }}
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        @for ($j = 0; $j <= 22-2-$i; $j++) 
-                            <div id="{{ $i }}_{{ $j }}" role="checkbox" data-toggle="tooltip" title="{{ _('Free') }}" value="{{ $i }}{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class=" seatNumber ">
-                            {{ $j+1 }}
-                            </div>
-                        @endfor
-                    </div>
-                </div>
-                @endfor
-            </div>
-            
-        </div>
-        </div>                        
-   
-        <div class="col-12  d-flex align-items-stretch flex-column">
+        <div class="col-12  d-flex align-items-center flex-column">
             <div class="seatRow">
                 <p> </p>
                 <p> </p>
@@ -185,7 +126,7 @@
                    <strong>Mesa </strong>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    @for ($j = 0; $j < 8; $j++) 
+                    @for ($j = 0; $j < 12; $j++) 
                         <div id="t_{{ $j }}" role="checkbox" data-toggle="tooltip" title="{{ _('Free') }}" value="{{ $j }}" aria-checked="false" focusable="true" tabindex="-1" class=" seatNumber ">
                         {{ $j+1 }}
                         </div>
@@ -195,21 +136,27 @@
         </div>
     </div>
     <div class="card-footer">
-        <div><p> </p>
-            <div class="seatsReceipt col-lg-2">
-                <p> </p><p> </p>
-                <p>
-                    <strong>Selected Seats: <span class="seatsAmount"> 0 </span></strong>
-                    <button id="btnClear" class="btn">Clear</button>
-                </p>
-                <ul id="seatsList" class="nav nav-stacked"></ul>
-            </div>
+        <div>
+            @isset ($user)
+                <div class="card">
+                    <div class="card-header">
+                        <h2> Asientos: </h2>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($user->seats as $as)
+                            <p>{{ $as->position }} {{ $as->reserved_at }}</p>
+                        @endforeach
+                        <hr>
+                    </div>
+                </div>
+            @endisset
+            <div class="seatsReceipt">
+                <ul id="seatsList" class="nav nav-pills flex-column"></ul>
+                <ul class="nav nav-pills flex-column">
+                     
+                </ul>
 
-            <div class="checkout col-lg-offset-6">
-                <span>Subtotal: CA$</span>
-                <span class="txtSubTotal">0.00</span><br />
-                <button id="btnCheckout" name="btnCheckout" class="btn btn-primary"> Check out </button>
-            </div>
+            </div> 
         </div>
     </div>
 

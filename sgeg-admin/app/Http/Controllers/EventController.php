@@ -19,20 +19,30 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-        $rooms = Room::all();
+        $events = Event::with('room')->get();
         
-        return view('event.index', compact('events', 'rooms'));
+        return view('event.index', compact('events'));
     }
 
-    public function reserve()
+    public function reserve(Request $request)
     {
-    //    $users = User::with('seat')->get();
-        $user = User::find(2);
-        $seats = Seat::all();
-       // $seats = User::with('user')->get();
-        
-        return view('actions.reserve', compact('user', 'seats'));
+       
+        $seat['position'] = $request->number_id;
+        $seat['is_table'] = 0;
+        $seat['usable'] = 1;
+        $seat['room_id'] = $request->room_id;
+        $seat['status'] =  'reserved';
+
+        $seatc = Seat::create($seat);
+
+        $data['seat_id'] = $seatc->id;
+        $data['user_id'] = $request->user_id;
+        $data['update_at'] = 
+
+        SeatUser::create($data);
+    
+        return response()->json(['message' => 'Asiento asignado correctamente']);
+
     }
 
     public function staircase()
@@ -92,11 +102,13 @@ class EventController extends Controller
     public function edit(Event $event): View
     {
         $rooms = Room::all();
+        $room = $event->room();
+        $positions = Seat::where('room_id', $event->room_id)->pluck('position')->toArray();;
         $roles = Role::all();
         $degrees = Degree::all();
         $users = User::with('roles')->with('degree')->get();
 
-        return view('event.edit', compact('event', 'rooms',  'degrees', 'roles', 'users'));
+        return view('event.edit', compact('event', 'rooms', 'degrees',  'roles', 'positions', 'users'));
     }
 
     /**
@@ -104,9 +116,15 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event): RedirectResponse
     {
-        $event->update($request->all()); 
+        $data = [
+            "title" => $request->title,
+            "date" => $request->date,
+            "room_id" => $request->room_id,
+            "description" => $request->description,
+        ];
+        $event->update($data); 
 
-        return redirect()->route('event.index')->with('success', 'event Updated');
+        return redirect()->route('event.edit', $event)->with('success', 'event Updated');
 
     }
 

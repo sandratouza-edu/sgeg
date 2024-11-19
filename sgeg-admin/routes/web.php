@@ -103,6 +103,7 @@ Route::middleware([
     
     //Reserve
     Route::get('/reserve', [EventController::class, 'reserve'])->name('reserve');
+    Route::post('/reserve', [EventController::class, 'reserve'])->name('reserve');
     Route::get('/staircase', [EventController::class, 'staircase'])->name('staircase');
     
 

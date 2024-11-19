@@ -13,14 +13,14 @@
     }
 
     .seatNumber {
-        margin: 2px;
+        margin: 3px;
         background-color: #5c86eb;
         color: #FFF;
         border-radius: 5px;
         cursor: default;
-        height: 25px;
-        width: 25px;
-        line-height: 25px;
+        height: 28px;
+        width: 28px;
+        line-height: 28px;
         text-align: center;
     }
 

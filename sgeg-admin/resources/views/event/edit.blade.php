@@ -48,19 +48,23 @@
                 <div class="form-group">  
                     @php
                         $options = [];
-                        foreach ($rooms as $room) {
-                            $options[$room->id] = $room->name;
+                        foreach ($rooms as $ro) {
+                            $options[$ro->id] = $ro->name;
                         }
                         $selected = $event->room_id
+                        
                     @endphp
-                    <x-adminlte-select id="room_id" name="room_id" label="{{ __('Rooms') }}" label-class="text-lightblue">
+                    @if (!empty($event->room_id)) 
+                         
+                    @endif 
+                    <x-adminlte-select id="room_id" name="room_id" label="{{ __('Rooms') }}" label-class="text-lightblue" disabled>
                         <x-slot name="prependSlot">
                             <div class="input-group-text">
                                 <i class="fas fa-lg fa-certificate text-lightblue"></i>
                             </div>
                         </x-slot>
                         
-                        <x-adminlte-options :options="$options"  empty-option="{{ __('Select an option...') }}" />
+                        <x-adminlte-options :options="$options" :selected="$selected" empty-option="{{ __('Select an option...') }}" />
                     </x-adminlte-select>
                 </div>
                 
@@ -71,15 +75,16 @@
                     </div>
                 </div>
                 <br>
-              
-                @include('event.room-render')
-
+                
                 <div class="form-group">
                     <a href="{{ route('event.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
-                    <input type="submit" value="{{ __('Update') }}" class="btn btn-success float-right">
+                    <input type="button" value="{{ __('Update') }}" class="btn btn-success float-right">
                 </div>
             </form>
         </div>
+        @if ($event->room)
+            @include('event.room-render', ['room' => $event->room])
+        @endif
     </div>
 @endsection
 
@@ -116,9 +121,44 @@
 <script>
     $('#modalAssign').on('show.bs.modal', function (event) {
         $('.students.hidden').hide();
-       
-        event.preventDefault;
+        var button = $(event.relatedTarget); // Button that triggered the modal
+            var number = button.data('number');
+            var modal = $(this);
+            modal.find('#number_id').val(number);            
+        console.log(number);
+            event.preventDefault;
     });
+    document.getElementById('assignSeat').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const formData = new FormData(form);
+        fetch('{{ route('reserve') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Error al asignar el asiento');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data.message);
+            form.reset(); // Opcional: reinicia el formulario
+            $('#modalAssign').modal('hide'); // Cierra el modal
+           // location.reload(); // Recarga la página para actualizar la lista (opcional)
+        })
+        .catch(error => {
+            console.log(error.message);
+        });
+    });
+
     $('#roles').on('change', function() {
         if (this.value == 2) {
             $('.students.hidden').show();
@@ -138,45 +178,33 @@
 </script>
 <script>
     // Clicking any seat
-    // https://codepen.io/hectorfeliz/pen/QbvXLo
     $(".seatNumber").click(
         function() {
             if (!$(this).hasClass("seatUnavailable")) {
                 // If selected, unselect it
                 if ($(this).hasClass("seatSelected")) {
                     var thisId = $(this).attr('id');
-                    var price = $('#seatsList .' + thisId).val();
                     $(this).removeClass("seatSelected");
                     $('#seatsList .' + thisId).remove();
                     // Calling functions to update checkout total and seat counter.
-                    removeFromCheckout(price);
                     refreshCounter();
                 } else {
                     // else, select it
                     // getting values from Seat
                     var thisId = $(this).attr('id');
                     var id = thisId.split("_");
-                    var price = $(this).attr('value');
-                    var seatDetails = "Row: " + id[0] + " Seat:" + id[1] + " Price:CA$:" + price;
+                    var seatDetails = " " + id[0] + " {{ __('Seat') }}: " + id[1] + "  " ;
 
 
                     var freeSeats = parseInt($('.freeSeats').first().text());
                     var selectedSeats = parseInt($(".seatSelected").length);
-
-                    // If you have free seats available the price of this one will be 0.
-                    if (selectedSeats < freeSeats) {
-                        price = 0;
-                    }
+ 
 
                     // Adding this seat to the list
-                    var seatDetails = "Row: " + id[0] + " Seat:" + id[1] + " Price:CA$:" + price;
-                    $("#seatsList").append('<li value=' + price + ' class=' + thisId + '>' + seatDetails + "  " +
-                        "<button id='remove:" + thisId +
-                        "'+ class='btn btn-default btn-sm removeSeat' value='" + price +
-                        "'><strong>X</strong></button></li>");
+                    var seatDetails = " -" + id[0] + " {{ __('Seat') }}: " + id[1] ;
+                    $("#seatsList").append('<li value=' + thisId + ' class=' + thisId + '>' + seatDetails + "  " + " </li>");
                     $(this).addClass("seatSelected");
 
-                    addToCheckout(price);
                     refreshCounter();
                 }
             }
@@ -186,10 +214,8 @@
     $(document).on('click', ".removeSeat", function() {
         // Getting the Id of the Seat
         var id = $(this).attr('id').split(":");
-        var price = $(this).attr('value')
         $('#seatsList .' + id[1]).remove();
         $("#" + id[1] + ".seatNumber").removeClass("seatSelected");
-        removeFromCheckout(price);
         refreshCounter();
     });
     // Show tooltip on hover.
@@ -198,8 +224,7 @@
             if (!$(this).hasClass("seatUnavailable")) {
                 var id = $(this).attr('id');
                 var id = id.split("_");
-                var price = $(this).attr('value');
-                var tooltip = "Row: " + id[0] + " Seat:" + id[1] + " Price:CA$:" + price;
+                var tooltip = "Row: " + id[0] + " Seat:" + id[1] ;
 
                 $(this).prop('title', tooltip);
             } else {
@@ -209,36 +234,15 @@
     );
     // Function to refresh seats counter
     function refreshCounter() {
-        $(".seatsAmount").text($(".seatSelected").length);
     }
-    // Add seat to checkout
-    function addToCheckout(thisSeat) {
-        var seatPrice = parseInt(thisSeat);
-        var num = parseInt($('.txtSubTotal').text());
-        num += seatPrice;
-        num = num.toString();
-        $('.txtSubTotal').text(num);
-    }
-    // Remove seat from checkout
-    function removeFromCheckout(thisSeat) {
-        var seatPrice = parseInt(thisSeat);
-        var num = parseInt($('.txtSubTotal').text());
-        num -= seatPrice;
-        num = num.toString();
-        $('.txtSubTotal').text(num);
-    }
-
+     
     // Clear seats.
     $("#btnClear").click(
         function() {
-            $('.txtSubTotal').text(0);
-            $(".seatsAmount").text(0);
             $('.seatSelected').removeClass('seatSelected');
             $('#seatsList li').remove();
         }
     );
 </script>
-
-
 
 @endsection

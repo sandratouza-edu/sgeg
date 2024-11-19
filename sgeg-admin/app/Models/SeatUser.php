@@ -10,6 +10,9 @@ class SeatUser extends Model
 {
     use HasFactory;
 
+    protected $table = 'seat_user';
+
+    public $timestamps = false;
     protected $guarded = [];
     
 }

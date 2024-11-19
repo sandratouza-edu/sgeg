@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Models\Pdi;
@@ -12,7 +13,7 @@ use App\Models\Degree;
 use App\Http\Requests\PdiRequest;
 use Spatie\Permission\Models\Role;
 
-class PdiController extends Controller
+class PDIController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +21,9 @@ class PdiController extends Controller
     public function index(): View
     {
         $pdis = Pdi::with('user')->get();
+        $degrees = Degree::all();
        
-        return view('pdi.index', compact('pdis'));
+        return view('pdi.index', compact('pdis', 'degrees'));
     }
 
     /**
@@ -39,7 +41,6 @@ class PdiController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $input = $request->all();
-        //ver uso $request->only('email','password')
 
         if(empty($input['password'])){ 
             $input['password'] = Hash::make('password');
@@ -51,7 +52,7 @@ class PdiController extends Controller
          
         $pdi = Pdi::create([
             'thesis_date' => $request->thesis_date,
-            'degree' => $request->degree,
+            'degree' => $request->degree_id,
             'user_id' => $user->id
         ]);
         
@@ -89,17 +90,32 @@ class PdiController extends Controller
     
         $pdi->thesis_date = $request->thesis_date;
         $pdi->degree      = $request->degree_id;
+        $pdi->is_godfather = $request->is_godfather;
+
         //$pdi->is_godfather
         $pdi->save(); 
 
         $user = User::find($pdi->user_id);
-        $user->name = $request->name;
+        $user->name  = $request->name;
         $user->phone = $request->phone;
         $user->email =  $request->email;
+        $user->degree_id =  $request->degree_id;
         $user->save();
 
        return redirect()->route('pdi.index')->with('success', 'pdi Updated');
         //return redirect()->route('pdi.edit', $pdi)->with('message', __('Updated'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function assignGodfather(Request $request, Pdi $pdi): RedirectResponse
+    {
+        $pdi = Pdi::find($request->pdi);
+        $pdi->is_godfather = $request->is_godfather;
+        $pdi->save(); 
+
+        return redirect()->route('pdi.index')->with('success', 'pdi Updated');
     }
 
     /**

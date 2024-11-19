@@ -47,7 +47,7 @@
                     <tr>
                         <td> {{ $event->title }} </td>
                         <td> {{ $event->date }} </td>
-                        <td> {{ $event->room_id }} </td>
+                        <td> {{ $event->room->name ?? '' }} </td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('event.show', $event->id) }}">
