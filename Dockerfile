@@ -30,9 +30,9 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
 ENV COMPOSER_HOME=/var/www/.composer
 
 # ILaravel
- RUN composer install --no-dev --no-scripts --no-autoloader  
- RUN composer dump-autoload && \
- php artisan key:generate
+ RUN composer install --no-dev --no-scripts --no-autoloader && \
+     composer dump-autoload && \
+     php artisan key:generate
 
 #RUN php artisan config:cache && \
 #    php artisan route:cache
